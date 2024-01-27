@@ -50,7 +50,7 @@ class DrawerHeader extends StatelessWidget {
     return const Center(child: Text(
       "Hello Admin !",
       style: TextStyle(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 20.0,
         fontWeight: FontWeight.w500,
       ),
