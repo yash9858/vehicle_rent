@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:rentify/User/car_detail.dart';
+import 'package:rentify/User/Car_Details.dart';
 
 class Bike extends StatefulWidget {
   const Bike({super.key});
@@ -67,7 +66,7 @@ class _BikeState extends State<Bike> {
                               borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
-                            child: Image.asset("assets/img/bullet.jpeg",fit: BoxFit.cover,),
+                              child: Image.asset("assets/bullet.jpeg",fit: BoxFit.cover,),
                             ),
                             Expanded(
                               child: Padding(
@@ -88,17 +87,17 @@ class _BikeState extends State<Bike> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                         children: [
-                                           Row(
-                                             children: [
-                                               Text(
+                                          Row(
+                                            children: [
+                                              Text(
                                                 " ₹400",
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold),
+                                              ),
+                                              Text("/day")
+                                            ],
                                           ),
-                                               Text("/day")
-                                             ],
-                                           ),
                                           Row(
                                             children: [
                                               const Text("4.1"),

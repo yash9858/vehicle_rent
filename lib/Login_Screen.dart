@@ -1,190 +1,148 @@
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Admin_DashBoard.dart';
-import 'package:rentify/User/Homescreen.dart';
-import 'package:rentify/User/UserDashboard.dart';
-import 'package:sign_button/sign_button.dart';
-import 'DashBoard_Screen.dart';
+import 'Forget_Password.dart';
 import 'Register_Screen.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
   @override
   Widget build(BuildContext context) {
-    var mdheight = MediaQuery.sizeOf(context).height;
-    var mdwidth = MediaQuery.sizeOf(context).width;
+
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-        body: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-              Colors.deepPurple.shade900,
-              Colors.deepPurple.shade800,
-              Colors.deepPurple.shade400
-            ])),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(height: mdheight * 0.09),
-              Padding(
-                padding: EdgeInsets.only(
-                    bottom: mdheight * 0.02, left: mdheight * 0.025),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Login',
-                      style: TextStyle(
-                          color: Colors.white, fontSize: mdheight * 0.050),
+      body: Container(
+        height: double.maxFinite,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Colors.deepPurple],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: size.height* 0.01, horizontal: size.height * 0.03),
+            child: Column(
+              children: [
+                Lottie.asset('assets/img/login.json',
+                  height: size.height * 0.35,
+                ),
+                Text(
+                  "Welcome Back!",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.005),
+                const Text(
+                  "Log In Your Account",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.025),
+                TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+                    filled: true,
+                    hintText: "Email",
+                    prefixIcon: const Icon(Icons.person),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
-                    Text(
-                      'Welcome Back',
-                      style: TextStyle(
-                          color: Colors.white, fontSize: mdheight * 0.020),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                  child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(mdheight * 0.14)),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: mdheight * 0.03,
-                      right: mdheight * 0.03,
-                      top : mdheight * 0.12,
                   ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                        children: [
-                          Center(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.person),
-                                fillColor: Colors.grey.shade100,
-                                filled: true,
-                                hintText: 'Enter Username',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                ),
-                            ),
-                          ),
-                        ),
-                      SizedBox(height: mdheight * 0.020),
-                      Center(
-                        child: TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.vpn_key_rounded),
-                              fillColor: Colors.grey.shade100,
-                              filled: true,
-                              hintText: 'Enter Password',
-                              suffixIcon: Icon(Icons.remove_red_eye_rounded),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20)
-                              )
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: mdheight * 0.010),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomePage()));
-                              },
-                              child: Text('Forget Password ?',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: mdheight * 0.020,
-                                  )),
-                            )
-                          ]),
-                      SizedBox(height: mdheight * 0.03),
-                      Center(
-                        child: Container(
-                            height: MediaQuery.sizeOf(context).height * 0.050,
-                            width: MediaQuery.sizeOf(context).width * 0.60,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(mdheight * 0.025),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const UserDasboard()));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.deepPurple.shade800,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(mdheight * 0.50),
-                                  )),
-                              child: Text('Login',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: mdheight * 0.025,
-                                      fontWeight: FontWeight.bold)),
-                            )),
-                      ),
-                      SizedBox(height: mdheight * 0.04),
-                      Text('Login With Social Media',
-                          style: TextStyle(
-                              color: Colors.black, fontSize: mdheight * 0.026)),
-                      SizedBox(height: mdheight * 0.04),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SignInButton.mini(
-                                buttonType: ButtonType.apple, onPressed: () {}),
-                            SignInButton.mini(
-                                buttonType: ButtonType.google,
-                                onPressed: () {}),
-                            SignInButton.mini(
-                                buttonType: ButtonType.facebook,
-                                onPressed: () {}),
-                          ]),
-                      SizedBox(
-                        height: mdheight * 0.04,
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Don't Have An Account?",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: mdheight * 0.021)),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegisterPage()));
-                              },
-                              child: Text('Sign Up',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.deepPurple,
-                                    fontSize: mdheight * 0.020,
-                                  )),
-                            )
-                          ])
+                ),
+                SizedBox(height: size.height * 0.025),
+                TextField(
+                  obscureText: true,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+                    filled: true,
+                    hintText: "Password",
+                    prefixIcon: const Icon(Icons.key),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.01),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children:[
+                      TextButton(onPressed: (){
+                        Navigator.push(context , MaterialPageRoute(builder: (context) => const Forget_password()));
+                      },
+                        child: Text('Forget Password ?',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: size.height * 0.020,)),)
                     ]),
+                SizedBox(height: size.height * 0.025),
+                MaterialButton(
+                  padding: EdgeInsets.zero,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: size.height * 0.080,
+                    decoration:  BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 45,
+                          color: Color.fromRGBO(120, 37, 139, 0.25),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(35),
+                      color: const Color.fromRGBO(225, 225, 225, 0.6),
+                    ),
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Admin_DashBoard()));
+                  },
                 ),
-              ))
-            ])));
+                SizedBox(height: size.height * 0.025),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                      Text("Don't Have An Account?",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: size.height * 0.022)),
+                      TextButton(onPressed: (){
+                        Navigator.push(context , MaterialPageRoute(builder: (context) => const RegisterPage()));
+                      },
+                        child: Text('Sign Up',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationColor: const Color.fromRGBO(225, 225, 225, 0.9),
+                              color: const Color.fromRGBO(225, 225, 225, 0.9),
+                              fontSize: size.height * 0.023,)),)
+                    ]),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

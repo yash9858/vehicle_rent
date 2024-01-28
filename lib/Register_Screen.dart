@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'DashBoard_Screen.dart';
+import 'package:rentify/User/Home_User.dart';
+import 'package:rentify/User/User_DashBoard.dart';
+import 'Forget_Password.dart';
 import 'Login_Screen.dart';
+import 'package:lottie/lottie.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -12,173 +15,159 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
-    var mdheight = MediaQuery.sizeOf(context).height;
-    var mdwidth = MediaQuery.sizeOf(context).width;
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
-        body: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-              Colors.deepPurple.shade900,
-              Colors.deepPurple.shade800,
-              Colors.deepPurple.shade400
-            ])),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(height: mdheight * 0.09),
-              Padding(
-                padding: EdgeInsets.only(
-                    bottom: mdheight * 0.02, left: mdheight * 0.025),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Registration ',
-                      style: TextStyle(
-                          color: Colors.white, fontSize: mdheight * 0.050),
-                    ),
-                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
-                    Text(
-                      'Create Account',
-                      style: TextStyle(
-                          color: Colors.white, fontSize: mdheight * 0.020),
-                    )
-                  ],
+      body: Container(
+        height: double.maxFinite,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Colors.deepPurple],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: size.height * 0.01, horizontal: size.height* 0.03),
+            child: Column(
+              children: [
+                Lottie.asset('assets/img/register.json',
+                  height: size.height * 0.32,
                 ),
-              ),
-              Expanded(
+                Text(
+                  "Welcome Back!",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.005),
+                const Text(
+                  "Create Account",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02),
+                TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+                    filled: true,
+                    hintText: "UserName",
+                    prefixIcon: const Icon(Icons.person),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02),
+                TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+                    filled: true,
+                    hintText: "Email",
+                    prefixIcon: const Icon(Icons.email),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02),
+                TextField(
+                  obscureText: true,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+                    filled: true,
+                    hintText: "Password",
+                    prefixIcon: const Icon(Icons.lock),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02),
+                TextField(
+                  obscureText: true,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
+                    filled: true,
+                    hintText: "Confirm Password",
+                    prefixIcon: const Icon(Icons.key),
+                    suffixIcon: const Icon(Icons.remove_red_eye),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.025),
+                MaterialButton(
+                  padding: EdgeInsets.zero,
                   child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(mdheight * 0.14)),
+                    alignment: Alignment.center,
+                    height: size.height * 0.080,
+                    decoration:  BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 45,
+                          color: Color.fromRGBO(120, 37, 139, 0.25),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(35),
+                      color: const Color.fromRGBO(225, 225, 225, 0.6),
+                    ),
+                    child: const Text(
+                      "Create Account",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
                       ),
-                      child: Padding(
-                          padding: EdgeInsets.only(
-                              left: mdheight * 0.03,
-                              right: mdheight * 0.03,
-                              top: mdheight * 0.12),
-                          child: SingleChildScrollView(
-                              child: Column(children: [
-                                Center(
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.person),
-                                        fillColor: Colors.grey.shade100,
-                                        filled: true,
-                                        hintText: 'Enter Username',
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(20)
-                                        )
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: mdheight * 0.020),
-                                Center(
-                                  child: TextField(
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.email),
-                                        fillColor: Colors.grey.shade100,
-                                        filled: true,
-                                        hintText: 'Enter Email',
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(20)
-                                        )
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: mdheight * 0.020),
-                                Center(
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.lock),
-                                        fillColor: Colors.grey.shade100,
-                                        filled: true,
-                                        hintText: 'Enter Password',
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(20)
-                                        )
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: mdheight * 0.020),
-                                Center(
-                                  child: TextField(
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.vpn_key_rounded),
-                                        fillColor: Colors.grey.shade100,
-                                        filled: true,
-                                        hintText: 'Enter Confirm Password',
-                                        suffixIcon: Icon(Icons.remove_red_eye_rounded),
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(20)
-                                        )
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: mdheight * 0.040),
-                                Center(
-                                    child: MaterialButton(
-                                        onPressed: () {
-                                          // ignore: non_constant_identifier_names
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                  const HomePage()));
-                                        },
-                                        child: Container(
-                                          height: MediaQuery.sizeOf(context)
-                                                  .height *
-                                              0.05,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: mdwidth * 0.035),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      mdheight * 0.025),
-                                              color:
-                                                  Colors.deepPurple.shade800),
-                                          child: Center(
-                                            child: Text('Create Account',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: mdheight * 0.022,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ),
-                                        ))),
-                                SizedBox(
-                                  height: mdheight * 0.03,
-                                ),
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("You have Already An Account?",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: mdheight * 0.021)),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const LoginPage()));
-                                        },
-                                        child: Text('Sign In',
-                                            style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              color: Colors.deepPurple,
-                                              fontSize: mdheight * 0.020,
-                                            )),
-                                      )
-                                    ])
-                              ])))))
-            ])));
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Navigation()));
+                  },
+                ),
+                SizedBox(height: size.height * 0.01),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                      Text("You Have Already An Account?",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: size.height * 0.022)),
+                      TextButton(onPressed: (){
+                        Navigator.push(context , MaterialPageRoute(builder: (context) => const LoginPage()));
+                      },
+                        child: Text('Sign In',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationColor: const Color.fromRGBO(225, 225, 225, 0.9),
+                              color: const Color.fromRGBO(225, 225, 225, 0.9),
+                              fontSize: size.height * 0.023,)),)
+                    ]),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -33,8 +33,6 @@ dependencies:
   lottie: ^2.6.0
   introduction_screen: ^3.1.12
   onboarding_intro_screen: ^0.0.8
-  sign_button: ^2.0.6
-  flutter_side_menu: ^0.4.0
   line_icons: ^2.0.3
   cool_alert: ^2.0.1
   flutter_launcher_icons: "^0.13.1"

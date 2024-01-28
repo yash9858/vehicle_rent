@@ -50,7 +50,7 @@ class DrawerHeader extends StatelessWidget {
     return const Center(child: Text(
       "Hello Admin !",
       style: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 20.0,
         fontWeight: FontWeight.w500,
       ),
@@ -227,7 +227,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   crossAxisCount: 2,
                   crossAxisSpacing: mdheight * 0.012,
                   mainAxisSpacing: mdheight * 0.012,
-                  mainAxisExtent: mdheight * 0.09,
+                  mainAxisExtent: mdheight * 0.08,
                 ),
                 itemCount: name.length,
                 itemBuilder: (context , int index)
