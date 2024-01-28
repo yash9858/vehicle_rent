@@ -2,6 +2,7 @@ import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:rentify/Admin/Vehicle_Category_Add_Admin.dart';
 
+// ignore: camel_case_types
 class Admin_CategoryPage extends StatefulWidget {
   const Admin_CategoryPage({super.key});
 
@@ -9,12 +10,13 @@ class Admin_CategoryPage extends StatefulWidget {
   State<Admin_CategoryPage> createState() => _Admin_CategoryPageState();
 }
 
+// ignore: camel_case_types
 class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
   var name = ['HatchBack', 'sedan', 'Suv', 'BodyType'];
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -32,7 +34,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
           itemCount: name.length,
           itemBuilder: (BuildContext context, int index)
           {
-            return Padding(padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.025, vertical: mdheight * 0.005),
+            return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
                   elevation: 5.0,
                   shadowColor: Colors.deepPurple.shade800,
@@ -82,7 +84,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                               {
                                 return Dialog(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.03),
+                                      padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
                                       child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,7 +94,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                               height: mdheight * 0.13,),
                                             SizedBox(height: mdheight * 0.02),
                                             Padding(
-                                              padding: EdgeInsets.only(left : mdhwidth * 0.05, right: mdhwidth * 0.01,),
+                                              padding: EdgeInsets.only(left : mdwidth * 0.05, right: mdwidth * 0.01,),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children :[
@@ -118,7 +120,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                               });
                             },
                                 color: Colors.deepPurple.shade800,
-                                padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),
@@ -136,7 +138,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                   ));
                             },
                                 color: Colors.redAccent.shade200,
-                                padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:line_icons/line_icons.dart';
 
+// ignore: camel_case_types
 class Admin_FeedbackPage extends StatefulWidget {
   const Admin_FeedbackPage({super.key});
 
@@ -8,11 +9,12 @@ class Admin_FeedbackPage extends StatefulWidget {
   State<Admin_FeedbackPage> createState() => _Admin_FeedbackPageState();
 }
 
+// ignore: camel_case_types
 class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -30,7 +32,7 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
         itemCount: 10,
         itemBuilder: (BuildContext context, int index)
         {
-          return Padding(padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.025, vertical: mdheight * 0.005),
+          return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
               child: Card(
                 elevation: 5.0,
                 shadowColor: Colors.deepPurple.shade800,

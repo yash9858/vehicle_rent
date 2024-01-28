@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
 
+// ignore: camel_case_types
 class Admin_BookingPage extends StatefulWidget {
   const Admin_BookingPage({super.key});
 
@@ -8,11 +9,12 @@ class Admin_BookingPage extends StatefulWidget {
   State<Admin_BookingPage> createState() => _Admin_BookingPageState();
 }
 
+// ignore: camel_case_types
 class _Admin_BookingPageState extends State<Admin_BookingPage> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
         appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -30,7 +32,7 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
           itemCount: 10,
           itemBuilder: (BuildContext context, int index)
           {
-            return Padding(padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.025, vertical: mdheight * 0.005),
+            return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
                   elevation: 5.0,
                   shadowColor: Colors.deepPurple.shade800,
@@ -68,7 +70,7 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                           children: [
                             MaterialButton(onPressed: (){},
                                 color: Colors.deepPurple.shade800,
-                                padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),
@@ -86,7 +88,7 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                                   ));
                             },
                                 color: Colors.redAccent.shade200,
-                                padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),

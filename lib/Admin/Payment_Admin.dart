@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class Admin_PaymentPage extends StatefulWidget {
   const Admin_PaymentPage({super.key});
 
@@ -7,11 +8,12 @@ class Admin_PaymentPage extends StatefulWidget {
   State<Admin_PaymentPage> createState() => _Admin_PaymentPageState();
 }
 
+// ignore: camel_case_types
 class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
         appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -29,7 +31,7 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
           itemCount: 10,
           itemBuilder: (BuildContext context, int index)
           {
-            return Padding(padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.025, vertical: mdheight * 0.005),
+            return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
                   elevation: 5.0,
                   shadowColor: Colors.deepPurple.shade800,
@@ -66,18 +68,18 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
                             {
                               return Dialog(
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.03),
+                                    padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
                                     child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           SizedBox(height: mdheight * 0.02),
                                           Padding(
-                                            padding: EdgeInsets.only(left : mdhwidth * 0.05, right: mdhwidth * 0.01,),
+                                            padding: EdgeInsets.only(left : mdwidth * 0.05, right: mdwidth * 0.01,),
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children :[
-                                                const Text('Cancle Id: 1'),
+                                                const Text('Cancel Id: 1'),
                                                 SizedBox(height: mdheight * 0.01),
                                                 const Text('Vehicle Id : 1'),
                                                 SizedBox(height: mdheight * 0.01),
@@ -107,7 +109,7 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
                           });
                           },
                               color: Colors.deepPurple.shade800,
-                              padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                              padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                               ),

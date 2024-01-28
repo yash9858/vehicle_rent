@@ -1,74 +1,79 @@
-// ignore_for_file: sized_box_for_whitespace
-import 'package:rentify/User/Bike_Details.dart';
-import 'Available_car.dart';
-import 'Home_User.dart';
-import 'Profile.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:rentify/User/Available_bike.dart';
+import 'package:rentify/User/Available_car.dart';
+import 'package:rentify/User/Homescreen.dart';
+import 'package:rentify/User/Profile.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-class Navigation extends StatefulWidget {
-  const Navigation({Key? key}) : super(key: key);
+class UserDasboard extends StatefulWidget {
+  const UserDasboard({super.key});
 
   @override
-  State<Navigation> createState() => NavigationState();
+  State<UserDasboard> createState() => _UserDasboardState();
 }
 
-class NavigationState extends State<Navigation> {
-  var _currentIndex = 0;
-    // ignore: non_constant_identifier_names
-    List<Widget> Pagelist = const [
+class _UserDasboardState extends State<UserDasboard> {
+  var _currentIndex=0;
+
+  var pagelist=[
     Homescreen(),
-    bike_detail(),
+    Bike(),
     Car(),
     Profile(),
+
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Pagelist[_currentIndex],
+
+
+
+      body: pagelist[_currentIndex],
       bottomNavigationBar: SalomonBottomBar(
-        onTap: (index){
+
+
+        onTap: (i){
+          print("ontap $i");
           setState(() {
-            _currentIndex = index;
+            _currentIndex=i;
           });
         },
         currentIndex: _currentIndex,
+
+
+
         items: [
           /// Home
-           SalomonBottomBarItem(
-            icon: const Icon(Icons.home),
-            title: const Text("Home"),
-            selectedColor: Colors.deepPurple.shade800,
+          SalomonBottomBarItem(
+            icon: Icon(Icons.home),
+            title: Text("Home"),
+            selectedColor: Colors.deepPurple.shade300,
           ),
 
           /// Likes
           SalomonBottomBarItem(
-            icon: const Icon(LineIcons.car),
-            title: const Text("Car"),
-            selectedColor: Colors.deepPurple.shade800,
+            icon: Icon(Icons.favorite_border),
+            title: Text("Likes"),
+            selectedColor: Colors.pink,
           ),
 
           /// Search
           SalomonBottomBarItem(
-            icon: const Icon(LineIcons.biking),
-            title: const Text("Bike"),
-            selectedColor: Colors.deepPurple.shade800,
+            icon: Icon(LineIcons.car),
+            title: Text("Search"),
+            selectedColor: Colors.orange,
           ),
 
           /// Profile
           SalomonBottomBarItem(
-            icon: const Icon(Icons.account_circle_rounded),
-            title: const Text("Profile"),
-            selectedColor: Colors.deepPurple.shade800,
+            icon: Icon(Icons.person),
+            title: Text("Profile"),
+            selectedColor: Colors.teal,
           ),
         ],
       ),
     );
-
-
   }
-
-
 }

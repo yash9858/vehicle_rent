@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:rentify/Vehicle_Add_Admin.dart';
 
+// ignore: camel_case_types
 class Admin_VehiclePage extends StatefulWidget {
   const Admin_VehiclePage({super.key});
 
@@ -9,12 +10,13 @@ class Admin_VehiclePage extends StatefulWidget {
   State<Admin_VehiclePage> createState() => _Admin_VehiclePageState();
 }
 
+// ignore: camel_case_types
 class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
   var name = ['Tesla', 'BMW', 'Ferrari', 'Ford', 'Honda', 'Toyota'];
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -32,7 +34,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
           itemCount: name.length,
           itemBuilder: (BuildContext context, int index)
           {
-            return Padding(padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.025, vertical: mdheight * 0.005),
+            return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
                   elevation: 5.0,
                   shadowColor: Colors.deepPurple.shade800,
@@ -89,7 +91,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                               {
                                 return Dialog(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.03),
+                                      padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
                                       child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,7 +100,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                             Image.asset('assets/img/Logo.jpg', height: mdheight * 0.13,),
                                             SizedBox(height: mdheight * 0.02),
                                             Padding(
-                                              padding: EdgeInsets.only(left : mdhwidth * 0.05, right: mdhwidth * 0.01,),
+                                              padding: EdgeInsets.only(left : mdwidth * 0.05, right: mdwidth * 0.01,),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children :[
@@ -133,7 +135,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                               );
                             },
                                 color: Colors.deepPurple.shade800,
-                                padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),
@@ -151,7 +153,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                   ));
                             },
                                 color: Colors.redAccent.shade200,
-                                padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),
@@ -167,7 +169,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_Add_Vehicle()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const Admin_Add_Vehicle()));
         },
         backgroundColor: Colors.deepPurple.shade800,
         shape: const RoundedRectangleBorder(

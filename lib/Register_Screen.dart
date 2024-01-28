@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rentify/User/Home_User.dart';
 import 'package:rentify/User/User_DashBoard.dart';
 import 'Forget_Password.dart';
 import 'Login_Screen.dart';
@@ -141,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Navigation()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UserDasboard()));
                   },
                 ),
                 SizedBox(height: size.height * 0.01),

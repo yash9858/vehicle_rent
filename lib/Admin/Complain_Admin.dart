@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/Material.dart';
 
 class Admin_ComplainPage extends StatefulWidget {
@@ -11,7 +13,7 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -29,7 +31,7 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
             itemCount: 10,
               itemBuilder: (BuildContext context, int index)
           {
-            return Padding(padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.025, vertical: mdheight * 0.005),
+            return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
               child: Card(
                 elevation: 5.0,
                 shadowColor: Colors.deepPurple.shade800,
@@ -59,7 +61,7 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
                       children: [
                         MaterialButton(onPressed: (){},
                             color: Colors.deepPurple.shade800,
-                            padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                            padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                             ),

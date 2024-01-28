@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/Available_bike.dart';
 import 'package:rentify/User/Available_car.dart';
-import 'package:rentify/User/Bike_detail.dart';
-import 'package:rentify/User/Profile_page.dart';
-import 'package:rentify/User/car_detail.dart';
+import 'package:rentify/User/Bike_Details.dart';
+import 'package:rentify/User/Car_Details.dart';
+import 'package:rentify/User/Profile.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 

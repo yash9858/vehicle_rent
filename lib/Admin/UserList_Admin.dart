@@ -1,6 +1,7 @@
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
 
+// ignore: camel_case_types
 class Admin_UserPage extends StatefulWidget {
   const Admin_UserPage({super.key});
 
@@ -8,12 +9,13 @@ class Admin_UserPage extends StatefulWidget {
   State<Admin_UserPage> createState() => _Admin_UserPageState();
 }
 
+// ignore: camel_case_types
 class _Admin_UserPageState extends State<Admin_UserPage> {
   var name = ['yash', 'raj', 'jigar','anuj', 'sachin'];
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -31,7 +33,7 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
           itemCount: name.length,
           itemBuilder: (BuildContext context, int index)
           {
-            return Padding(padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.025, vertical: mdheight * 0.005),
+            return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
                   elevation: 5.0,
                   shadowColor: Colors.deepPurple.shade800,
@@ -93,7 +95,7 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                                   ));
                             },
                                 color: Colors.redAccent.shade200,
-                                padding: EdgeInsets.symmetric(horizontal: mdhwidth * 0.05, vertical: mdhwidth * 0.01),
+                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),

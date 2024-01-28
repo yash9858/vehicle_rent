@@ -1,6 +1,7 @@
 import 'package:flutter/Material.Dart';
 import 'package:rentify/Admin/Vehicle_Category_Admin.dart';
 
+// ignore: camel_case_types
 class Vehicle_Category_Details extends StatefulWidget {
   const Vehicle_Category_Details({super.key});
 
@@ -8,11 +9,11 @@ class Vehicle_Category_Details extends StatefulWidget {
   State<Vehicle_Category_Details> createState() => _Vehicle_Category_DetailsState();
 }
 
+// ignore: camel_case_types
 class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -28,15 +29,15 @@ class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
           children: [
             IconButton(
               onPressed: (){},
-              icon: Icon(Icons.add_a_photo_outlined, size: 50,),
+              icon: const Icon(Icons.add_a_photo_outlined, size: 50,),
               splashColor: Colors.deepPurple.shade800,
             ),
-            SizedBox(height: 40,),
+            const SizedBox(height: 40,),
             TextField(
               decoration: InputDecoration(
                 fillColor: Colors.grey.shade100,
@@ -47,7 +48,7 @@ class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
                 )
               ),
             ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               TextField(
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
@@ -58,7 +59,7 @@ class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
                     ),
                 ),
               ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             TextField(
               decoration: InputDecoration(
                   fillColor: Colors.grey.shade100,
@@ -69,7 +70,7 @@ class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
                   )
               ),
             ),
-            SizedBox(height: 40,),
+            const SizedBox(height: 40,),
             Container(
             height: MediaQuery.sizeOf(context).height * 0.050,
             width: MediaQuery.sizeOf(context).width * 0.70,
