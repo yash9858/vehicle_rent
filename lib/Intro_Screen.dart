@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onboarding_intro_screen/onboarding_screen.dart';
-import 'Login_Screen.dart';
+import 'package:rentify/Login_Screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});

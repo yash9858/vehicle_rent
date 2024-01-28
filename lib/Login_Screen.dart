@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Admin_DashBoard.dart';
+import 'package:rentify/User/Homescreen.dart';
+import 'package:rentify/User/UserDashboard.dart';
 import 'package:sign_button/sign_button.dart';
 import 'DashBoard_Screen.dart';
 import 'Register_Screen.dart';
@@ -121,7 +123,7 @@ class LoginPage extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const Admin_DashBoard()));
+                                            const UserDasboard()));
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.deepPurple.shade800,
