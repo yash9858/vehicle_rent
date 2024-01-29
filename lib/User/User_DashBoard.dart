@@ -48,7 +48,7 @@ class _UserDasboardState extends State<UserDasboard> {
           /// Home
           SalomonBottomBarItem(
             icon: Icon(Icons.home),
-            title: Text("Home"),
+            title: Text("H"),
             selectedColor: Colors.deepPurple.shade300,
           ),
 
