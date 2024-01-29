@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Admin_DashBoard.dart';
+import 'package:rentify/User/User_DashBoard.dart';
 import 'Forget_Password.dart';
 import 'Register_Screen.dart';
 import 'package:lottie/lottie.dart';
@@ -82,7 +83,7 @@ class LoginPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children:[
                       TextButton(onPressed: (){
-                        Navigator.push(context , MaterialPageRoute(builder: (context) => const Forget_password()));
+                        Navigator.push(context , MaterialPageRoute(builder: (context) => UserDasboard()));
                       },
                         child: Text('Forget Password ?',
                             style: TextStyle(

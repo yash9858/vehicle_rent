@@ -7,6 +7,7 @@ void main() {
     theme: ThemeData(
       primarySwatch: Colors.deepPurple,
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple.shade800),
+      useMaterial3: false
     ),
     home: const SplashScreen(),
   ));

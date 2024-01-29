@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:rentify/User/Bike_Details.dart';
 import 'package:rentify/User/Car_Details.dart';
 
 class Bike extends StatefulWidget {
@@ -37,7 +38,7 @@ class _BikeState extends State<Bike> {
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>car_detail()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail()));
                 },
                 child: Container(
 
@@ -66,7 +67,7 @@ class _BikeState extends State<Bike> {
                               borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
-                              child: Image.asset("assets/bullet.jpeg",fit: BoxFit.cover,),
+                              child: Image.asset("assets/img/bullet.jpeg",fit: BoxFit.cover,),
                             ),
                             Expanded(
                               child: Padding(

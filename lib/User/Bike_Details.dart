@@ -50,7 +50,7 @@ class _bike_detailState extends State<bike_detail> {
                         ],
                       ),
                     ),
-                    Image.asset("assets/bullet.jpeg",height: mheight*0.33,),
+                    Image.asset("assets/img/bullet.jpeg",height: mheight*0.33,),
                   ],
                 ),
               ),
