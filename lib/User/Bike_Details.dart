@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'Home_User.dart';
+import 'package:rentify/User/Homescreen.dart';
 
 class bike_detail extends StatefulWidget {
   const bike_detail({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:rentify/Vehicle_Add_Admin.dart';
+import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
 
 // ignore: camel_case_types
 class Admin_VehiclePage extends StatefulWidget {
