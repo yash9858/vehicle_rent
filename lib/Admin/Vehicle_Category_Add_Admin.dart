@@ -29,37 +29,17 @@ class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
           children: [
+            SizedBox(height: mdheight * 0.05,),
             IconButton(
+              iconSize: 100,
               onPressed: (){},
-              icon: const Icon(Icons.add_a_photo_outlined, size: 50,),
+              icon: const Icon(Icons.add_a_photo_outlined,),
               splashColor: Colors.deepPurple.shade800,
             ),
-            const SizedBox(height: 40,),
-            TextField(
-              decoration: InputDecoration(
-                fillColor: Colors.grey.shade100,
-                filled: true,
-                hintText: 'Enter Category Id',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10)
-                )
-              ),
-            ),
-              const SizedBox(height: 20,),
-              TextField(
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Vehicle Id',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                    ),
-                ),
-              ),
-            const SizedBox(height: 20,),
+            SizedBox(height: mdheight * 0.05,),
             TextField(
               decoration: InputDecoration(
                   fillColor: Colors.grey.shade100,
@@ -70,7 +50,7 @@ class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
                   )
               ),
             ),
-            const SizedBox(height: 40,),
+            SizedBox(height: mdheight * 0.05,),
             Container(
             height: MediaQuery.sizeOf(context).height * 0.050,
             width: MediaQuery.sizeOf(context).width * 0.70,
@@ -90,7 +70,7 @@ class _Vehicle_Category_DetailsState extends State<Vehicle_Category_Details> {
                   backgroundColor: Colors.deepPurple.shade800,
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                    BorderRadius.circular(mdheight * 0.10),
+                    BorderRadius.circular(mdheight * 0.02),
                   )),
               child: Text('Add Category',
                   style: TextStyle(

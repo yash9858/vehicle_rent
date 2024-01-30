@@ -87,52 +87,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             MaterialButton(onPressed: (){
-                              showDialog(context: context, builder: (context)
-                              {
-                                return Dialog(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
-                                      child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(height: mdheight * 0.02),
-                                            Image.asset('assets/img/Logo.jpg', height: mdheight * 0.13,),
-                                            SizedBox(height: mdheight * 0.02),
-                                            Padding(
-                                              padding: EdgeInsets.only(left : mdwidth * 0.05, right: mdwidth * 0.01,),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children :[
-                                                  const Text('Category Id : 1'),
-                                                  SizedBox(height: mdheight * 0.01),
-                                                  const Text('Vehicle Id : 1'),
-                                                  SizedBox(height: mdheight * 0.01),
-                                                  const Text('Vehicle Name : Tesla'),
-                                                  SizedBox(height: mdheight * 0.01),
-                                                  const Text('Vehicle Type : Car'),
-                                                  SizedBox(height: mdheight * 0.01),
-                                                  const Text('Vehicle Description : This Is Fully \nAutomated Car'),
-                                                  SizedBox(height: mdheight * 0.01),
-                                                  const Text('Rent Price: 500/day'),
-                                                  SizedBox(height: mdheight * 0.01),
-                                                  const Text('Availability : True'),
-                                                  SizedBox(height: mdheight * 0.01),
-                                                ],
-                                              ),
-                                            ),
-                                            MaterialButton(onPressed: (){
-                                              Navigator.pop(context);
-                                            },
-                                                color: Colors.deepPurple.shade800,
-                                                elevation: 5.0,
-                                                child: const Text('Update', style: TextStyle(color: Colors.white,),)),
-                                            SizedBox(height: mdheight * 0.01),
-                                          ]
-                                      ),
-                                    ));
-                              }
-                              );
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const Admin_Add_Vehicle()));
                             },
                                 color: Colors.deepPurple.shade800,
                                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
@@ -145,14 +100,14 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                               CoolAlert.show(context: context,
                                   type: CoolAlertType.confirm,
                                   text: 'Do you Remove Vehicle',
-                                  confirmBtnColor: Colors.redAccent.shade200,
+                                  confirmBtnColor: Colors.red,
                                   animType: CoolAlertAnimType.slideInDown,
-                                  backgroundColor: Colors.redAccent.shade200,
+                                  backgroundColor: Colors.red,
                                   cancelBtnTextStyle: const TextStyle(
                                     color: Colors.black,
                                   ));
                             },
-                                color: Colors.redAccent.shade200,
+                                color: Colors.red,
                                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),

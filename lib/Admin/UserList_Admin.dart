@@ -87,14 +87,14 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                               CoolAlert.show(context: context,
                                   type: CoolAlertType.confirm,
                                   text: 'Do you Remove User',
-                                  confirmBtnColor: Colors.redAccent.shade200,
+                                  confirmBtnColor: Colors.red,
                                   animType: CoolAlertAnimType.slideInDown,
-                                  backgroundColor: Colors.redAccent.shade200,
+                                  backgroundColor: Colors.red,
                                   cancelBtnTextStyle: const TextStyle(
                                     color: Colors.black,
                                   ));
                             },
-                                color: Colors.redAccent.shade200,
+                                color: Colors.red,
                                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),

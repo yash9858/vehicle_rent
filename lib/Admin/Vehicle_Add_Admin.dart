@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Vehicle_Admin.dart';
 
+// ignore: camel_case_types
 class Admin_Add_Vehicle extends StatefulWidget {
   const Admin_Add_Vehicle({super.key});
 
@@ -8,18 +9,18 @@ class Admin_Add_Vehicle extends StatefulWidget {
   State<Admin_Add_Vehicle> createState() => _Admin_Add_VehicleState();
 }
 
+// ignore: camel_case_types
 class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
-    var mdhwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: mdheight * 0.025,
         ),
-        title: const Text('Add Vehicle Category '),
+        title: const Text('Add Vehicle'),
         backgroundColor: Colors.deepPurple.shade800,
         iconTheme: const IconThemeData(
           color: Colors.white,
@@ -28,15 +29,15 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(mdheight * 0.02),
           child: Column(
             children: [
               IconButton(
+                iconSize: 80,
                 onPressed: (){},
-                icon: Icon(Icons.add_a_photo_outlined, size: 50,),
-                splashColor: Colors.deepPurple.shade800,
+                icon: const Icon(Icons.add_a_photo_outlined,),
               ),
-              SizedBox(height: 40,),
+              SizedBox(height: mdheight * 0.04),
               TextField(
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
@@ -47,7 +48,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                     )
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: mdheight * 0.025,),
               TextField(
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
@@ -58,7 +59,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                     )
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: mdheight * 0.025,),
               TextField(
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
@@ -69,7 +70,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                     )
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: mdheight * 0.025,),
               TextField(
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
@@ -80,7 +81,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                     )
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: mdheight * 0.025,),
               TextField(
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
@@ -91,7 +92,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                     )
                 ),
               ),
-              SizedBox(height: 40,),
+              SizedBox(height: mdheight * 0.04,),
               Container(
                   height: MediaQuery.sizeOf(context).height * 0.050,
                   width: MediaQuery.sizeOf(context).width * 0.70,
@@ -111,7 +112,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                         backgroundColor: Colors.deepPurple.shade800,
                         shape: RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.circular(mdheight * 0.10),
+                          BorderRadius.circular(mdheight * 0.02),
                         )),
                     child: Text('Add Vehicle',
                         style: TextStyle(
