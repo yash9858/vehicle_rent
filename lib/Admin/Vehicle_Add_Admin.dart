@@ -20,7 +20,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
           color: Colors.white,
           fontSize: mdheight * 0.025,
         ),
-        title: const Text('Add Vehicle'),
+        title: const Text('Vehicle Details'),
         backgroundColor: Colors.deepPurple.shade800,
         iconTheme: const IconThemeData(
           color: Colors.white,
@@ -114,7 +114,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                           borderRadius:
                           BorderRadius.circular(mdheight * 0.02),
                         )),
-                    child: Text('Add Vehicle',
+                    child: Text('Save Details',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: mdheight * 0.025,

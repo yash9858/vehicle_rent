@@ -68,7 +68,16 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            MaterialButton(onPressed: (){},
+                            MaterialButton(onPressed: (){
+                              CoolAlert.show(
+                                context: context,
+                                type: CoolAlertType.success,
+                                text: 'Booking Accepted',
+                                autoCloseDuration: const Duration(seconds: 3),
+                                confirmBtnColor: Colors.deepPurple.shade800,
+                                backgroundColor: Colors.deepPurple.shade800,
+                              );
+                            },
                                 color: Colors.deepPurple.shade800,
                                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
@@ -80,14 +89,14 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                               CoolAlert.show(context: context,
                                   type: CoolAlertType.confirm,
                                   text: 'Do you Cancel Booking',
-                                  confirmBtnColor: Colors.redAccent.shade200,
+                                  confirmBtnColor: Colors.red,
                                   animType: CoolAlertAnimType.slideInDown,
-                                  backgroundColor: Colors.redAccent.shade200,
+                                  backgroundColor: Colors.red,
                                   cancelBtnTextStyle: const TextStyle(
                                     color: Colors.black,
                                   ));
                             },
-                                color: Colors.redAccent.shade200,
+                                color: Colors.red,
                                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),

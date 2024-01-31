@@ -228,11 +228,12 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => page[index]));
               },
               child: Card(
-              elevation: 10.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              margin: EdgeInsets.all(mdheight * 0.015),
+                  elevation: 10.0,
+                  color: Colors.grey.shade200,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              margin: EdgeInsets.all(mdheight * 0.02),
               child: Padding(
                 padding: EdgeInsets.all(mdheight * 0.015),
                 child: Column(

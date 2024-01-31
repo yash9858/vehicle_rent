@@ -1,6 +1,5 @@
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:rentify/Admin/Vehicle_Category_Add_Admin.dart';
 
 // ignore: camel_case_types
 class Admin_CategoryPage extends StatefulWidget {
@@ -80,7 +79,49 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             MaterialButton(onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const Vehicle_Category_Details()));
+                              showDialog(context: context, builder: (context)
+                              {
+                                return Dialog(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
+                                      child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(height: mdheight * 0.02),
+                                            Padding(
+                                              padding: EdgeInsets.only(left : mdwidth * 0.05, right: mdwidth * 0.01,),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children :[
+                                                  Center(child: Image.asset('assets/img/Logo.jpg',height: 150,)),
+                                                  TextField(
+                                                    decoration: InputDecoration(
+                                                        fillColor: Colors.grey.shade100,
+                                                        filled: true,
+                                                        hintText: 'Enter A Category Name',
+                                                        border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(15)
+                                                        )
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height:  mdheight * 0.02,),
+                                            MaterialButton(onPressed: (){
+                                             Navigator.pop(context);
+                                            },
+                                                color: Colors.deepPurple.shade800,
+                                                elevation: 5.0,
+                                                shape: const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                                                child: const Text('Update Category', style: TextStyle(color: Colors.white,),)),
+                                            SizedBox(height: mdheight * 0.01),
+                                          ]
+                                      ),
+                                    ));
+                              });
                             },
                                 color: Colors.deepPurple.shade800,
                                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
@@ -116,7 +157,56 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> const Vehicle_Category_Details()));
+          showDialog(context: context, builder: (context)
+          {
+            return Dialog(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: mdheight * 0.02),
+                        Padding(
+                          padding: EdgeInsets.only(left : mdwidth * 0.05, right: mdwidth * 0.01,),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children :[
+                              Center(child: Image.asset('assets/img/Logo.jpg',height: 150,)),
+                              TextField(
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade100,
+                                    filled: true,
+                                    hintText: 'Enter A Category Name',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15)
+                                    )
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height:  mdheight * 0.02,),
+                        MaterialButton(onPressed: (){
+                          CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.success,
+                            text: 'Successful Added',
+                            autoCloseDuration: const Duration(seconds: 2),
+                            confirmBtnColor: Colors.deepPurple.shade800,
+                            backgroundColor: Colors.deepPurple.shade800,
+                          );
+                        },
+                            color: Colors.deepPurple.shade800,
+                            elevation: 5.0,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(15))),
+                            child: const Text('Add Category', style: TextStyle(color: Colors.white,),)),
+                        SizedBox(height: mdheight * 0.01),
+                      ]
+                  ),
+                ));
+          });
         },
         backgroundColor: Colors.deepPurple.shade800,
         shape: const RoundedRectangleBorder(
@@ -127,4 +217,3 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
     );
   }
 }
-

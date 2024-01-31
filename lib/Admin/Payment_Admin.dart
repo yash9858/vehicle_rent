@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 // ignore: camel_case_types
 class Admin_PaymentPage extends StatefulWidget {
@@ -97,8 +98,15 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
                                             ),
                                           ),
                                           MaterialButton(onPressed: (){
-                                            Navigator.pop(context);
-                                          },
+                                            CoolAlert.show(
+                                                context: context,
+                                                type: CoolAlertType.success,
+                                                text: 'Successful Refund',
+                                                autoCloseDuration: const Duration(seconds: 2),
+                                                confirmBtnColor: Colors.deepPurple.shade800,
+                                                backgroundColor: Colors.deepPurple.shade800,
+                                            );
+                                            },
                                               color: Colors.deepPurple.shade800,
                                               elevation: 5.0,
                                               child: const Text('Refund', style: TextStyle(color: Colors.white,),)),
@@ -111,9 +119,8 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
                               color: Colors.deepPurple.shade800,
                               padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
+                                borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.02)),
                               ),
-
                               child: const Text('Proceed Refund', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                               )),
                         ],

@@ -18,7 +18,7 @@ TimeOfDay _timeOfDay = TimeOfDay(hour: 8,minute: 10);
 void _showdatepicker(){
   showDatePicker(
       context: context,
-      firstDate: DateTime(2020), lastDate: DateTime(2025),).then((value){
+      firstDate: DateTime(2020), lastDate: DateTime(2025), initialDate: _dateTime,).then((value){
         setState(() {
           _dateTime=value!;
         });
