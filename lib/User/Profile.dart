@@ -31,10 +31,26 @@ class _ProfileState extends State<Profile> {
               Padding(
                   padding: EdgeInsets.only(top: 0),
                   child: Center(
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(
-                            "https://launchwebsitedesign.com/wp-content/uploads/2017/09/josh-d-avatar.jpg"),
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(
+                                "https://launchwebsitedesign.com/wp-content/uploads/2017/09/josh-d-avatar.jpg"),
+                          ),
+                          Positioned(
+                            left: 80,
+                            bottom: 1,
+                            child: CircleAvatar(
+
+                                child: IconButton(
+                                  onPressed: (){
+
+                                  },
+                                icon:Icon(Icons.edit)),
+                                ),
+                          )
+                        ],
                       ))),
               SizedBox(
                 height: mHeight * 0.03,

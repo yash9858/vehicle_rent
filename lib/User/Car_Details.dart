@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/Homescreen.dart';
-
+import 'Book_summary.dart';
 
 class car_detail extends StatefulWidget {
   const car_detail({super.key});
@@ -201,7 +201,9 @@ class _car_detailState extends State<car_detail> {
                               ),
 
 
-                              onPressed: (){},child: Text("Book"),),
+                              onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Book_summary()));
+                              },child: Text("Book"),),
                           )
                         ],
                       )

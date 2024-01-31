@@ -60,7 +60,7 @@ class _CarState extends State<Car> {
                                 children: [
 
                                   Text("Hetchback",style: TextStyle(color: Colors.grey),),
-                                  Icon(LineIcons.heart,color: Colors.deepPurple,)
+                                  Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
                             ),
