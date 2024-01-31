@@ -56,19 +56,6 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
                     SizedBox(height: mdheight * 0.01,),
                     const Text('Complain Status : Pending'),
                     SizedBox(height: mdheight * 0.01,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        MaterialButton(onPressed: (){},
-                            color: Colors.deepPurple.shade800,
-                            padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
-                            ),
-                            child: const Text('Proceed Solution', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                            )),
-                      ],
-                    )
                   ],
                 ),
               ),

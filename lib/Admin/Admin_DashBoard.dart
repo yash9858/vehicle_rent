@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rentify/Admin/Booking_Admin.dart';
 import 'package:rentify/Admin/Complain_Admin.dart';
 import 'package:rentify/Admin/Feedback_Admin.dart';
@@ -75,14 +76,10 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
   @override
   Widget build(BuildContext context) {
 
-    var name2 = ['yash','raj','sachin','anuj'];
-    var name = ['Total User', 'Total Vehicle','Total Booking', 'Total Payment'];
-    var total = ['23000', '1500', '700', '20972'];
-    var page = const [Admin_UserPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage()];
-    var start = ['12.00','10.00','8.00', '20.00'];
-    var end = ['18.00','15.00','12.00', '5.00'];
-    var status = ['done', 'pending', 'done', 'done'];
-    var adr = ['shahpur', 'naroda', 'nava vadaj', 'rajiv nagar'];
+    var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Total Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
+    var total = ['23000', '1500', '700', '20972', '1208', '8762', '2875'];
+    var page = const [Admin_UserPage(), Admin_CategoryPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage(), Admin_ComplainPage(), Admin_FeedbackPage()];
+    var image = ['assets/img/user.json','assets/img/category.json','assets/img/vehicle.json','assets/img/bookings.json','assets/img/payments.json','assets/img/complain.json','assets/img/feedback.json'];
 
     var mdheight = MediaQuery.sizeOf(context).height;
 
@@ -95,9 +92,12 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: mdheight * 0.02,
+                ),
                 const DrawerHeader(),
                  SizedBox(
-                  height: mdheight * 0.018,
+                  height: mdheight * 0.02,
                 ),
                 DrawerNavigationItem(
                   iconData:  Icons.home_rounded,
@@ -219,74 +219,39 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-              Padding(padding: EdgeInsets.all(mdheight * 0.015),
-                child: GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: mdheight * 0.012,
-                  mainAxisSpacing: mdheight * 0.012,
-                  mainAxisExtent: mdheight * 0.08,
-                ),
-                itemCount: name.length,
-                itemBuilder: (context , int index)
-                {
-                  return InkWell(
-                    child: Card(
-                    elevation: 9.0,
-                    color: Colors.white,
-                    child: Padding(
-                        padding: EdgeInsets.all(mdheight * 0.015),
-                        child: Column(
-                          children: [
-                            Text(name[index]),
-                            Text(total[index]),
-                          ],
-                        )),
-                      ),
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> page[index]));
-                      }
-                  );
-                },
-              )),
-            Padding(padding: EdgeInsets.all(mdheight * 0.015),
-            child: Container(
-              height: 400,
-              color: Colors.deepPurple.shade800,
-            )),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-              headingRowHeight: 50,
-              dividerThickness: 1,
-              columns: const [
-              DataColumn(label: Text("Booking Id")),
-              DataColumn(label: Text("User Name")),
-              DataColumn(label: Text("Start Time")),
-              DataColumn(label: Text("Return Time")),
-              DataColumn(label: Text("Booking Status")),
-              DataColumn(label: Text("Address")),
-              ],
-              rows: List.generate(4, (index) {
-              return DataRow(
-              cells:[
-                DataCell(Text('$index')),
-                DataCell(Text(name2[index])),
-                DataCell(Text(start[index])),
-                DataCell(Text(end[index])),
-                DataCell(Text(status[index])),
-                DataCell(Text(adr[index])),
-              ],
-              );}
-          ))),
-            const SizedBox(height : 40),
-          ]),
-      ),
+      body: ListView.builder(
+          itemCount: page.length,
+          itemBuilder: (context, int index)
+          {
+            return InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => page[index]));
+              },
+              child: Card(
+              elevation: 10.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin: EdgeInsets.all(mdheight * 0.015),
+              child: Padding(
+                padding: EdgeInsets.all(mdheight * 0.015),
+                child: Column(
+                children: [
+                  SizedBox(
+                    height: mdheight * 0.12,
+                    child: Lottie.asset(image[index],),
+                  ),
+                  SizedBox(height: mdheight * 0.015,),
+                  Text(pageName[index],
+                    style: const TextStyle(fontSize: 18),),
+                  SizedBox(height: mdheight * 0.01,),
+                  Text(total[index],
+                      style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            )));
+          }),
     );
   }
 }
