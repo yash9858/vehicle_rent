@@ -77,7 +77,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
   Widget build(BuildContext context) {
 
     var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Total Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
-    var total = ['23000', '1500', '700', '20972', '1208', '8762', '2875'];
+    var total = ['23000', '10', '700', '20972', '1208', '8762', '2875'];
     var page = const [Admin_UserPage(), Admin_CategoryPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage(), Admin_ComplainPage(), Admin_FeedbackPage()];
     var image = ['assets/img/user.json','assets/img/category.json','assets/img/vehicle.json','assets/img/bookings.json','assets/img/payments.json','assets/img/complain.json','assets/img/feedback.json'];
 
@@ -219,7 +219,15 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
+      body: Padding(
+      padding: EdgeInsets.all(mdheight * 0.01),
+      child: GridView.builder(
+          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: mdheight * 0.015,
+            mainAxisSpacing: mdheight * 0.015,
+            mainAxisExtent: mdheight * 0.23,
+          ),
           itemCount: page.length,
           itemBuilder: (context, int index)
           {
@@ -227,19 +235,16 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => page[index]));
               },
-              child: Card(
-                  elevation: 10.0,
-                  color: Colors.grey.shade200,
+                child:Card(
+                  elevation: 12.0,
+                  color: Colors.grey.shade100,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-              margin: EdgeInsets.all(mdheight * 0.02),
-              child: Padding(
-                padding: EdgeInsets.all(mdheight * 0.015),
                 child: Column(
                 children: [
                   SizedBox(
-                    height: mdheight * 0.12,
+                    height: mdheight * 0.13,
                     child: Lottie.asset(image[index],),
                   ),
                   SizedBox(height: mdheight * 0.015,),
@@ -251,8 +256,8 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   ),
                 ],
               ),
-            )));
+            ));
           }),
-    );
+    ));
   }
 }

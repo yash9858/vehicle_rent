@@ -94,7 +94,29 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children :[
-                                                  Center(child: Image.asset('assets/img/Logo.jpg',height: 150,)),
+                                                  Center(
+                                                      child: Stack(
+                                                        children: [
+                                                          const CircleAvatar(
+                                                            radius: 60,
+                                                            backgroundImage: AssetImage(
+                                                                "assets/img/Logo.jpg"),
+                                                          ),
+                                                          Positioned(
+                                                            left: 80,
+                                                            bottom: 1,
+                                                            child: CircleAvatar(
+
+                                                              child: IconButton(
+                                                                  onPressed: (){
+
+                                                                  },
+                                                                  icon:const Icon(Icons.edit)),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )),
+                                                  SizedBox(height:  mdheight * 0.02,),
                                                   TextField(
                                                     decoration: InputDecoration(
                                                         fillColor: Colors.grey.shade100,
@@ -172,7 +194,29 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children :[
-                              Center(child: Image.asset('assets/img/Logo.jpg',height: 150,)),
+                              Center(
+                                  child: Stack(
+                                  children: [
+                                  const CircleAvatar(
+                                    radius: 60,
+                                    backgroundImage: AssetImage(
+                                        "assets/img/Logo.jpg"),
+                                  ),
+                                  Positioned(
+                                    left: 80,
+                                    bottom: 1,
+                                    child: CircleAvatar(
+
+                                      child: IconButton(
+                                          onPressed: (){
+
+                                          },
+                                          icon:const Icon(Icons.edit)),
+                                    ),
+                                  )
+                                ],
+                              )),
+                              SizedBox(height:  mdheight * 0.02,),
                               TextField(
                                 decoration: InputDecoration(
                                     fillColor: Colors.grey.shade100,
@@ -188,14 +232,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                         ),
                         SizedBox(height:  mdheight * 0.02,),
                         MaterialButton(onPressed: (){
-                          CoolAlert.show(
-                            context: context,
-                            type: CoolAlertType.success,
-                            text: 'Successful Added',
-                            autoCloseDuration: const Duration(seconds: 2),
-                            confirmBtnColor: Colors.deepPurple.shade800,
-                            backgroundColor: Colors.deepPurple.shade800,
-                          );
+                          Navigator.pop(context);
                         },
                             color: Colors.deepPurple.shade800,
                             elevation: 5.0,

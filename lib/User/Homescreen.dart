@@ -100,7 +100,7 @@ class _HomescreenState extends State<Homescreen> {
               ),
             ),
             //  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
-            //CATEGORY
+            // CATEGORY
             // Row(
             //
             //   mainAxisAlignment: MainAxisAlignment.end,
@@ -116,104 +116,102 @@ class _HomescreenState extends State<Homescreen> {
 
             SizedBox(height: MediaQuery.sizeOf(context).height * 0.02),
 
-            Container(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        Card(
-                          elevation: 5,
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Card(
+                        elevation: 5,
 
-                          child: ClipRRect(
-                            borderRadius:
-                            BorderRadius.circular(10),
-                            child: Image.network(
-                              "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
-                              fit: BoxFit.cover,
-                              height: mwidth * 0.17,
-                            ),
+                        child: ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(10),
+                          child: Image.network(
+                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
+                            fit: BoxFit.cover,
+                            height: mwidth * 0.17,
                           ),
                         ),
-                        Text(
-                          "SUV",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Card(
-                          elevation: 5,
+                      ),
+                      Text(
+                        "SUV",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Card(
+                        elevation: 5,
 
-                          child: ClipRRect(
-                            borderRadius:
-                            BorderRadius.circular(10),
-                            child: Image.network(
-                              "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
-                              fit: BoxFit.cover,
-                              height: mwidth * 0.17,
-                            ),
+                        child: ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(10),
+                          child: Image.network(
+                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
+                            fit: BoxFit.cover,
+                            height: mwidth * 0.17,
                           ),
                         ),
-                        Text(
-                          "Hetchback",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 12),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Card(
+                      ),
+                      Text(
+                        "Hetchback",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 12),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Card(
 
-                          elevation: 5,
+                        elevation: 5,
 
-                          child: ClipRRect(
-                            borderRadius:
-                            BorderRadius.circular(10),
-                            child: Image.network(
-                              "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
-                              fit: BoxFit.cover,
-                              height: mwidth * 0.17,
-                            ),
+                        child: ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(10),
+                          child: Image.network(
+                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
+                            fit: BoxFit.cover,
+                            height: mwidth * 0.17,
                           ),
                         ),
-                        Text(
-                          "Seddan",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Card(
+                      ),
+                      Text(
+                        "Seddan",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Card(
 
-                          elevation: 5,
+                        elevation: 5,
 
-                          child: ClipRRect(
-                            borderRadius:
-                            BorderRadius.circular(10),
-                            child: Image.network(
-                              "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
-                              fit: BoxFit.cover,
-                              width: mwidth * 0.17,
+                        child: ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(10),
+                          child: Image.network(
+                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
+                            fit: BoxFit.cover,
+                            width: mwidth * 0.17,
 
-                            ),
                           ),
                         ),
-                        Text(
-                          "MPV",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
+                      ),
+                      Text(
+                        "MPV",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
 
 
 
 
-                  ]),
-            ),
+                ]),
             //SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
             Container(
               padding: EdgeInsets.only(left: 5,right: 5),
@@ -236,11 +234,22 @@ class _HomescreenState extends State<Homescreen> {
                 ],
               ),
             ),
-            Container(
-              //  height: mheight * 0.49,
 
+              //  height: mheight * 0.49,
               // padding: EdgeInsets.only(top: 3, left: 10, right: 10),
-              child: Card(
+
+        Container(
+            height: MediaQuery.sizeOf(context).height * 0.32,
+            child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                ),
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: 4,
+                itemBuilder: (BuildContext context, int index) {
+                return Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
                 elevation: 6,
@@ -258,16 +267,18 @@ class _HomescreenState extends State<Homescreen> {
                                 Text(
                                   "Tesla",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 20),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
                                 ),
                                 Text(
                                   "Model3 Long Range",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 15),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
                                 )
                               ],
                             ),
-                            Icon(LineIcons.heart,color: Colors.red,)
+                            Icon(LineIcons.heart, color: Colors.red,)
                           ],
                         ),
 
@@ -277,9 +288,9 @@ class _HomescreenState extends State<Homescreen> {
                                 color: Colors.deepPurple.shade50,
                                 borderRadius: BorderRadius.circular(12)
                             ),
-                            child: Text("Compact",style: TextStyle(),)),
-                        Image.network(
-                          "https://teslaenergy.am/assets/images/f6/f6aac5_Tesla-Model-3-Order.webp",
+                            child: Text("Compact", style: TextStyle(),)),
+                        Image.asset(
+                          'assets/img/tesla.jpg',
                           fit: BoxFit.cover,
                           height: mheight * 0.17,
                           width: mwidth,
@@ -292,14 +303,15 @@ class _HomescreenState extends State<Homescreen> {
                                 Text(
                                   "₹750",
                                   style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text("/day"),
                               ],
                             ),
                             Row(
                               children: [
-                                Icon(Icons.star,color: Colors.orange,),
+                                Icon(Icons.star, color: Colors.orange,),
                                 Text("4.9"),
                                 Text("(25 Review)")
                               ],
@@ -308,10 +320,9 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                       ]),
                 ),
-              ),
-            ),
-
-
+              );
+            }),
+        ),
             // SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
             //popular text
             Container(

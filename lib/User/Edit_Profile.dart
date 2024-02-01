@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-// ignore: camel_case_types
-class Admin_Add_Vehicle extends StatefulWidget {
-  const Admin_Add_Vehicle({super.key});
+class Edit_Profile extends StatefulWidget {
+  const Edit_Profile({super.key});
 
   @override
-  State<Admin_Add_Vehicle> createState() => _Admin_Add_VehicleState();
+  State<Edit_Profile> createState() => _Edit_ProfileState();
 }
 
-// ignore: camel_case_types
-class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
+class _Edit_ProfileState extends State<Edit_Profile> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -19,7 +17,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
           color: Colors.white,
           fontSize: mdheight * 0.025,
         ),
-        title: const Text('Vehicle Details'),
+        title: const Text('Edit Profile'),
         backgroundColor: Colors.deepPurple.shade800,
         iconTheme: const IconThemeData(
           color: Colors.white,
@@ -58,7 +56,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
                     filled: true,
-                    hintText: 'Enter Vehicle Name',
+                    hintText: 'Enter Your Name',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15)
                     )
@@ -69,7 +67,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
                     filled: true,
-                    hintText: 'Enter Vehicle Number',
+                    hintText: 'Enter Your Address',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15)
                     )
@@ -80,7 +78,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
                     filled: true,
-                    hintText: 'Enter Vehicle Type',
+                    hintText: 'Enter Your DOB',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15)
                     )
@@ -91,7 +89,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
                     filled: true,
-                    hintText: 'Enter Vehicle Description',
+                    hintText: 'Enter Gender',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15)
                     )
@@ -102,7 +100,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                 decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
                     filled: true,
-                    hintText: 'Enter Rent Price',
+                    hintText: 'Enter Your Licence Number',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15)
                     )

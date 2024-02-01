@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:rentify/Login_Screen.dart';
+import 'package:rentify/User/Edit_Profile.dart';
+import 'package:rentify/User/Help_Center.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -38,18 +41,18 @@ class _ProfileState extends State<Profile> {
                             backgroundImage: NetworkImage(
                                 "https://launchwebsitedesign.com/wp-content/uploads/2017/09/josh-d-avatar.jpg"),
                           ),
-                          Positioned(
-                            left: 80,
-                            bottom: 1,
-                            child: CircleAvatar(
-
-                                child: IconButton(
-                                  onPressed: (){
-
-                                  },
-                                icon:Icon(Icons.edit)),
-                                ),
-                          )
+                          // Positioned(
+                          //   left: 80,
+                          //   bottom: 1,
+                          //   child: CircleAvatar(
+                          //
+                          //       child: IconButton(
+                          //         onPressed: (){
+                          //
+                          //         },
+                          //       icon:Icon(Icons.edit)),
+                          //       ),
+                          // )
                         ],
                       ))),
               SizedBox(
@@ -66,70 +69,90 @@ class _ProfileState extends State<Profile> {
                 children: [
                   ListTile(
                     leading: Icon(
-                      Icons.person,
+                      Icons.account_circle_outlined,
                       color: Colors.deepPurple,
                     ),
                     title: Text(
-                      "Your Profile",
+                      "Edit Profile",
                       style: TextStyle(fontSize: 20),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                  ),
+                    trailing:IconButton(
+                      onPressed: (){
+                        Navigator.push(context , MaterialPageRoute(builder: (context)=> Edit_Profile()));
+                      },
+                      icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                  )),
                   Divider(),
                   ListTile(
                     leading: Icon(LineIcons.car,color: Colors.deepPurple,),
                     title: Text(
-                      "Booking History",
+                      "My Bookings",
                       style: TextStyle(fontSize: 20),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                  ),
+                    trailing:IconButton(
+                      onPressed: (){},
+                      icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                  )),
 
                   Divider(),
                   ListTile(
                     leading: Icon(LineIcons.heart,color: Colors.deepPurple,),
                     title: Text(
-                      "Favorite Car",
+                      "Favorite Vehicles",
                       style: TextStyle(fontSize: 20),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                  ),
+                    trailing:
+                    IconButton(
+                      onPressed: (){},
+                      icon:Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                  )),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.headset_mic_outlined,color: Colors.deepPurple,),
+                    title: Text(
+                      "Help Center",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    trailing:IconButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> HelpCenter()));
+                      },
+                      icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                  )),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.policy_outlined,color: Colors.deepPurple,),
                     title: Text(
-                      "Private Policy",
+                      "Privacy Policy",
                       style: TextStyle(fontSize: 20),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                  ),
+                    trailing: IconButton(
+                    onPressed: (){},
+                    icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                  )),
                   Divider(),
                   ListTile(
-                    leading: Icon(Icons.policy,color: Colors.deepPurple,),
-                    title: Text(
-                      "Private Policy",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                  ),
+                      leading: Icon(Icons.info_outline,color: Colors.deepPurple,),
+                      title: Text(
+                        "About Us",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      trailing:IconButton(
+                        onPressed: (){},
+                        icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                      )),
                   Divider(),
-                  ListTile(
-                    leading: Icon(Icons.policy,color: Colors.deepPurple,),
+                  InkWell(
+                    onTap: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+                    },
+                  child: ListTile(
+                    leading: Icon(Icons.logout,color: Colors.deepPurple,),
                     title: Text(
-                      "Private Policy",
+                      "Log Out",
                       style: TextStyle(fontSize: 20),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.policy,color: Colors.deepPurple,),
-                    title: Text(
-                      "Private Policy",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                  ),
+                  )),
 
 
                 ],
