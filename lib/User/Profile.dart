@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/Edit_Profile.dart';
+import 'package:rentify/User/Feedback_User.dart';
 import 'package:rentify/User/Help_Center.dart';
 
 class Profile extends StatefulWidget {
@@ -78,7 +79,7 @@ class _ProfileState extends State<Profile> {
                     ),
                     trailing:IconButton(
                       onPressed: (){
-                        Navigator.push(context , MaterialPageRoute(builder: (context)=> Edit_profile()));
+                        Navigator.push(context , MaterialPageRoute(builder: (context)=> Edit_Profile()));
                       },
                       icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                   )),
@@ -138,7 +139,9 @@ class _ProfileState extends State<Profile> {
                         style: TextStyle(fontSize: 20),
                       ),
                       trailing:IconButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User()));
+                        },
                         icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                       )),
                   Divider(),
