@@ -214,7 +214,10 @@ void _showtimepicker(){
                         Text("5"),
                       ],
                     ),
-                    SizedBox(height: mheight*0.05,),
+                    Divider(
+                      height: mheight*0.05,
+                    ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
