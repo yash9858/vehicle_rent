@@ -1,139 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 
-class Edit_Profile extends StatefulWidget {
-  const Edit_Profile({super.key});
+class Edit_profile extends StatefulWidget {
+  const Edit_profile({super.key});
 
   @override
-  State<Edit_Profile> createState() => _Edit_ProfileState();
+  State<Edit_profile> createState() => _Edit_profileState();
 }
 
-class _Edit_ProfileState extends State<Edit_Profile> {
+class _Edit_profileState extends State<Edit_profile> {
+
   @override
   Widget build(BuildContext context) {
-    var mdheight = MediaQuery.sizeOf(context).height;
+    var mHeight = MediaQuery.sizeOf(context).height;
+    var mwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
-      appBar: AppBar(
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: mdheight * 0.025,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
+
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          iconTheme: const IconThemeData(color: Colors.black),
         ),
-        title: const Text('Edit Profile'),
-        backgroundColor: Colors.deepPurple.shade800,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(mdheight * 0.02),
+      body:SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(10),
           child: Column(
-            children: [
-              Center(
-                  child: Stack(
-                    children: [
-                      const CircleAvatar(
-                        radius: 60,
-                        backgroundImage: AssetImage(
-                            "assets/img/Logo.jpg"),
-                      ),
-                      Positioned(
-                        left: 80,
-                        bottom: 1,
-                        child: CircleAvatar(
+            crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            // User Image
 
-                          child: IconButton(
-                              onPressed: (){
-
-                              },
-                              icon:const Icon(Icons.edit)),
+            Padding(
+                padding: EdgeInsets.only(top: 0),
+                child: Center(
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(
+                              "https://launchwebsitedesign.com/wp-content/uploads/2017/09/josh-d-avatar.jpg"),
                         ),
-                      )
-                    ],
-                  )),
-              SizedBox(height: mdheight * 0.04),
-              TextField(
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Your Name',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-              ),
-              SizedBox(height: mdheight * 0.025,),
-              TextField(
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Your Address',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-              ),
-              SizedBox(height: mdheight * 0.025,),
-              TextField(
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Your DOB',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-              ),
-              SizedBox(height: mdheight * 0.025,),
-              TextField(
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Gender',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-              ),
-              SizedBox(height: mdheight * 0.025,),
-              TextField(
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Your Licence Number',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-              ),
-              SizedBox(height: mdheight * 0.04,),
-              Container(
-                  height: MediaQuery.sizeOf(context).height * 0.050,
-                  width: MediaQuery.sizeOf(context).width * 0.70,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.circular(mdheight * 0.015),
-                  ),
-                  child:ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple.shade800,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(mdheight * 0.02),
-                        )),
-                    child: Text('Save Details',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: mdheight * 0.025,
-                            fontWeight: FontWeight.bold)),
-                  )
-              )],
-          ),
-        ),
-      ),
-    );
+                        Positioned(
+                          left: 80,
+                          bottom: 1,
+                          child: CircleAvatar(
+
+                            child: IconButton(
+                                onPressed: (){
+
+                                },
+                                icon:Icon(Icons.camera_alt_outlined)),
+                          ),
+                        )
+                      ],
+                    ))),
+
+
+            SizedBox(
+              height: mHeight * 0.03,
+            ),
+
+            //Name
+            Text("Name",style: TextStyle(fontSize: 18,),),
+            TextField(
+
+
+
+            )
+
+        ]),
+      )
+    ));
   }
 }
+
+

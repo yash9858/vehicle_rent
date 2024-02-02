@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'dart:ui';
@@ -237,92 +239,105 @@ class _HomescreenState extends State<Homescreen> {
 
               //  height: mheight * 0.49,
               // padding: EdgeInsets.only(top: 3, left: 10, right: 10),
-
-        Container(
-            height: MediaQuery.sizeOf(context).height * 0.32,
-            child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                ),
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
+            //card
+            Container(
+              height: mheight * 0.32,
+              child: PageView.builder(
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
-                return Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                elevation: 6,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Tesla",
-                                  style: TextStyle(
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 6,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Tesla",
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                                Text(
-                                  "Model3 Long Range",
-                                  style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Model3 Long Range",
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                )
-                              ],
-                            ),
-                            Icon(LineIcons.heart, color: Colors.red,)
-                          ],
-                        ),
-
-                        Container(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                LineIcons.heart,
+                                color: Colors.red,
+                              ),
+                            ],
+                          ),
+                          Container(
                             padding: EdgeInsets.all(2),
                             decoration: BoxDecoration(
-                                color: Colors.deepPurple.shade50,
-                                borderRadius: BorderRadius.circular(12)
+                              color: Colors.deepPurple.shade50,
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text("Compact", style: TextStyle(),)),
-                        Image.asset(
-                          'assets/img/tesla.jpg',
-                          fit: BoxFit.cover,
-                          height: mheight * 0.17,
-                          width: mwidth,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "₹750",
-                                  style: TextStyle(
+                            child: Text("Compact", style: TextStyle()),
+                          ),
+                          Image.asset(
+                            'assets/img/tesla.jpg',
+                            fit: BoxFit.cover,
+                            height: mheight * 0.17,
+                            width: mwidth,
+                         //   filterQuality: FilterQuality.high,
+
+
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "₹750",
+                                    style: TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text("/day"),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(Icons.star, color: Colors.orange,),
-                                Text("4.9"),
-                                Text("(25 Review)")
-                              ],
-                            ),
-                          ],
-                        ),
-                      ]),
-                ),
-              );
-            }),
-        ),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text("/day"),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.orange,
+                                  ),
+                                  Text("4.9"),
+                                  Text("(25 Review)"),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+
+
+
             // SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
             //popular text
             Container(
