@@ -13,6 +13,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
+    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -109,30 +110,24 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                 ),
               ),
               SizedBox(height: mdheight * 0.04,),
-              Container(
-                  height: MediaQuery.sizeOf(context).height * 0.050,
-                  width: MediaQuery.sizeOf(context).width * 0.70,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.circular(mdheight * 0.015),
-                  ),
-                  child:ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple.shade800,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(mdheight * 0.02),
-                        )),
-                    child: Text('Save Details',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: mdheight * 0.025,
-                            fontWeight: FontWeight.bold)),
-                  )
-              )],
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(mdheight * 0.02),
+          color: Colors.deepPurple.shade800,
+        ),
+        height: mdheight * 0.06,
+        width: mdwidth * 0.7,
+        child: MaterialButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          child: Text('Save Details',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: mdheight * 0.025,
+                  fontWeight: FontWeight.bold)),
+        ),
+      )],
           ),
         ),
       ),
