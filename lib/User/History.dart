@@ -13,12 +13,21 @@ class _History_pageState extends State<History_page> {
 
   @override
   Widget build(BuildContext context) {
-    var mheight = MediaQuery.sizeOf(context).height;
+    var mdheight = MediaQuery.sizeOf(context).height;
     var mwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Rental History'),
-      ),
+        appBar: AppBar(
+        titleTextStyle: TextStyle(
+        color: Colors.white,
+        fontSize: mdheight * 0.025,
+        ),
+          title: const Text('Booking History'),
+        backgroundColor: Colors.deepPurple.shade800,
+        iconTheme: const IconThemeData(
+        color: Colors.white,
+        ),
+    centerTitle: true,
+        ),
       body: Container(
         padding: EdgeInsets.only(top: 5,left: 8,right: 8),
         child: ListView.builder(
@@ -37,7 +46,7 @@ class _History_pageState extends State<History_page> {
 
                     child:
                     Image.network("https://imgd-ct.aeplcdn.com/664x415/n/cw/ec/148477/thar-right-front-three-quarter-5.jpeg?isig=0&q=80",fit: BoxFit.contain,
-                      height: mheight*0.15,width: mwidth*0.4,
+                      height: mdheight*0.15,width: mwidth*0.4,
 
                     )
                     ,),
@@ -74,7 +83,7 @@ class _History_pageState extends State<History_page> {
                             ],
                           )
                         ],),
-                      SizedBox(height: mheight*0.01,),
+                      SizedBox(height: mdheight*0.01,),
 
                       //Car Name
                       Text("Kia Seltos Htk",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),

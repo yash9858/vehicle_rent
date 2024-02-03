@@ -54,15 +54,15 @@ class _UserDasboardState extends State<UserDasboard> {
 
           /// Likes
           SalomonBottomBarItem(
-            icon: Icon(Icons.favorite_border),
-            title: Text("Likes"),
+            icon: Icon(Icons.directions_bike_outlined),
+            title: Text("Bike"),
             selectedColor: Colors.pink,
           ),
 
           /// Search
           SalomonBottomBarItem(
             icon: Icon(LineIcons.car),
-            title: Text("Search"),
+            title: Text("Car"),
             selectedColor: Colors.orange,
           ),
 

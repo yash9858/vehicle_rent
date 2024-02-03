@@ -19,11 +19,11 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Container(
         height: double.maxFinite,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Colors.deepPurple],
+            colors: [Colors.white, Colors.deepPurple.shade400],
           ),
         ),
         child: SingleChildScrollView(

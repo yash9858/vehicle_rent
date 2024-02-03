@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Admin_DashBoard.dart';
 import 'package:rentify/User/User_DashBoard.dart';
-import 'Forget_Password.dart';
 import 'Register_Screen.dart';
 import 'package:lottie/lottie.dart';
 
@@ -15,11 +14,11 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         height: double.maxFinite,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, Colors.deepPurple],
+            colors: [Colors.white, Colors.deepPurple.shade400],
           ),
         ),
         child: SingleChildScrollView(
@@ -83,7 +82,7 @@ class LoginPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children:[
                       TextButton(onPressed: (){
-                        Navigator.push(context , MaterialPageRoute(builder: (context) => UserDasboard()));
+                        Navigator.pushReplacement(context , MaterialPageRoute(builder: (context) => const UserDasboard()));
                       },
                         child: Text('Forget Password ?',
                             style: TextStyle(

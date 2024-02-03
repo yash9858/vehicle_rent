@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:expansion_tile_group/expansion_tile_group.dart';
 
 class HelpCenter extends StatefulWidget {
   const HelpCenter({super.key});
@@ -8,10 +9,20 @@ class HelpCenter extends StatefulWidget {
   State<HelpCenter> createState() => _HelpCenterState();
 }
 
+class Item
+{
+  Item({
+   required this.headerText,
+   required this.expandedText,
+   this.isExpanded = false,
+});
+  String headerText;
+  String expandedText;
+  bool isExpanded;
+}
 class _HelpCenterState extends State<HelpCenter> {
 
   late bool _customicon = false;
-
   var icon = [Icons.call, LineIcons.facebookMessenger, Icons.email_outlined];
   var title = ['Phone No', 'Message', 'Email'];
   var val = ['955887****', '123446798', 'mistryyash123@gmail.com'];
@@ -68,36 +79,21 @@ class _HelpCenterState extends State<HelpCenter> {
                         itemCount: QA.length,
                         shrinkWrap: true,
                         itemBuilder: (context , int index) {
-                          return Padding(
-                              padding:  EdgeInsets.symmetric(vertical: 10),
-                              child: ExpansionTile(
-                                shape: ShapeBorder.lerp(
-                                    InputBorder.none, const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                                  borderSide: BorderSide(
-                                    color: Colors.grey,
-                                    style: BorderStyle.solid,
-                                    width: 1.5,
-                                  ),
-                                ), 20),
-                                leading:  Text('$index'),
-                                title: Text(QA[index]),
-                                trailing: Icon(
-                                    _customicon ? Icons.expand_less : Icons.expand_more
+                          return ExpansionTileGroup(
+                            toggleType: ToggleType.expandOnlyCurrent,
+                              children: [
+                                ExpansionTileItem(
+                                  title: Text(QA[index]),
+                                  expendedBorderColor: Colors.deepPurple,
+                                  leading: Text('$index'),
+                                  isHasLeftBorder: true,
+                                  isHasRightBorder: true,
+                                  textColor: Colors.black,
+                                  children: [
+                                    Text(Ans[index]),
+                                  ],
                                 ),
-                                children: [
-                                  ListTile(
-                                      title: Padding(
-                                        padding: EdgeInsets.only(left : 20),
-                                        child:Text(Ans[index],style: TextStyle(
-                                          color: Colors.deepPurple.shade800,
-                                        ),),
-                                      ))
-                                ],
-                                onExpansionChanged: (bool expanded){
-                                  setState(()=> _customicon = expanded);
-                                },
-                              ));
+                          ]);
                         }
                     ),
                   ),
@@ -107,34 +103,22 @@ class _HelpCenterState extends State<HelpCenter> {
                         itemCount: title.length,
                         shrinkWrap: true,
                         itemBuilder: (context , int index) {
-                          return Padding(
-                              padding:  EdgeInsets.symmetric(vertical: 10),
-                              child: ExpansionTile(
-                                shape: ShapeBorder.lerp(
-                                    InputBorder.none, const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                                  borderSide: BorderSide(
-                                    color: Colors.grey,
-                                    style: BorderStyle.solid,
-                                    width: 1.5,
-                                  ),
-                                ), 20),
-                                leading:  Icon(icon[index]),
-                                title: Text(title[index]),
-                                trailing: Icon(
-                                  _customicon ? Icons.expand_less : Icons.expand_more
+                          return ExpansionTileGroup(
+                              toggleType: ToggleType.expandOnlyCurrent,
+                              children: [
+                                ExpansionTileItem(
+                                  title: Text(title[index]),
+                                  expendedBorderColor: Colors.deepPurple,
+                                  leading: Icon(icon[index]),
+                                  isHasLeftBorder: true,
+                                  isHasRightBorder: true,
+                                  textColor: Colors.black,
+                                  iconColor: Colors.black,
+                                  children: [
+                                    Text(val[index]),
+                                  ],
                                 ),
-                                children: [
-                                  ListTile(
-                                    title: Padding(
-                                      padding: EdgeInsets.only(left : 20),
-                                    child:Text(val[index]),
-                                  ))
-                                ],
-                                onExpansionChanged: (bool expanded){
-                                  setState(()=> _customicon = expanded);
-                                },
-                              ));
+                              ]);
                         }
                     ),
                   ),

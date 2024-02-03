@@ -211,6 +211,8 @@ class _bike_detailState extends State<bike_detail> {
               )
             ],
           ),
-        ) );
+        ) ,
+
+    );
   }
 }

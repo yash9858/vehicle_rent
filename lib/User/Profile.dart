@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/Login_Screen.dart';
+import 'package:rentify/User/About_us.dart';
 import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Edit_Profile.dart';
 import 'package:rentify/User/Feedback_User.dart';
@@ -139,7 +140,8 @@ class _ProfileState extends State<Profile> {
                   ListTile(
                       leading: Icon(Icons.info_outline,color: Colors.deepPurple,),
                       title: Text(
-                        "About Us",
+                        "Feedback"
+                            ,
                         style: TextStyle(fontSize: 20),
                       ),
                       trailing:IconButton(
@@ -150,7 +152,7 @@ class _ProfileState extends State<Profile> {
                       )),
                   Divider(),
                   ListTile(
-                      leading: Icon(Icons.info_outline,color: Colors.deepPurple,),
+                      leading: Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
                       title: Text(
                         "Cancel Booking",
                         style: TextStyle(fontSize: 20),
@@ -158,6 +160,19 @@ class _ProfileState extends State<Profile> {
                       trailing:IconButton(
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> Cancel_booking()));
+                        },
+                        icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                      )),
+                  Divider(),
+                  ListTile(
+                      leading: Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
+                      title: Text(
+                        "About_Us",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      trailing:IconButton(
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> About_us()));
                         },
                         icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                       )),
