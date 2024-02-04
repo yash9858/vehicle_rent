@@ -229,17 +229,21 @@ void _showtimepicker(){
                 ),
               ),
               SizedBox(height: mheight*0.08,),
-              Container(
-                color: Colors.blueAccent,
-                height: mheight*0.07,
-                width: mwidth,
-                child: MaterialButton(
-                  onPressed: (){},
-                  child: Text("Continue"),
-                ),
-              ),
+
+
+
+
             ],
           ),
+        ),
+      ),
+      bottomSheet: Container(
+        padding: EdgeInsets.only(bottom: 5,left: 10,right: 10),
+        width: double.infinity,
+        height: mheight*0.08,
+        child: ElevatedButton(
+          onPressed: (){},
+          child: Text("Continue"),
         ),
       ),
     );
