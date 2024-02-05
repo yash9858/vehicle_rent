@@ -103,7 +103,7 @@ class _CarState extends State<Car> {
                                               const Text("4.1"),
                                               Icon(
                                                 Icons.star,
-                                                color: Colors.deepPurple.shade300,
+                                                color: Colors.orange,
                                                 size: 18,
                                               )
                                             ],

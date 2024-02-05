@@ -63,7 +63,7 @@ class _UserDasboardState extends State<UserDasboard> {
           SalomonBottomBarItem(
             icon: Icon(LineIcons.car),
             title: Text("Car"),
-            selectedColor: Colors.orange,
+            selectedColor: Colors.blueAccent,
           ),
 
           /// Profile

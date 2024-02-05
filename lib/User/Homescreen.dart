@@ -1,15 +1,15 @@
-import 'dart:ffi';
+
 
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'dart:ui';
-import 'package:line_icons/line_icons.dart';
+
 import 'package:rentify/User/Available_bike.dart';
 import 'package:rentify/User/Available_car.dart';
 import 'package:rentify/User/Bike_Details.dart';
 import 'package:rentify/User/Car_Details.dart';
 import 'package:rentify/User/Profile.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
 
 
 class Homescreen extends StatefulWidget {
@@ -245,89 +245,92 @@ class _HomescreenState extends State<Homescreen> {
               child: PageView.builder(
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 6,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Tesla",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
+                  return GestureDetector(
+                    onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>car_detail()));},
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Tesla",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "Model3 Long Range",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                    Text(
+                                      "Model3 Long Range",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                LineIcons.heart,
-                                color: Colors.red,
-                              ),
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Colors.deepPurple.shade50,
-                              borderRadius: BorderRadius.circular(12),
+                                  ],
+                                ),
+                                Icon(
+                                  LineIcons.heart,
+                                  color: Colors.red,
+                                ),
+                              ],
                             ),
-                            child: Text("Compact", style: TextStyle()),
-                          ),
-                          Image.asset(
-                            'assets/img/tesla.jpg',
-                            fit: BoxFit.cover,
-                            height: mheight * 0.17,
-                            width: mwidth,
-                         //   filterQuality: FilterQuality.high,
+                            Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.deepPurple.shade50,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text("Compact", style: TextStyle()),
+                            ),
+                            Image.asset(
+                              'assets/img/tesla.jpg',
+                              fit: BoxFit.cover,
+                              height: mheight * 0.17,
+                              width: mwidth,
+                           //   filterQuality: FilterQuality.high,
 
 
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "₹750",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "₹750",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  Text("/day"),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.orange,
-                                  ),
-                                  Text("4.9"),
-                                  Text("(25 Review)"),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                    Text("/day"),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.orange,
+                                    ),
+                                    Text("4.9"),
+                                    Text("(25 Review)"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

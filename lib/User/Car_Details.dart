@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/Homescreen.dart';
 import 'package:rentify/User/Select_date.dart';
-import 'Book_summary.dart';
+
 
 class car_detail extends StatefulWidget {
   const car_detail({super.key});
@@ -76,7 +76,7 @@ class _car_detailState extends State<car_detail> {
                         children: [
                           Text("Renualt Kwid",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
                           Row(
-                            children: [Text("4.1",style: TextStyle(fontSize: 20,color: Colors.white),),Icon(Icons.star,color: Colors.deepPurple.shade300,)],
+                            children: [Text("4.1",style: TextStyle(fontSize: 20,color: Colors.white),),Icon(Icons.star,color: Colors.orange,)],
                           )
                         ],
                       ),
