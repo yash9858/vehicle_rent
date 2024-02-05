@@ -7,6 +7,7 @@ import 'package:rentify/User/Edit_Profile.dart';
 import 'package:rentify/User/Feedback_User.dart';
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
+import 'package:rentify/User/Payment_Receipt.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -109,7 +110,9 @@ class _ProfileState extends State<Profile> {
                     ),
                     trailing:
                     IconButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Payment_Receipt()));
+                      },
                       icon:Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                   )),
                   Divider(),

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:expansion_tile_group/expansion_tile_group.dart';
@@ -22,7 +24,6 @@ class Item
 }
 class _HelpCenterState extends State<HelpCenter> {
 
-  late bool _customicon = false;
   var icon = [Icons.call, LineIcons.facebookMessenger, Icons.email_outlined];
   var title = ['Phone No', 'Message', 'Email'];
   var val = ['955887****', '123446798', 'mistryyash123@gmail.com'];
@@ -49,19 +50,16 @@ class _HelpCenterState extends State<HelpCenter> {
         length: 2,
         child: Scaffold(
             appBar: AppBar(
-              titleTextStyle: TextStyle(
-                color: Colors.white,
-                fontSize: mdheight * 0.025,
-              ),
-              title: const Text('Help Center'),
-              backgroundColor: Colors.deepPurple.shade800,
-              iconTheme: const IconThemeData(
-                color: Colors.white,
-              ),
               centerTitle: true,
+              title: Text("Help Center",style: TextStyle(color: Colors.black,fontSize: 20),),
+
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              iconTheme: const IconThemeData(color: Colors.black),
               bottom: const TabBar(
-                  indicatorColor: Colors.white,
+                  indicatorColor: Colors.deepPurple,
                   indicatorWeight: 3,
+                  labelColor: Colors.black,
                   tabs: [
                     Tab(
                       text: 'FAQ',
@@ -80,6 +78,7 @@ class _HelpCenterState extends State<HelpCenter> {
                         shrinkWrap: true,
                         itemBuilder: (context , int index) {
                           return ExpansionTileGroup(
+                            spaceBetweenItem: 15,
                             toggleType: ToggleType.expandOnlyCurrent,
                               children: [
                                 ExpansionTileItem(

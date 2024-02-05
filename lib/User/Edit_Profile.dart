@@ -24,16 +24,12 @@ class _Edit_ProfileState extends State<Edit_Profile> {
     var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: mdheight * 0.025,
-        ),
-        title: const Text('Edit Profile'),
-        backgroundColor: Colors.deepPurple.shade800,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
         centerTitle: true,
+        title: Text("Edit Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
+
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         child: Padding(

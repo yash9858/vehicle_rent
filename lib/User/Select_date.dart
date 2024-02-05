@@ -1,9 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-
+import 'package:line_icons/line_icon.dart';
 import 'package:intl/intl.dart';
-import 'package:rentify/User/Payment_page.dart';
 
 
 class Select_date extends StatefulWidget {
@@ -65,9 +64,9 @@ class _Select_dateState extends State<Select_date> {
     //var time.text="helo";
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+
         backgroundColor: Colors.transparent,
-        title: Text("Select Date and Time",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.030),),
+        title: Text("Select Date and Time",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.033),),
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 
@@ -147,7 +146,7 @@ class _Select_dateState extends State<Select_date> {
 
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Pick Up Date and Time",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                  Text("Pick Up Date and Time",style: TextStyle(fontSize: 17,)),
                   SizedBox(height:mheight*0.03),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,8 +156,8 @@ class _Select_dateState extends State<Select_date> {
                         width:mwidth*0.4,
                         padding:EdgeInsets.only(left: 10,right: 5),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(12),
+                         // color: Colors.amber,
                           border: Border.all(
                             width: 1
                           )
@@ -168,8 +167,8 @@ class _Select_dateState extends State<Select_date> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                         children: [
-                          Text(_PickupTime.format(context).toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                          IconButton(onPressed: PickupTime, icon: Icon(Icons.timer_outlined,color: Colors.deepPurple.shade400,))
+                          Text(_PickupTime.format(context).toString(),style: TextStyle(fontSize: 18),),
+                          IconButton(onPressed: PickupTime, icon: Icon(Icons.more_time_rounded))
                         ],
                       ),
 
@@ -181,8 +180,8 @@ class _Select_dateState extends State<Select_date> {
                         width:mwidth*0.4,
                         padding:EdgeInsets.only(left: 5,),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                             color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                            // color: Colors.amber,
                             border: Border.all(
                                 width: 1
                             )
@@ -192,8 +191,8 @@ class _Select_dateState extends State<Select_date> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                           children: [
-                            Text(DateFormat('d MMM yy').format(_PickupDate),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                            IconButton(onPressed: Pickupdate, icon: Icon(Icons.calendar_month_outlined,color: Colors.deepPurple.shade400,))
+                            Text(DateFormat('yMd').format(_PickupDate),style: TextStyle(fontSize: 18),),
+                            IconButton(onPressed: Pickupdate, icon: Icon(Icons.calendar_month_outlined))
                           ],
                         ),
 
@@ -217,7 +216,7 @@ class _Select_dateState extends State<Select_date> {
 
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Return  Date and Time",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                  Text("Return  Date and Time",style: TextStyle(fontSize: 17)),
                   SizedBox(height:mheight*0.03),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,8 +226,8 @@ class _Select_dateState extends State<Select_date> {
                         width:mwidth*0.4,
                         padding:EdgeInsets.only(left: 10,right: 5),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                             color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                            // color: Colors.amber,
                             border: Border.all(
                                 width: 1
                             )
@@ -238,8 +237,8 @@ class _Select_dateState extends State<Select_date> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                           children: [
-                            Text(_ReturnTime.format(context).toString(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                            IconButton(onPressed: ReturnTime, icon: Icon(Icons.timer_outlined,color: Colors.deepPurple.shade400,))
+                            Text(_ReturnTime.format(context).toString(),style: TextStyle(fontSize: 18),),
+                            IconButton(onPressed: ReturnTime, icon: Icon(Icons.more_time_rounded))
                           ],
                         ),
 
@@ -251,8 +250,8 @@ class _Select_dateState extends State<Select_date> {
                         width:mwidth*0.4,
                         padding:EdgeInsets.only(left: 5,),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                             color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                            // color: Colors.amber,
                             border: Border.all(
                                 width: 1
                             )
@@ -262,8 +261,8 @@ class _Select_dateState extends State<Select_date> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                           children: [
-                            Text(DateFormat('d MMM yy').format(_ReturnDate),style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                            IconButton(onPressed: ReturnDate, icon: Icon(Icons.calendar_month_outlined,color: Colors.deepPurple.shade400,))
+                            Text(DateFormat('yMd').format(_ReturnDate),style: TextStyle(fontSize: 18),),
+                            IconButton(onPressed: ReturnDate, icon: Icon(Icons.calendar_month_outlined))
                           ],
                         ),
 
@@ -283,9 +282,7 @@ class _Select_dateState extends State<Select_date> {
         width: double.infinity,
         height: mheight*0.08,
         child: ElevatedButton(
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>Payment_page()));
-          },
+          onPressed: (){},
           child: Text("Continue"),
         ),
       ),

@@ -13,11 +13,11 @@ class _About_usState extends State<About_us> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("About Us",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-
+        title: Text("About Us",
+          style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),),
         elevation: 0,
-      //  backgroundColor: Colors.transparent,
-      //  iconTheme: const IconThemeData(color: Colors.black),
+      backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),

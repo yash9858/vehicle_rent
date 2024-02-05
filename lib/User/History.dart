@@ -17,16 +17,12 @@ class _History_pageState extends State<History_page> {
     var mwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
         appBar: AppBar(
-        titleTextStyle: TextStyle(
-        color: Colors.white,
-        fontSize: mdheight * 0.025,
-        ),
-          title: const Text('Booking History'),
-        backgroundColor: Colors.deepPurple.shade800,
-        iconTheme: const IconThemeData(
-        color: Colors.white,
-        ),
-    centerTitle: true,
+        centerTitle: true,
+          title: Text("Booking History",style: TextStyle(color: Colors.black,fontSize: 20),),
+
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          iconTheme: const IconThemeData(color: Colors.black),
         ),
       body: Container(
         padding: EdgeInsets.only(top: 5,left: 8,right: 8),
