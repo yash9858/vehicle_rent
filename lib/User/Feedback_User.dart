@@ -18,15 +18,10 @@ class _FeedBack_UserState extends State<FeedBack_User> {
     var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
         appBar: AppBar(
-        titleTextStyle: TextStyle(
-        color: Colors.white,
-        fontSize: mdheight * 0.025,
-    ),
-    title: const Text('Review And Rating'),
-    backgroundColor: Colors.deepPurple.shade800,
-    iconTheme: const IconThemeData(
-    color: Colors.white,
-    ),
+          title: const Text("Review And Rating",style: TextStyle(color: Colors.black,fontSize: 20),),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          iconTheme: const IconThemeData(color: Colors.black),
     centerTitle: true,
     ),
       body:  SingleChildScrollView(
@@ -34,42 +29,6 @@ class _FeedBack_UserState extends State<FeedBack_User> {
         padding: const EdgeInsets.only(top:15,left: 15,right: 15),
         child: Column(
           children: [
-        //car
-        Row(
-        children: [
-        //Image
-          Image.asset("assets/img/tesla.jpg",
-            fit: BoxFit.contain,
-            height: mdheight * 0.15,
-            width: mdwidth * 0.4,
-        ),
-      SizedBox(width: mdwidth*0.015,),
-      Expanded(
-          child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-              Container(
-                  padding: const EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
-                  decoration: BoxDecoration(
-                      color: Colors.pink.shade50,
-                      borderRadius: BorderRadius.circular(6)
-                  ),
-                  child: const Text("suv")),
-          SizedBox(height: mdheight*0.01,),
-          const Text("Kia Seltos Htk",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-          SizedBox(height: mdheight*0.02,),
-        ],
-      ))
-      ],
-    ),
-    Divider(
-    height: mdheight*0.03,
-    ),
-           const  Center(child:Text('How Is Your Rental', style: TextStyle(fontSize: 24),)),
-            const Center(child:Text('Experience ?', style: TextStyle(fontSize: 23),)),
-            Divider(
-              height: mdheight*0.03,
-            ),
       SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,41 +41,6 @@ class _FeedBack_UserState extends State<FeedBack_User> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("Ratings & Reviews",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(mdheight * 0.02),
-                                  )),
-                              onPressed: (){
-                            showDialog(context: context, builder: (context){
-                              return AlertDialog(
-                                content: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    review()
-                                  ],
-                                ),
-                                actionsAlignment: MainAxisAlignment.spaceBetween,
-                                actions: [
-                                  OutlinedButton(onPressed: (){
-                                    Navigator.pop(context);
-                                  }, child:const Text("Cancel") ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(mdheight * 0.02),
-                                        )),
-                                    onPressed: (){
-                                      Navigator.pop(context);
-                                    },
-                                    child:const Text("Submit")),
-                                ],
-                              );
-                            });
-                          }, child: const Text("Write Review")),
                         ],
                       ),
                       const SizedBox(
@@ -178,26 +102,48 @@ class _FeedBack_UserState extends State<FeedBack_User> {
                     );
                   }),
               SizedBox(height: mdheight * 0.012,),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(mdheight * 0.02),
-                  color: Colors.deepPurple.shade800,
-                ),
-                height: mdheight*0.07,
-                width: mdwidth,
-                child: MaterialButton(
-                  onPressed: (){},
-                  child: Text('See All Review',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: mdheight * 0.025,
-                          fontWeight: FontWeight.bold)),
-                ),
-              ),
-              SizedBox(height: mdheight * 0.012,),
               ]),
       ),
     ]),
+    )),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(15),
+        child: SizedBox(
+        height: mdheight*0.07,
+        width: mdwidth*0.50,
+
+    child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.deepPurple.shade800, // Background color
+    ),
+    onPressed: (){
+            showDialog(context: context, builder: (context){
+              return AlertDialog(
+                content: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    review()
+                  ],
+                ),
+                actionsAlignment: MainAxisAlignment.spaceBetween,
+                actions: [
+                  OutlinedButton(onPressed: (){
+                    Navigator.pop(context);
+                  }, child:const Text("Cancel") ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(mdheight * 0.02),
+                          )),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      child:const Text("Submit")),
+                ],
+              );
+            });
+          }, child: const Text("Write Review", style: TextStyle(fontSize: 17),)),
     )));
   }
 }

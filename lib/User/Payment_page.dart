@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rentify/User/Add_Card.dart';
 
 class Payment_page extends StatefulWidget {
   const Payment_page({super.key});
@@ -82,7 +83,11 @@ class _Payment_pageState extends State<Payment_page> {
                   child: ListTile(
                     leading: Icon(Icons.credit_card_outlined,color: Colors.deepPurple.shade400,),
                     title: const Text('Add Card',style: TextStyle(color: Colors.grey),),
-                    trailing:Icon(Icons.arrow_forward_ios,color: Colors.deepPurple.shade400,)
+                    trailing: IconButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Credit_Card()));
+                      },
+                    icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple.shade400,)),
                   ),
                 ),
               ],

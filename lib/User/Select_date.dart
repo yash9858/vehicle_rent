@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:intl/intl.dart';
+import 'package:rentify/User/Payment_page.dart';
 
 
 class Select_date extends StatefulWidget {
@@ -282,8 +283,10 @@ class _Select_dateState extends State<Select_date> {
         width: double.infinity,
         height: mheight*0.08,
         child: ElevatedButton(
-          onPressed: (){},
-          child: Text("Continue"),
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> Payment_page()));
+          },
+          child: Text("Payment"),
         ),
       ),
     );
