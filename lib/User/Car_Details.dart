@@ -297,54 +297,32 @@ class _car_detailState extends State<car_detail> {
               )],
           ),
         ),
-      bottomNavigationBar: Container(
+
+      bottomSheet: Container(
         color: Colors.deepPurple.shade800,
-        child: Padding(
-          padding: EdgeInsets.only(left: mdheight * 0.02, top: mdheight * 0.01, bottom: mdheight * 0.01, right: mdheight * 0.01),
-          child: Row(
+        padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
+        child:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-           Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.028,color: Colors.white),),
-            SizedBox(
+            Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
+            Container(
+
               height: mdheight*0.07,
-              width: mdwidth*0.50,
+              width: mdwidth*0.40,
 
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black, // Background color
                 ),
+
+
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date()));
-                },child: Text("Book", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),),
+                },child: Text("Book"),),
             )
           ],
-        )),
+        ),
       ),
-
-
-      // bottomSheet: Container(
-      //   color: Colors.deepPurple.shade800,
-      //   padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
-      //   child:  Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //     children: [
-      //       Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
-      //       Container(
-      //
-      //         height: mdheight*0.07,
-      //         width: mdwidth*0.40,
-      //
-      //         child: ElevatedButton(
-      //           style: ElevatedButton.styleFrom(
-      //             backgroundColor: Colors.black, // Background color
-      //           ),
-      //
-      //
-      //           onPressed: (){},child: Text("Book"),),
-      //       )
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

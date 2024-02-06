@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 class Book_summary extends StatefulWidget {
 
   const Book_summary({super.key});
@@ -41,7 +42,7 @@ void _showtimepicker(){
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        title: Text("Book Summary",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.033),),
+        title: Text("Book Summary",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.030),),
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 
@@ -115,7 +116,7 @@ void _showtimepicker(){
               ),
 
               Divider(
-                height: mheight*0.07,
+                height: mheight*0.05,
 
               ),
               //Calender
@@ -127,63 +128,41 @@ void _showtimepicker(){
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      children: [
-                       Text("Pick-Up Time",style: TextStyle(fontSize: 17),),
-                       Row(
-                         children: [
-                           Text(_timeOfDay.format(context).toString()),
-                           SizedBox(width: mwidth*0.01,),
-                           IconButton(onPressed: _showtimepicker, icon: Icon(Icons.more_time))
-                         ],
-                       ),
+                       Text("Pick-Up Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                       Text(_timeOfDay.format(context).toString(),style: TextStyle(fontSize: 16,)),
 
                      ],
                     ),
 
-                   // SizedBox(height: mheight*0.01,),
+                    SizedBox(height: mheight*0.02,),
                     //Pick up date
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Pick-Up Date",style: TextStyle(fontSize: 17),),
-                        Row(
-                          children: [
-                            Text(_dateTime.toString()),
-                            SizedBox(width: mwidth*0.01,),
-                           IconButton(onPressed: _showdatepicker, icon: Icon(Icons.calendar_month))
-                          ],
-                        ),
+                        Text("Pick-Up Date",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        Text(DateFormat('d MMM yy').format(_dateTime),style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
+
+                    SizedBox(height: mheight*0.02,),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Return  Time",style: TextStyle(fontSize: 17),),
-                        Row(
-                          children: [
-                            Text(_timeOfDay.format(context).toString()),
-                            SizedBox(width: mwidth*0.01,),
-                            IconButton(onPressed: _showtimepicker, icon: Icon(Icons.more_time))
-                          ],
-                        ),
+                        Text("Return  Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        Text(_timeOfDay.format(context).toString(),style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
 
-                    // SizedBox(height: mheight*0.01,),
+                     SizedBox(height: mheight*0.02,),
                     //Pick up date
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Return Date",style: TextStyle(fontSize: 17),),
-                        Row(
-                          children: [
-                            Text(_dateTime.toString()),
-                            SizedBox(width: mwidth*0.01,),
-                            IconButton(onPressed: _showdatepicker, icon: Icon(Icons.calendar_month))
-                          ],
-                        ),
+                        Text("Return Date",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        Text(DateFormat('d MMM yy').format(_dateTime),style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
@@ -202,15 +181,15 @@ void _showtimepicker(){
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Amount",style: TextStyle(fontSize: 17)),
-                        Text("₹450/day"),
+                        Text("Amount",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                        Text("₹450/day",),
                       ],
                     ),
                     SizedBox(height: mheight*0.02,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Days",style: TextStyle(fontSize: 17)),
+                        Text("Total Days",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
                         Text("5"),
                       ],
                     ),
@@ -221,7 +200,7 @@ void _showtimepicker(){
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total",style: TextStyle(fontSize: 17)),
+                        Text("Total",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
                         Text("₹5990/day"),
                       ],
                     )
