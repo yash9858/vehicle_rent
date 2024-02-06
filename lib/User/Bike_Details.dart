@@ -61,7 +61,7 @@ class _bike_detailState extends State<bike_detail> {
                 ),
               ),
               SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: FixedExtentScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 300),
                   child: Container(
@@ -81,9 +81,6 @@ class _bike_detailState extends State<bike_detail> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Thunder 350X",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
-                            Row(
-                              children: [Text("4.1",style: TextStyle(fontSize: 20,color: Colors.white),),Icon(Icons.star,color: Colors.orange,)],
-                            )
                           ],
                         ),
 
@@ -95,7 +92,6 @@ class _bike_detailState extends State<bike_detail> {
                         ),
 
 
-                        SizedBox(height: mheight*0.03,),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -206,9 +202,9 @@ class _bike_detailState extends State<bike_detail> {
           ),
         ),
 
-      bottomSheet: Container(
+      bottomNavigationBar: Container(
         color: Colors.deepPurple.shade800,
-        padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
+        padding: EdgeInsets.only(top: 10,left: 20,right: 15,bottom: 10),
         child:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -220,13 +216,16 @@ class _bike_detailState extends State<bike_detail> {
 
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // Background color
+                  backgroundColor: Colors.white, // Background color
                 ),
 
 
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date()));
-                },child: Text("Book"),),
+                },child: Text("Book",
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.black),),),
             )
           ],
         ),

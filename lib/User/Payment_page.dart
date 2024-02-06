@@ -85,7 +85,7 @@ class _Payment_pageState extends State<Payment_page> {
                     title: const Text('Add Card',style: TextStyle(color: Colors.grey),),
                     trailing: IconButton(
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Credit_Card()));
+                        //Navigator.push(context, MaterialPageRoute(builder: (context)=> Credit_Card()));
                       },
                     icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple.shade400,)),
                   ),
