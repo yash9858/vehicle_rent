@@ -15,7 +15,7 @@ class _CarState extends State<Car> {
   @override
   Widget build(BuildContext context) {
     var    mheight=MediaQuery.sizeOf(context).height;
-    var   mwidth=MediaQuery.sizeOf(context).width;
+
     return Scaffold(
       appBar: AppBar(
 

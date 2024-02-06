@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/Bike_Details.dart';
-import 'package:rentify/User/Car_Details.dart';
+
 
 class Bike extends StatefulWidget {
   const Bike({super.key});
@@ -14,7 +14,7 @@ class _BikeState extends State<Bike> {
   @override
   Widget build(BuildContext context) {
     var    mheight=MediaQuery.sizeOf(context).height;
-    var   mwidth=MediaQuery.sizeOf(context).width;
+
     return Scaffold(
       appBar: AppBar(
 

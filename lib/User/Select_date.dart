@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icon.dart';
+
 import 'package:intl/intl.dart';
 import 'package:rentify/User/Payment_page.dart';
 

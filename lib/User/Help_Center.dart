@@ -45,7 +45,7 @@ class _HelpCenterState extends State<HelpCenter> {
   ];
   @override
   Widget build(BuildContext context) {
-    var mdheight = MediaQuery.sizeOf(context).height;
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
