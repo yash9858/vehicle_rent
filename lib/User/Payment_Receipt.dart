@@ -29,91 +29,94 @@ class _Payment_ReceiptState extends State<Payment_Receipt> {
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Column(
-        children:[
-          ListView.builder(
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Column(
+          children:[
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: user.length,
+                itemBuilder: (context, int index)
+                {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(user[index], style: const TextStyle(fontSize: 16),),
+                        Text(uval[index], style: const TextStyle(fontSize: 16),),
+                      ],
+                    ),
+                  );
+                }),
+            const Divider(),
+            ListView.builder(
               shrinkWrap: true,
-              itemCount: user.length,
-              itemBuilder: (context, int index)
-              {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                itemCount: name.length,
+                itemBuilder: (context, int index)
+            {
+              return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(user[index], style: const TextStyle(fontSize: 16),),
-                      Text(uval[index], style: const TextStyle(fontSize: 16),),
+                      Text(name[index], style: const TextStyle(fontSize: 16),),
+                      Text(val[index], style: const TextStyle(fontSize: 16),),
                     ],
                   ),
-                );
-              }),
-          const Divider(),
-          ListView.builder(
-            shrinkWrap: true,
-              itemCount: name.length,
-              itemBuilder: (context, int index)
-          {
-            return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              );
+            }),
+            const Divider(),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8,),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Address', style: TextStyle(fontSize: 16),),
+                  SizedBox(width: 100,),
+                  Expanded(child: Text('NGCCA Navgujarat near asharam road, ahemdabad', style: TextStyle(fontSize: 16),)),
+                ],
+              ),
+            ),
+            const Divider(),
+            ListView.builder(
+              shrinkWrap: true,
+                itemCount: date.length,
+                itemBuilder: (context, int index)
+            {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(name[index], style: const TextStyle(fontSize: 16),),
-                    Text(val[index], style: const TextStyle(fontSize: 16),),
+                    Text(date[index], style: const TextStyle(fontSize: 16),),
+                    Text(dval[index], style: const TextStyle(fontSize: 16),),
                   ],
                 ),
-            );
-          }),
-          const Divider(),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Address', style: TextStyle(fontSize: 16),),
-                SizedBox(width: 100,),
-                Expanded(child: Text('NGCCA Navgujarat near asharam road, ahemdabad', style: TextStyle(fontSize: 16),)),
-              ],
-            ),
-          ),
-          const Divider(),
-          ListView.builder(
-            shrinkWrap: true,
-              itemCount: date.length,
-              itemBuilder: (context, int index)
-          {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(date[index], style: const TextStyle(fontSize: 16),),
-                  Text(dval[index], style: const TextStyle(fontSize: 16),),
-                ],
-              ),
-            );
-          }),
-          const Divider(),
-          ListView.builder(
-            shrinkWrap: true,
-              itemCount: price.length,
-              itemBuilder: (context, int index)
-          {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(price[index], style: const TextStyle(fontSize: 16),),
-                  Text(pval[index], style: const TextStyle(fontSize: 16),),
-                ],
-              ),
-            );
-          }),
-        ]
-      )),
+              );
+            }),
+            const Divider(),
+            ListView.builder(
+              shrinkWrap: true,
+                itemCount: price.length,
+                itemBuilder: (context, int index)
+            {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(price[index], style: const TextStyle(fontSize: 16),),
+                    Text(pval[index], style: const TextStyle(fontSize: 16),),
+                  ],
+                ),
+              );
+            }),
+          ]
+        )),
+      ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(bottom: 5,left: 10,right: 10),
         width: double.infinity,

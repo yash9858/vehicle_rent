@@ -219,7 +219,7 @@ class _car_detailState extends State<car_detail> {
                                     average: 4,
                                     averageStyle: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 35,
+                                      fontSize: 30,
                                     ),
                                     counterFiveStars: 7,
                                     labelCounterFiveStarsStyle: TextStyle(
@@ -263,7 +263,7 @@ class _car_detailState extends State<car_detail> {
                                               initialRating: 0,
                                               minRating: 0,
                                               direction: Axis.horizontal,
-                                              itemSize: 30,
+                                              itemSize: 25,
                                               itemCount: 5,
                                               allowHalfRating: true,
                                               itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
@@ -297,26 +297,54 @@ class _car_detailState extends State<car_detail> {
               )],
           ),
         ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(left: mdheight * 0.02, top: mdheight * 0.01, bottom: mdheight * 0.01, right: mdheight * 0.01),
-        child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-         Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.03),),
-          SizedBox(
-            height: mdheight*0.07,
-            width: mdwidth*0.50,
+      bottomNavigationBar: Container(
+        color: Colors.deepPurple.shade800,
+        child: Padding(
+          padding: EdgeInsets.only(left: mdheight * 0.02, top: mdheight * 0.01, bottom: mdheight * 0.01, right: mdheight * 0.01),
+          child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+           Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.028,color: Colors.white),),
+            SizedBox(
+              height: mdheight*0.07,
+              width: mdwidth*0.50,
 
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple.shade800, // Background color
-              ),
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date()));
-              },child: Text("Book", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),),
-          )
-        ],
-      )),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black, // Background color
+                ),
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date()));
+                },child: Text("Book", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),),
+            )
+          ],
+        )),
+      ),
+
+
+      // bottomSheet: Container(
+      //   color: Colors.deepPurple.shade800,
+      //   padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
+      //   child:  Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      //       Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
+      //       Container(
+      //
+      //         height: mdheight*0.07,
+      //         width: mdwidth*0.40,
+      //
+      //         child: ElevatedButton(
+      //           style: ElevatedButton.styleFrom(
+      //             backgroundColor: Colors.black, // Background color
+      //           ),
+      //
+      //
+      //           onPressed: (){},child: Text("Book"),),
+      //       )
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
