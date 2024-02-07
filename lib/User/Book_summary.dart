@@ -220,9 +220,10 @@ void _showtimepicker(){
         padding: EdgeInsets.only(bottom: 5,left: 10,right: 10),
         width: double.infinity,
         height: mheight*0.08,
-        child: ElevatedButton(
+        child: MaterialButton(
+          color: Colors.deepPurple.shade800,
           onPressed: (){},
-          child: Text("Continue"),
+          child: Text("Continue", style: TextStyle(color: Colors.white),),
         ),
       ),
     );

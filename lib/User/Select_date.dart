@@ -278,15 +278,16 @@ class _Select_dateState extends State<Select_date> {
           ],
         ),
       ),
-      bottomSheet: Container(
+      bottomNavigationBar: Container(
         padding: EdgeInsets.only(bottom: 5,left: 10,right: 10),
         width: double.infinity,
         height: mheight*0.08,
-        child: ElevatedButton(
-          onPressed: (){
+        child:  MaterialButton(
+        color: Colors.deepPurple.shade800,
+        onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> Payment_page()));
           },
-          child: Text("Payment"),
+          child: Text("Payment", style: TextStyle(color: Colors.white),),
         ),
       ),
     );

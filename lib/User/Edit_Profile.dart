@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
 class Edit_Profile extends StatefulWidget {
@@ -25,7 +27,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Edit Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
+        title: const Text("Edit Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
 
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -48,11 +50,8 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         left: 80,
                         bottom: 1,
                         child: CircleAvatar(
-
                           child: IconButton(
-                              onPressed: (){
-
-                              },
+                              onPressed: (){},
                               icon:const Icon(Icons.edit)),
                         ),
                       )
@@ -60,17 +59,16 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   )),
               SizedBox(height: mdheight * 0.04),
               TextField(
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
                     fillColor: Colors.grey.shade100,
                     filled: true,
-                    hintText: 'Enter Your Name',
+                    hintText: "Enter Your Name",
+                    labelText: "Name",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-              ),
+                        borderRadius: BorderRadius.circular(mdheight * 0.02)),
+                  )),
               SizedBox(height: mdheight * 0.025,),
               TextField(
                 textInputAction: TextInputAction.next,
@@ -78,9 +76,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     fillColor: Colors.grey.shade100,
                     filled: true,
                     hintText: 'Enter Your Address',
+                    labelText: "Address",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
+                        borderRadius: BorderRadius.circular(mdheight * 0.02)),
                 ),
               ),
               SizedBox(height: mdheight * 0.025,),
@@ -91,13 +89,13 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         fillColor: Colors.grey.shade100,
                         filled: true,
                         hintText: 'Enter Your DOB',
-                        suffixIcon: IconButton(
+                        labelText: "Date Of Birth",
+                        prefixIcon: IconButton(
                           onPressed: _showDatePicker,
-                          icon: Icon(Icons.calendar_month),
+                          icon: const Icon(Icons.calendar_month),
                         ),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)
-                        )
+                            borderRadius: BorderRadius.circular(mdheight * 0.02)),
                     ),
                   ),
               SizedBox(height: mdheight * 0.025,),
@@ -107,9 +105,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     fillColor: Colors.grey.shade100,
                     filled: true,
                     hintText: 'Enter Your Licence Number',
+                    labelText: "Licence Number",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
+                        borderRadius: BorderRadius.circular(mdheight * 0.02)),
                 ),
               ),
               SizedBox(height: mdheight * 0.025,),
@@ -124,7 +122,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   });
                 },
               ),
-                  Text('Male', style: TextStyle(fontSize: 18)),
+                  const Text('Male', style: TextStyle(fontSize: 18)),
                   Radio(
                   value: 2,
                   groupValue: _value,
@@ -134,7 +132,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     });
                 },
               ),
-              Text('Female', style: TextStyle(fontSize: 18)),
+              const Text('Female', style: TextStyle(fontSize: 18)),
                   Radio(
                   value: 3,
                   groupValue: _value,
@@ -144,30 +142,28 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     });
                 },
               ),
-              Text('Other', style: TextStyle(fontSize: 18)),
+              const Text('Other', style: TextStyle(fontSize: 18)),
               ]),
-              SizedBox(height: mdheight * 0.04,),
+              SizedBox(height: mdheight * 0.03,),
       Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(mdheight * 0.02),
           color: Colors.deepPurple.shade800,
         ),
         height: mdheight*0.07,
-        width: mdwidth * 0.7,
+        width: mdwidth,
         child: MaterialButton(
           onPressed: (){
             Navigator.pop(context);
           },
-          child: Text('See All Review',
+          child: Text('Save Details',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: mdheight * 0.025,
                   fontWeight: FontWeight.bold)),
         ),
       ),
-          ]),
-        ),
-      ),
-    );
+    ]))
+    ));
   }
 }

@@ -121,9 +121,10 @@ class _Payment_ReceiptState extends State<Payment_Receipt> {
         padding: const EdgeInsets.only(bottom: 5,left: 10,right: 10),
         width: double.infinity,
         height: mdheight*0.08,
-        child: ElevatedButton(
+        child: MaterialButton(
+          color: Colors.deepPurple.shade800,
           onPressed: (){},
-          child: const Text("Continue", style: TextStyle(fontSize: 17),),
+          child: const Text("Continue", style: TextStyle(fontSize: 17,color: Colors.white),),
         ),
       ),
     );

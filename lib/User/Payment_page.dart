@@ -85,7 +85,7 @@ class _Payment_pageState extends State<Payment_page> {
                     title: const Text('Add Card',style: TextStyle(color: Colors.grey),),
                     trailing: IconButton(
                       onPressed: (){
-                        //Navigator.push(context, MaterialPageRoute(builder: (context)=> Credit_Card()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Credit_Card()));
                       },
                     icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple.shade400,)),
                   ),
@@ -142,11 +142,12 @@ class _Payment_pageState extends State<Payment_page> {
       ),
       bottomSheet:  Container(
         padding: EdgeInsets.only(left: 12,right: 12,bottom: 8),
-        height: mheight*0.07,
+        height: mheight *0.07,
         width: mwidth,
-        child: ElevatedButton(
+        child:  MaterialButton(
+          color: Colors.deepPurple.shade800,
           onPressed: (){},
-          child: Text('Confirm Payment'),
+          child: Text("Confirm Payment", style: TextStyle(color: Colors.white),),
         ),
       ),
     );

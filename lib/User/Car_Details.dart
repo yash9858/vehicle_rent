@@ -1,5 +1,4 @@
-// ignore_for_file: camel_case_types, depend_on_referenced_packages
-
+// ignore_for_file: camel_case_types, depend_on_referenced_packages, file_names
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/Feedback_User.dart';
@@ -7,11 +6,8 @@ import 'package:rentify/User/Homescreen.dart';
 import 'package:rentify/User/Select_date.dart';
 import 'package:rating_summary/rating_summary.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-
 class car_detail extends StatefulWidget {
   const car_detail({super.key});
-
   @override
   State<car_detail> createState() => _car_detailState();
 }
@@ -22,7 +18,6 @@ class _car_detailState extends State<car_detail> {
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -33,7 +28,6 @@ class _car_detailState extends State<car_detail> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
-
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
@@ -42,7 +36,6 @@ class _car_detailState extends State<car_detail> {
                             onPressed: (){
                               Navigator.pop(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
                             },
-
                             icon: const Icon(Icons.arrow_back,)),
                       ),
                       const Text("Car Details",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
@@ -52,7 +45,6 @@ class _car_detailState extends State<car_detail> {
                             onPressed: (){},
                             icon: const Icon(LineIcons.heart)),
                       )
-
                     ],
                   ),
                 ),
@@ -67,7 +59,6 @@ class _car_detailState extends State<car_detail> {
                     color: Colors.deepPurple.shade800,
                     borderRadius: const BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
                 ),
-
                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.035),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,10 +71,8 @@ class _car_detailState extends State<car_detail> {
                         Text("Renault Kwid",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
                       ],
                     ),
-
                     //overview
                     SizedBox(height: mdheight*0.022,),
-
                     const Text("Renault Kwid is compact hatchback produced by Renault it have a petrol engine that give a perfect power to this car ",style: TextStyle(color: Colors.grey),),
                     SizedBox(height: mdheight*0.01,),
                     Column(
@@ -204,16 +193,12 @@ class _car_detailState extends State<car_detail> {
           children: [
             Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
             SizedBox(
-
               height: mdheight*0.07,
               width: mdwidth*0.40,
-
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white, // Background color
+                  backgroundColor: Colors.white.withOpacity(0.9), // Background color
                 ),
-
-
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>const Select_date()));
                 },child: const Text("Book",

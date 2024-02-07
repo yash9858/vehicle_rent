@@ -99,9 +99,10 @@ class _Cancel_bookingState extends State<Cancel_booking> {
         padding: EdgeInsets.only(left: 12,right: 12,bottom: 8),
         height: mheight*0.07,
         width: mwidth,
-        child: ElevatedButton(
+        child: MaterialButton(
+          color: Colors.deepPurple.shade800,
           onPressed: (){},
-          child: Text('Cancel Ride'),
+          child: Text("Cancel Ride", style: TextStyle(color: Colors.white),),
         ),
       ),
 
