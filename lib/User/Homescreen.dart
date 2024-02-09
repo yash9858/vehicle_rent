@@ -8,6 +8,7 @@ import 'package:rentify/User/Available_bike.dart';
 import 'package:rentify/User/Available_car.dart';
 import 'package:rentify/User/Bike_Details.dart';
 import 'package:rentify/User/Car_Details.dart';
+import 'package:rentify/User/Category.dart';
 import 'package:rentify/User/Profile.dart';
 
 
@@ -102,26 +103,47 @@ class _HomescreenState extends State<Homescreen> {
               ),
             ),
             //  SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
-            // CATEGORY
-            // Row(
-            //
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     TextButton(
-            //         onPressed: () {
-            //           Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
-            //         },
-            //
-            //         child: Text("View all",  style: TextStyle(color: Colors.grey),)),
-            //   ],
-            // ),
 
-            SizedBox(height: MediaQuery.sizeOf(context).height * 0.02),
 
+            //CATEGORY
             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
+
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Category",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Category()));
+                    },
+
+                    child: Text("View all",  style: TextStyle(color: Colors.grey),)),
+              ],
+            ),
+
+          //  SizedBox(height: MediaQuery.sizeOf(context).height * 0.02),
+
+
+            //SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
+
+            Container(
+              height: mheight*0.12,
+            //  color: Colors.deepPurple,
+              child: GridView.builder(
+                  scrollDirection: Axis.horizontal,
+                 physics: const BouncingScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                //mainAxisSpacing: 5,
+                    mainAxisSpacing: 1
+
+              ),
+                  itemCount: 4,
+                  itemBuilder: (BuildContext contect, int index){
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Car()));
+                  },
+                  child:  Column(
                     children: [
                       Card(
                         elevation: 5,
@@ -142,79 +164,9 @@ class _HomescreenState extends State<Homescreen> {
                       )
                     ],
                   ),
-                  Column(
-                    children: [
-                      Card(
-                        elevation: 5,
-
-                        child: ClipRRect(
-                          borderRadius:
-                          BorderRadius.circular(10),
-                          child: Image.network(
-                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
-                            fit: BoxFit.cover,
-                            height: mwidth * 0.17,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Hetchback",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 12),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Card(
-
-                        elevation: 5,
-
-                        child: ClipRRect(
-                          borderRadius:
-                          BorderRadius.circular(10),
-                          child: Image.network(
-                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
-                            fit: BoxFit.cover,
-                            height: mwidth * 0.17,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Seddan",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Card(
-
-                        elevation: 5,
-
-                        child: ClipRRect(
-                          borderRadius:
-                          BorderRadius.circular(10),
-                          child: Image.network(
-                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
-                            fit: BoxFit.cover,
-                            width: mwidth * 0.17,
-
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "MPV",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-
-
-
-
-                ]),
-            //SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
+                );
+              }),
+            ),
             Container(
               padding: EdgeInsets.only(left: 5,right: 5),
               width: double.infinity,
