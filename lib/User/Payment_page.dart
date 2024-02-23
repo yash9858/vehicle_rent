@@ -13,7 +13,7 @@ class _Payment_pageState extends State<Payment_page> {
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
-    var mwidth = MediaQuery.sizeOf(context).width;
+
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,

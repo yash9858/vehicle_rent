@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:lottie/lottie.dart';
+
 import 'package:rentify/Admin/Booking_Admin.dart';
+import 'package:rentify/Admin/CancelBooking_Admin.dart';
 import 'package:rentify/Admin/Complain_Admin.dart';
 import 'package:rentify/Admin/Feedback_Admin.dart';
 import 'package:rentify/Admin/Payment_Admin.dart';
@@ -10,6 +12,7 @@ import 'package:rentify/Admin/UserList_Admin.dart';
 import 'package:rentify/Admin/Vehicle_Admin.dart';
 import 'package:rentify/Admin/Vehicle_Category_Admin.dart';
 import 'package:rentify/Login_Screen.dart';
+
 
 class DrawerNavigationItem extends StatelessWidget {
   final IconData iconData;
@@ -172,6 +175,17 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   {
                     setState(() => _currentIndex = 6),
                     Navigator.push(context , MaterialPageRoute(builder: (context) => const Admin_ComplainPage())),
+                    _currentIndex = 0
+                  },
+                ),
+                DrawerNavigationItem(
+                  iconData: Icons.list,
+                  title: "Cancel Bookings",
+                  selected: _currentIndex == 2,
+                  onTap: () =>
+                  {
+                    setState(() => _currentIndex = 2),
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Cancel_Bookings())),
                     _currentIndex = 0
                   },
                 ),

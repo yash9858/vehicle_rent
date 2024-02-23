@@ -10,7 +10,7 @@ class _ComplainState extends State<Complain> {
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
-    var mwidth = MediaQuery.sizeOf(context).width;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
