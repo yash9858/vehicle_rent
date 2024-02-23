@@ -35,9 +35,9 @@ class _HomescreenState extends State<Homescreen> {
           //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
           children: [
-             Icon(Icons.location_on_outlined),
+
             Text(
-              "Hy!",
+              "Hy,",
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -167,6 +167,7 @@ class _HomescreenState extends State<Homescreen> {
                 );
               }),
             ),
+            SizedBox(height: mheight*0.01,),
             Container(
               padding: EdgeInsets.only(left: 5,right: 5),
               width: double.infinity,
@@ -174,17 +175,17 @@ class _HomescreenState extends State<Homescreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "New Arrive",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    "Most popular",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
-                      },
-                      child: Text(
-                        "View More",
-                        style: TextStyle(color: Colors.grey),
-                      ))
+                  // TextButton(
+                  //     onPressed: () {
+                  //       Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
+                  //     },
+                  //     child: Text(
+                  //       "View More",
+                  //       style: TextStyle(color: Colors.grey),
+                  //     ))
                 ],
               ),
             ),
@@ -302,8 +303,8 @@ class _HomescreenState extends State<Homescreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Popular",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    "Available Cars",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextButton(
                       onPressed: () {
@@ -424,8 +425,8 @@ class _HomescreenState extends State<Homescreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Popular",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    "Available Bikes",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextButton(
                       onPressed: () {

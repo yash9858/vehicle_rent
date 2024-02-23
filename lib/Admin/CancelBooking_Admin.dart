@@ -12,7 +12,7 @@ class _Cancel_BookingsState extends State<Cancel_Bookings> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(" Cancel bookings"),
-          backgroundColor: Color.fromRGBO(92, 198, 208, 1),
+          backgroundColor: Colors.deepPurple.shade800,
         ),
         body:ListView.builder(
             itemCount: 4,
@@ -26,12 +26,15 @@ class _Cancel_BookingsState extends State<Cancel_Bookings> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children:[
+                      Row(
+
+                          children:[
                         Text((index+1).toString()+". ",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         Text("yash",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
                       ]),
                       SizedBox(height: 16),
                       Row(
+
                         children: [
                           Text("Booknig id : ",style: TextStyle(fontWeight: FontWeight.bold),),
                           Text("3"),

@@ -97,7 +97,7 @@ class _Cancel_bookingState extends State<Cancel_booking> {
       ),
       bottomNavigationBar:  Container(
         padding: EdgeInsets.only(left: 12,right: 12,bottom: 8),
-        height: mheight*0.07,
+        height: mheight*0.08,
         width: mwidth,
         child: MaterialButton(
           color: Colors.deepPurple.shade800,

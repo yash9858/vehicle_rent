@@ -16,8 +16,8 @@ class _CategoryState extends State<Category> {
     var mwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-      //  backgroundColor: Colors.transparent,
+      //  centerTitle: true,
+        backgroundColor: Colors.deepPurple.shade800,
         title: Text("Category",style: TextStyle(color: Colors.white,fontSize: mheight*0.030,fontWeight: FontWeight.bold),),
     //    iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,

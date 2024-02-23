@@ -179,7 +179,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   },
                 ),
                 DrawerNavigationItem(
-                  iconData: Icons.list,
+                  iconData: Icons.free_cancellation_outlined,
                   title: "Cancel Bookings",
                   selected: _currentIndex == 2,
                   onTap: () =>
