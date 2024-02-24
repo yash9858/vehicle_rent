@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'Login_Screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,12 +13,23 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController NameController = TextEditingController();
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController ConfirmpasswordController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+  var logindata;
+  var data;
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
+      body:isLoading ? Center(child: CircularProgressIndicator(color: Colors.white)) : Container(
         height: double.maxFinite,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -25,7 +38,9 @@ class _RegisterPageState extends State<RegisterPage> {
             colors: [Colors.white, Colors.deepPurple.shade400],
           ),
         ),
-        child: SingleChildScrollView(
+        child:Form(
+          key: _formKey,
+          child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: size.height * 0.01, horizontal: size.height* 0.03),
             child: Column(
@@ -51,8 +66,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.02),
-                TextField(
+                TextFormField(
                   keyboardType: TextInputType.text,
+                  controller: NameController,
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return "Please enter first name";
+                    }
+                  },
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                     filled: true,
@@ -66,7 +87,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.02),
-                TextField(
+                TextFormField(
+                  controller: emailController,
+
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
@@ -139,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   onPressed: () {
-                   // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UserDasboard()));
+                    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UserDasboard()));
                   },
                 ),
                 SizedBox(height: size.height * 0.01),
@@ -164,7 +187,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
           ),
-        ),
+        ),)
+
       ),
     );
   }
