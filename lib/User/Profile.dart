@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:rentify/Forget_Password.dart';
 import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/About_us.dart';
 import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Edit_Profile.dart';
-import 'package:rentify/User/Feedback_User.dart';
+
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
 import 'package:rentify/User/Payment_Receipt.dart';
-import 'package:rentify/User/Payment_page.dart';
+
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -110,7 +111,7 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Payment_Receipt()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Forget_password()));
                   },
                   child:ListTile(
                   leading: const Icon(LineIcons.heart,color: Colors.deepPurple,),
@@ -157,7 +158,7 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const FeedBack_User()));
+                  //  Navigator.push(context, MaterialPageRoute(builder: (context)=> const FeedBack_User()));
                   },
                   child: ListTile(
                     leading: const Icon(Icons.info_outline,color: Colors.deepPurple,),

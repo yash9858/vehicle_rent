@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Login_Screen.dart';
 import 'package:lottie/lottie.dart';
@@ -71,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: NameController,
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return "Please enter first name";
+                      return "Please Enter name";
                     }
                   },
                   decoration: InputDecoration(
@@ -89,6 +92,20 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(height: size.height * 0.02),
                 TextFormField(
                   controller: emailController,
+                  validator: (val) {
+                    if (val!.isEmpty )
+                       {
+                      return "Email must not be empty";
+                    } else {
+                      if (RegExp(
+                          r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}")
+                          .hasMatch(val)) {
+                        return null;
+                      } else {
+                        return "Enter a valid Email";
+                      }
+                    }
+                  },
 
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
@@ -104,7 +121,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.02),
-                TextField(
+                TextFormField(
+                  controller: passwordController,
+                  validator: (val) {
+                    if (val!.isEmpty
+                        ) {
+                      return "Use Proper Password ";
+                    }
+                  },
                   obscureText: true,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
@@ -120,9 +144,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.02),
-                TextField(
+                TextFormField(
                   obscureText: true,
                   keyboardType: TextInputType.text,
+                  controller: ConfirmpasswordController,
+                  validator: (val) {
+                    if (val!.isEmpty
+                      ) {
+                      return " Password not same ";
+                    }
+                  },
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                     filled: true,
@@ -159,11 +190,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
                       ),
+
                     ),
                   ),
-                  onPressed: () {
-                    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UserDasboard()));
-                  },
+                onPressed: _submit,
                 ),
                 SizedBox(height: size.height * 0.01),
                 Row(
@@ -192,4 +222,55 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
+
+  Future<void> _submit() async {
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      final login_url = Uri.parse(
+          "https://road-runner24.000webhostapp.com/API/Insert_API/Login.php");
+      final response = await http
+          .post(login_url, body: {
+        "Email": emailController.text,
+        "Password": passwordController.text,
+        "User_Name": NameController.text,
+
+        "Role": "1",
+        "Status": "0",
+
+      });
+      if (response.statusCode == 200) {
+        logindata = jsonDecode(response.body);
+        data =
+        jsonDecode(response.body)['user'];
+        print(logindata);
+        setState(() {
+          isLoading = false;
+        });
+        if (logindata['error'] == false) {
+          Fluttertoast.showToast(
+              msg: logindata['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => LoginPage()),
+                  (route) => false);
+        }else{
+          Fluttertoast.showToast(
+              msg: logindata['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+        }
+      }
+    }
+
+  }
+
 }

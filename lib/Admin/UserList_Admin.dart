@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class Admin_UserPage extends StatefulWidget {
@@ -11,6 +14,28 @@ class Admin_UserPage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Admin_UserPageState extends State<Admin_UserPage> {
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/User_Details_Admin.php"));
+    if(response.statusCode==200){
+      data=response.body;
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+
+  }
   var name = ['yash', 'raj', 'jigar','anuj', 'sachin'];
   @override
   Widget build(BuildContext context) {
@@ -29,8 +54,8 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
         ),
         centerTitle: true,
       ),
-      body : ListView.builder(
-          itemCount: name.length,
+      body : isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
+          itemCount: getUser.length,
           itemBuilder: (BuildContext context, int index)
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
@@ -51,17 +76,17 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                               child:Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Login Id : 1'),
+                                  Text('Login Id : '+getUser[index]["Login_Id"]),
                                   SizedBox(height: mdheight * 0.01,),
-                                  const Text('User Name : Yash Mistry'),
+                                  Text('User Name : '+getUser[index]["Name"]),
                                   SizedBox(height: mdheight * 0.01,),
-                                  const Text('Dob : 18/1/2004'),
+                                   Text('Dob : '+getUser[index]["Dob"]),
                                   SizedBox(height: mdheight * 0.01,),
-                                  const Text('Gender : Male'),
+                                   Text('Gender : '+getUser[index]["Gender"]),
                                   SizedBox(height: mdheight * 0.01,),
-                                  const Text('Address : Kailash Bhuvan Near Fire Station more details is near about find'),
+                                   Text('Address :'+getUser[index]["Address"]),
                                   SizedBox(height: mdheight * 0.01,),
-                                  const Text('Licence Number : Yash124'),
+                                   Text('Licence Number : '+getUser[index]["Lincence_Number"]),
                                   SizedBox(height: mdheight * 0.01,),
                                 ],
                               ),
@@ -71,8 +96,9 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                                 children:[
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
-                                    child: Image.asset('assets/img/Logo.jpg',
+                                    child: Image.network(getUser[index]["Profile_Image"],
                                       height : mdheight * 0.15,
+
                                       fit: BoxFit.cover,
                                     ),
                                   ),

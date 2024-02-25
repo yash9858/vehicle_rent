@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/Material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:http/http.dart' as http;
+
 
 // ignore: camel_case_types
 class Admin_FeedbackPage extends StatefulWidget {
@@ -11,6 +15,28 @@ class Admin_FeedbackPage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Feedback_Admin.php"));
+    if(response.statusCode==200){
+      data=response.body;
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -28,8 +54,8 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: 10,
+      body:isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
+        itemCount: getUser.length,
         itemBuilder: (BuildContext context, int index)
         {
           return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
@@ -43,22 +69,22 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('User Name'),
-                          Text('TimeStamp'),
+                          Text('User Name: '+getUser[index]["Name"]),
+                          Text(getUser[index]["Feedback_Time"]),
                         ],
                       ),
                       SizedBox(height: mdheight * 0.01,),
-                      const Text('Vehicle Name'),
+                       Text('Vehicle Name: '+getUser[index]["Vehicle_Name"]),
                       SizedBox(height: mdheight * 0.01,),
-                      const Text('Comments'),
+                      Text('Comments: '+getUser[index]["Comment"]),
                       SizedBox(height: mdheight * 0.01,),
-                      const Row(
+                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text('Feedback :'),
+                          Text(getUser[index]["Ratings"]),
                           Icon(LineIcons.starAlt, color: Colors.amber,),
                           Icon(LineIcons.starAlt, color: Colors.amber,),
                           Icon(LineIcons.starAlt, color: Colors.amber,),

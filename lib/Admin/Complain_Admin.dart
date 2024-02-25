@@ -1,6 +1,9 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:convert';
+
 import 'package:flutter/Material.dart';
+import 'package:http/http.dart' as http;
 
 class Admin_ComplainPage extends StatefulWidget {
   const Admin_ComplainPage({super.key});
@@ -10,6 +13,28 @@ class Admin_ComplainPage extends StatefulWidget {
 }
 
 class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Complain_Admin.php"));
+    if(response.statusCode==200){
+      data=response.body;
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -27,8 +52,8 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
         ),
         centerTitle: true,
       ),
-      body: ListView.builder(
-            itemCount: 10,
+      body:isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
+            itemCount: getUser.length,
               itemBuilder: (BuildContext context, int index)
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
@@ -42,19 +67,19 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
                   child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('User Name'),
-                        Text('TimeStamp'),
+                        Text('User Name: '+getUser[index]["Name"]),
+                        Text(getUser[index]["Complain_Timestamp"]),
                       ],
                     ),
                     SizedBox(height: mdheight * 0.01,),
-                    const Text('Vehicle Name'),
+                     Text('Vehicle Name: '+getUser[index]["Vehicle_Name"]),
                     SizedBox(height: mdheight * 0.01,),
-                    const Text('Complain Description'),
+                     Text('Complain Description: '+getUser[index]["Complain"]),
                     SizedBox(height: mdheight * 0.01,),
-                    const Text('Complain Status : Pending'),
+                     Text('Complain Status :'+getUser[index]["Complain_Status"]),
                     SizedBox(height: mdheight * 0.01,),
                   ],
                 ),

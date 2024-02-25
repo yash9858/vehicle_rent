@@ -9,7 +9,7 @@ import 'package:rentify/User/Available_car.dart';
 import 'package:rentify/User/Bike_Details.dart';
 import 'package:rentify/User/Car_Details.dart';
 import 'package:rentify/User/Category.dart';
-import 'package:rentify/User/Profile.dart';
+
 
 
 
@@ -192,7 +192,9 @@ class _HomescreenState extends State<Homescreen> {
 
               //  height: mheight * 0.49,
               // padding: EdgeInsets.only(top: 3, left: 10, right: 10),
+            SizedBox(height: mheight*0.01,),
             //card
+
             Container(
               height: mheight * 0.32,
               child: PageView.builder(

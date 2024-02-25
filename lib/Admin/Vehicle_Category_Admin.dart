@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class Admin_CategoryPage extends StatefulWidget {
@@ -11,7 +14,30 @@ class Admin_CategoryPage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
-  var name = ['HatchBack', 'sedan', 'Suv', 'BodyType'];
+  String? data;
+  var getUser;
+  bool isLoading = false;
+
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Category_Admin.php"));
+    if(response.statusCode==200){
+      data=response.body;
+      setState(() {
+        isLoading = false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+
+  }
+ // var name = ['HatchBack', 'sedan', 'Suv', 'BodyType'];
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -29,8 +55,8 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
         ),
         centerTitle: true,
       ),
-      body : ListView.builder(
-          itemCount: name.length,
+      body : isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) :ListView.builder(
+          itemCount: getUser.length,
           itemBuilder: (BuildContext context, int index)
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
@@ -52,11 +78,11 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                 child:Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Category Id : 1'),
+                                   Text('Category Id : '+getUser[index]["Category_Id"]),
+
                                   SizedBox(height: mdheight * 0.01,),
-                                  const Text('Vehicle Id : 1'),
                                   SizedBox(height: mdheight * 0.01,),
-                                  const Text('Category Name : sedan'),
+                                   Text('Category Name : '+getUser[index]["Category_Name"]),
                                   SizedBox(height: mdheight * 0.01,),
                                 ],
                               )),
@@ -65,7 +91,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                   children:[
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset('assets/img/Logo.jpg',
+                                      child: Image.network(getUser[index]["Category_Image"],
                                         height: mdheight * 0.15,
                                         fit: BoxFit.cover,
                                       ),

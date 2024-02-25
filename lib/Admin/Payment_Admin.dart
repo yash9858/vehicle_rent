@@ -1,5 +1,8 @@
 // ignore_for_file: file_names
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class Admin_PaymentPage extends StatefulWidget {
@@ -11,6 +14,28 @@ class Admin_PaymentPage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Payment_Admin.php"));
+    if(response.statusCode==200){
+      data=response.body;
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -28,8 +53,8 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
     ),
           centerTitle: true,
     ),
-      body: ListView.builder(
-          itemCount: 10,
+      body:  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) :ListView.builder(
+          itemCount: getUser.length,
           itemBuilder: (BuildContext context, int index)
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
@@ -43,23 +68,23 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('User name :'),
+                         Text('User name :'+getUser[index]['User_Name']),
                         SizedBox(height: mdheight * 0.01,),
-                        const Text('Booking Id :'),
+                         Text('Booking Id :'+getUser[index]["Booking_Id"]),
                         SizedBox(height: mdheight * 0.01,),
-                        const Text('Vehicle Id : '),
+                         Text('Vehicle Id : '),
                         SizedBox(height: mdheight * 0.01,),
-                        const Row(
+                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Payment Mode : '),
-                            Text('Payment TimeStamp'),
+                            Text('Payment Mode : '+getUser[index]["Payment_Mode"]),
+                            Text(getUser[index]['Payment_Timestamp']),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.01,),
-                        const Text('Total Price : '),
+                        Text('Total Price : '+getUser[index]["Total_Price"]),
                         SizedBox(height: mdheight * 0.01,),
-                        const Text('Payment Status : '),
+                         Text('Payment Status : '+getUser[index]["Payment_Status"]),
                         SizedBox(height: mdheight * 0.01,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

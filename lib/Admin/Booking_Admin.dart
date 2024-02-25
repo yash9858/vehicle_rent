@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class Admin_BookingPage extends StatefulWidget {
@@ -11,6 +14,28 @@ class Admin_BookingPage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Admin_BookingPageState extends State<Admin_BookingPage> {
+
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Booking_Admin.php"));
+    if(response.statusCode==200){
+      data=response.body;
+    }
+    setState(() {
+      isLoading=false;
+      getUser=jsonDecode(data!)["users"];
+    });
+  }
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -28,8 +53,8 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
     ),
           centerTitle: true,
     ),
-      body: ListView.builder(
-          itemCount: 10,
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
+          itemCount: getUser.length,
           itemBuilder: (BuildContext context, int index)
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
@@ -43,27 +68,35 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Row(
+                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('User Name'),
-                            Text('Booking TimeStamp'),
+                            Text(getUser[index]["Name"] ),
+
+                            Text(getUser[index]["Booking_Timestamp"]),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.01,),
-                        const Text('Vehicle Name: '),
+                         Row(
+                           children: [
+                             Text("Vehicle Name: "),
+                             Text( getUser[index]["Vehicle_Name"]),
+                           ],
+                         ),
                         SizedBox(height: mdheight * 0.01,),
-                        const Row(
+                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Start Time '),
-                            Text('Return Time'),
+                            Text('Start Time: '+getUser[index]["Start_Datetime"],),
+
                           ],
                         ),
                         SizedBox(height: mdheight * 0.01,),
-                        const Text('Address'),
+                        Text('Return Time: '+getUser[index]["Return_Datetime"]),
                         SizedBox(height: mdheight * 0.01,),
-                        const Text('Booking Status: Pending'),
+                         Text('Address: '+getUser[index]["Address"]),
+                        SizedBox(height: mdheight * 0.01,),
+                         Text('Booking Status: '+getUser[index]["Booking_Status"]),
                         SizedBox(height: mdheight * 0.01,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

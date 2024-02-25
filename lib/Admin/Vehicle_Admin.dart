@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
+import 'package:http/http.dart' as http;
+
 
 // ignore: camel_case_types
 class Admin_VehiclePage extends StatefulWidget {
@@ -12,7 +16,30 @@ class Admin_VehiclePage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
-  var name = ['Tesla', 'BMW', 'Ferrari', 'Ford', 'Honda', 'Toyota'];
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Vehicle_Admin.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+
+  }
+ // var name = ['Tesla', 'BMW', 'Ferrari', 'Ford', 'Honda', 'Toyota'];
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -30,8 +57,8 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
         ),
         centerTitle: true,
       ),
-      body : ListView.builder(
-          itemCount: name.length,
+      body : isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
+          itemCount: getUser.length,
           itemBuilder: (BuildContext context, int index)
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
@@ -52,19 +79,19 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                 child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Category Id : 1'),
+                                   Text('Category Id : '+getUser[index]["Category_Id"]),
                                   SizedBox(height: mdheight * 0.01),
-                                  const Text('Vehicle Id : 1'),
+                                   Text('Vehicle Id : '+getUser[index]["Vehicle_Id"]),
                                   SizedBox(height: mdheight * 0.01),
-                                  const Text('Vehicle Name : Tesla'),
+                                  Text('Vehicle Name : '+getUser[index]["Vehicle_Name"]),
                                   SizedBox(height: mdheight * 0.01),
-                                  const Text('Vehicle Type : Car'),
+                                   Text('Vehicle Type : '+getUser[index]["Vehicle_Type"]),
                                   SizedBox(height: mdheight * 0.01),
-                                  const Text('Vehicle Description : This Is Fully Automated Car'),
+                                   Text('Vehicle Description : '+getUser[index]["Vehicle_Description"]),
                                   SizedBox(height: mdheight * 0.01),
-                                  const Text('Rent Price: 500/day'),
+                                   Text('Rent Price: '+getUser[index]["Rent_Price"]+'/day'),
                                   SizedBox(height: mdheight * 0.01),
-                                  const Text('Availability : True'),
+                                   Text('Availability :'+getUser[index]["Availability"]),
                                   SizedBox(height: mdheight * 0.01),
                                 ],
                               )),
@@ -73,7 +100,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                   children:[
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset('assets/img/Logo.jpg',
+                                      child: Image.network(getUser[index]["Vehicle_Image"],
                                         height: mdheight * 0.2,
                                         fit: BoxFit.cover,
                                       ),
