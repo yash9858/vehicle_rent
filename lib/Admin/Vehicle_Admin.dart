@@ -79,8 +79,6 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                 child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Text('Category Id : '+getUser[index]["Category_Id"]),
-                                  SizedBox(height: mdheight * 0.01),
                                    Text('Vehicle Id : '+getUser[index]["Vehicle_Id"]),
                                   SizedBox(height: mdheight * 0.01),
                                   Text('Vehicle Name : '+getUser[index]["Vehicle_Name"]),

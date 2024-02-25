@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Admin_DashBoard.dart';
+import 'package:rentify/Forget_Password.dart';
 import 'package:rentify/User/User_DashBoard.dart';
 import 'Register_Screen.dart';
 import 'package:lottie/lottie.dart';
@@ -89,7 +90,10 @@ class _LoginPageState extends State<LoginPage> {
                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                    filled: true,
                    hintText: "Email",
-
+                   errorStyle: TextStyle(
+                     color: Colors.black,
+                     fontSize: 14,
+                   ),
                    prefixIcon: const Icon(Icons.person),
                    fillColor: Colors.white,
                    border: OutlineInputBorder(
@@ -114,6 +118,10 @@ class _LoginPageState extends State<LoginPage> {
                    contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                    filled: true,
                    hintText: "Password",
+                   errorStyle: TextStyle(
+                     color: Colors.black,
+                     fontSize: 14,
+                   ),
                    prefixIcon: const Icon(Icons.key),
                    fillColor: Colors.white,
                    border: OutlineInputBorder(
@@ -127,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                    mainAxisAlignment: MainAxisAlignment.start,
                    children:[
                      TextButton(onPressed: (){
-                       Navigator.pushReplacement(context , MaterialPageRoute(builder: (context) => const UserDasboard()));
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=> Forget_password()));
                      },
                        child: Text('Forget Password ?',
                            style: TextStyle(
@@ -138,10 +146,6 @@ class _LoginPageState extends State<LoginPage> {
                SizedBox(height: size.height * 0.025),
                MaterialButton(
                  padding: EdgeInsets.zero,
-                 // onPressed: () {
-                 //  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Admin_DashBoard()));
-                 //
-                 // },
                  onPressed: _submit,
                  child: Container(
                    alignment: Alignment.center,

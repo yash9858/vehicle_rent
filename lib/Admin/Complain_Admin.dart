@@ -58,7 +58,9 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
               child: Card(
-                elevation: 5.0,
+                elevation: 5,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                margin: EdgeInsets.all(mdheight * 0.01),
                 shadowColor: Colors.deepPurple.shade800,
                 semanticContainer: true,
                 surfaceTintColor: Colors.deepPurple.shade800,

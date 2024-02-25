@@ -36,7 +36,6 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
     }
 
   }
-  var name = ['yash', 'raj', 'jigar','anuj', 'sachin'];
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -60,9 +59,10 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
           {
             return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
-                  elevation: 5.0,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  margin: EdgeInsets.all(mdheight * 0.01),
                   shadowColor: Colors.deepPurple.shade800,
-                  semanticContainer: true,
                   surfaceTintColor: Colors.deepPurple.shade800,
                   child: Padding(
                     padding: EdgeInsets.all(mdheight * 0.017),

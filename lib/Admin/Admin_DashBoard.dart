@@ -111,7 +111,6 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   selected: _currentIndex == 0,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 0),
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> const Admin_DashBoard())),
                   },
                 ),
@@ -121,9 +120,8 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   selected: _currentIndex == 1,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 1),
+                    _currentIndex == 0,
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> const Admin_UserPage())),
-                    _currentIndex = 0
                   },
                 ),
                 DrawerNavigationItem(
@@ -132,7 +130,6 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   selected: _currentIndex == 2,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 2),
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> const Admin_CategoryPage())),
                     _currentIndex = 0
                   },
@@ -143,7 +140,6 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   selected: _currentIndex == 3,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 3),
                     Navigator.push(context , MaterialPageRoute(builder: (context) => const Admin_VehiclePage())),
                     _currentIndex = 0
                   },
@@ -154,7 +150,6 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   selected: _currentIndex == 4,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 4),
                     Navigator.push(context , MaterialPageRoute(builder: (context) => const Admin_BookingPage())),
                     _currentIndex = 0
                   },
@@ -165,40 +160,35 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   selected: _currentIndex == 5,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 5),
                     Navigator.push(context , MaterialPageRoute(builder: (context) => const Admin_PaymentPage())),
+                    _currentIndex = 0
+                  },
+                ),
+                DrawerNavigationItem(
+                  iconData: Icons.free_cancellation_outlined,
+                  title: "Cancle Bookings",
+                  selected: _currentIndex == 6,
+                  onTap: () =>
+                  {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Cancel_Bookings())),
                     _currentIndex = 0
                   },
                 ),
                 DrawerNavigationItem(
                   iconData: Icons.forum,
                   title: "Manage Complains",
-                  selected: _currentIndex == 6,
+                  selected: _currentIndex == 7,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 6),
                     Navigator.push(context , MaterialPageRoute(builder: (context) => const Admin_ComplainPage())),
-                    _currentIndex = 0
-                  },
-                ),
-                DrawerNavigationItem(
-                  iconData: Icons.free_cancellation_outlined,
-                  title: "Cancel Bookings",
-                  selected: _currentIndex == 2,
-                  onTap: () =>
-                  {
-                    setState(() => _currentIndex = 2),
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Cancel_Bookings())),
-                    _currentIndex = 0
                   },
                 ),
                 DrawerNavigationItem(
                   iconData: Icons.feedback_rounded,
                   title: "Manage Feedbacks",
-                  selected: _currentIndex == 7,
+                  selected: _currentIndex == 8,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 7),
                     Navigator.push(context , MaterialPageRoute(builder: (context) => const Admin_FeedbackPage())),
                     _currentIndex = 0
                   },
@@ -206,10 +196,9 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                 DrawerNavigationItem(
                   iconData: Icons.logout_outlined,
                   title: "Log Out",
-                  selected: _currentIndex == 8,
+                  selected: _currentIndex == 9,
                   onTap: () =>
                   {
-                    setState(() => _currentIndex = 8),
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage())),
                     _currentIndex = 0
                   },

@@ -17,7 +17,8 @@ class _Forget_passwordState extends State<Forget_password> {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Forget Password",style: TextStyle(color: Colors.black,fontSize: 20),),
+          title: const Text("Forget Password",
+            style: TextStyle(color: Colors.black,fontSize: 20),),
 
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -32,7 +33,7 @@ class _Forget_passwordState extends State<Forget_password> {
 
             TextField(
              // controller: emailController,
-              decoration: InputDecoration(  contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
+              decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
                 filled: true,
                 hintText: "Enter Your Email ",
                 prefixIcon: const Icon(Icons.email_outlined),

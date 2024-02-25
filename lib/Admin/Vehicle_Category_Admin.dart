@@ -92,7 +92,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Image.network(getUser[index]["Category_Image"],
-                                        height: mdheight * 0.15,
+                                        height: mdheight * 0.1,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
