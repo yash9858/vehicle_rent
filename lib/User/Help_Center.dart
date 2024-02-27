@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:expansion_tile_group/expansion_tile_group.dart';
@@ -23,6 +25,30 @@ class Item
   bool isExpanded;
 }
 class _HelpCenterState extends State<HelpCenter> {
+
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Category_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+  }
 
   var icon = [Icons.call, LineIcons.facebookMessenger, Icons.email_outlined];
   var title = ['Phone No', 'Message', 'Email'];
@@ -100,7 +126,7 @@ class _HelpCenterState extends State<HelpCenter> {
                   Padding(
                     padding:  EdgeInsets.all(mdheight * 0.015),
                     child : ListView.builder(
-                        itemCount: title.length,
+                        itemCount: 3,
                         shrinkWrap: true,
                         itemBuilder: (context , int index) {
                           return Padding(

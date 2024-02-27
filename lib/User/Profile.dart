@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/Forget_Password.dart';
@@ -5,6 +6,7 @@ import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/About_us.dart';
 import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Edit_Profile.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
@@ -19,10 +21,16 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+
+  var getUser;
+  bool isLoading =false;
+
   @override
   Widget build(BuildContext context) {
     var mHeight=MediaQuery.sizeOf(context).height;
-    return Scaffold(
+    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+    :Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: const Text("Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
@@ -63,8 +71,7 @@ class _ProfileState extends State<Profile> {
             SizedBox(
               height: mHeight * 0.03,
             ),
-            const Text(
-              "Esther Howard",
+            Text('name',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(

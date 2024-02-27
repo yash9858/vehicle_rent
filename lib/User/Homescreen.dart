@@ -1,17 +1,13 @@
-
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'dart:ui';
-
+import 'package:http/http.dart' as http;
 import 'package:rentify/User/Available_bike.dart';
 import 'package:rentify/User/Available_car.dart';
 import 'package:rentify/User/Bike_Details.dart';
 import 'package:rentify/User/Car_Details.dart';
 import 'package:rentify/User/Category.dart';
-
-
-
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -21,6 +17,47 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
+
+  String? data;
+  var getUser;
+  var getUser2;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+    getdata2();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Category_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+  }
+
+  Future getdata2() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -65,7 +102,8 @@ class _HomescreenState extends State<Homescreen> {
               ))
         ],
       ),
-      body: SingleChildScrollView(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+          :SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 15, right: 15,top: 6),
           child:
@@ -143,7 +181,8 @@ class _HomescreenState extends State<Homescreen> {
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Car()));
                   },
-                  child:  Column(
+                  child:  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                  :Column(
                     children: [
                       Card(
                         elevation: 5,
@@ -152,16 +191,16 @@ class _HomescreenState extends State<Homescreen> {
                           borderRadius:
                           BorderRadius.circular(10),
                           child: Image.network(
-                            "https://t3.ftcdn.net/jpg/05/12/61/78/360_F_512617800_Y3fLiMSaoBYsZt9x8AysMBZv3sMh1cbd.jpg",
+                            getUser[index]["Category_Image"],
                             fit: BoxFit.cover,
                             height: mwidth * 0.17,
                           ),
                         ),
                       ),
-                      Text(
-                        "SUV",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
+                       Text(
+                          getUser[index]["Category_Name"],
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                     ],
                   ),
                 );
@@ -354,45 +393,47 @@ class _HomescreenState extends State<Homescreen> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 7,right: 7,top: 3),
-                              child: Row(
+                              child:   isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                              :Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text("Hetchback",style: TextStyle(color: Colors.grey),),
+                                  Text(getUser2[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
                                   Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
                             ),
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  topRight: Radius.circular(12)),
+                            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                            : Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: ClipRRect(
+                              borderRadius: const BorderRadius.all(Radius.circular(10)),
                               child: Image.network(
-                                "https://i.pinimg.com/736x/5f/33/2d/5f332d3fbad470d3109cab05fb99beb6.jpg",
+                                getUser2[index]["Vehicle_Image"],
+                                height: mheight * 0.12,
+                                width: mwidth * 0.5,
                                 fit: BoxFit.cover,
                               ),
-                            ),
+                            )),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                     left: 4, bottom: 2, right: 4),
                                 child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      const Text(
-                                        " Kwid",
+                                      Text(getUser2[index]["Category_Name"],
                                         style: TextStyle(
                                             fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                            fontWeight: FontWeight.bold),),
                                       Row(
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            " ₹400/Day",
+                                           Text(
+                                            getUser2[index]["Rent_Price"]+"/ Day",
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),

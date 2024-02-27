@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
-import 'package:rentify/User/Available_car.dart';
 import 'package:http/http.dart' as http;
 
 class Category extends StatefulWidget {
@@ -43,9 +42,10 @@ class _CategoryState extends State<Category> {
     var mwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
-        //  centerTitle: true,
+        centerTitle: true,
         backgroundColor: Colors.deepPurple.shade800,
-        title: Text(" Select Category",style: TextStyle(color: Colors.white,fontSize: mheight*0.030,fontWeight: FontWeight.bold),),
+        title: Text(" Select Category",style: TextStyle(color: Colors.white,
+          fontSize: mheight * 0.025,),),
         //    iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 

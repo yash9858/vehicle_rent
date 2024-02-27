@@ -43,6 +43,11 @@ class _update_VehicleState extends State<update_Vehicle> {
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
+        NameController.text = getUser[0]["Vehicle_Name"];
+        NumberController.text = getUser[0]["Vehicle_Number"];
+        TypeController.text = getUser[0]["Vehicle_Type"];
+        DescriptionController.text = getUser[0]["Vehicle_Description"];
+        PriceController.text = getUser[0]["Rent_Price"];
       });
     }
   }
@@ -57,6 +62,7 @@ class _update_VehicleState extends State<update_Vehicle> {
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
+
       });
     }
   }
@@ -64,7 +70,8 @@ class _update_VehicleState extends State<update_Vehicle> {
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
-    return Scaffold(
+    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+    :Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
           color: Colors.white,

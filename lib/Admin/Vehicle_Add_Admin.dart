@@ -122,7 +122,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
         centerTitle: true,
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: Colors.black))
+          ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
           : SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(mdheight * 0.02),
@@ -250,7 +250,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                   onPressed: () {
                     uploadImageMedia(_image!);
                   },
-                  child: Text('Save Details',
+                  child: Text('Add Vehicle',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: mdheight * 0.025,
