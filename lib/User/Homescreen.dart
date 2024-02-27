@@ -201,7 +201,10 @@ class _HomescreenState extends State<Homescreen> {
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>car_detail()));},
+                    onTap:() =>
+                    {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail())),
+                      },
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

@@ -33,38 +33,10 @@ class _FeedBack_UserState extends State<FeedBack_User> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.all(mdheight * 0.012),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Ratings & Reviews",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      const RatingSummary(
-                        counter: 15,
-                        average: 4,
-                        counterFiveStars: 7,
-                        counterFourStars: 4,
-                        counterThreeStars: 2,
-                        counterTwoStars: 1,
-                        counterOneStars: 1,
-                      ),
-                    ],
-                  ),
-                ),
-              Divider(
-                height: mdheight * 0.03,
-              ),
               ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 5,
+                  itemCount: 7,
                   itemBuilder: (BuildContext context,int index){
                     return Column(
                         children: [

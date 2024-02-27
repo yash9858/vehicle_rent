@@ -1,10 +1,12 @@
 
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:rentify/Admin/Booking_Admin.dart';
 import 'package:rentify/Admin/CancelBooking_Admin.dart';
 import 'package:rentify/Admin/Complain_Admin.dart';
@@ -75,6 +77,28 @@ class Admin_DashBoard extends StatefulWidget {
 
 // ignore: camel_case_types
 class _Admin_DashBoardState extends State<Admin_DashBoard> {
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Admin_DashBoard.php"));
+    if(response.statusCode==200){
+      data=response.body;
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+
+  }
 
   int _currentIndex = 0;
 
@@ -89,7 +113,8 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
 
     var mdheight = MediaQuery.sizeOf(context).height;
 
-    return Scaffold(
+    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+        :Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.deepPurple.shade800,
         child: SingleChildScrollView(

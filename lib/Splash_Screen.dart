@@ -16,6 +16,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(const Duration(seconds: 5), () {
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => IntroScreen()));
+      login();
+    });
+  }
+
   Future login() async {
     SharedPreferences pref=await SharedPreferences.getInstance();
     bool _seen=(pref.getBool('seen')??false);
@@ -44,17 +57,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     }
   }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Timer(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const IntroScreen()));
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

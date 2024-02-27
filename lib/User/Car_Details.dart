@@ -31,10 +31,10 @@ class _car_detailState extends State<car_detail> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left:8),
+                        padding: EdgeInsets.only(left:8),
                         child: IconButton(
-                            onPressed: (){
-                              Navigator.pop(context, MaterialPageRoute(builder: (context)=> Homescreen()));
+                            onPressed: () => {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homescreen())),
                             },
                             icon: const Icon(Icons.arrow_back,)),
                       ),
