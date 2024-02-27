@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
 import 'package:http/http.dart' as http;
+import 'package:rentify/Admin/select_category.dart';
 import 'package:rentify/Admin/update_Vehicle.dart';
 
 
@@ -151,7 +152,8 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>  Admin_Add_Vehicle()));
+      //    Navigator.push(context, MaterialPageRoute(builder: (context) =>  Admin_Add_Vehicle()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  Category()));
         },
         backgroundColor: Colors.deepPurple.shade800,
         shape: const RoundedRectangleBorder(

@@ -11,9 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types
 class Admin_Add_Vehicle extends StatefulWidget {
-  //final String id;
+  final String id;
+  final String name;
  // Admin_Add_Vehicle({required this.id});
-  const Admin_Add_Vehicle({super.key, });
+  const Admin_Add_Vehicle({super.key,required this.id ,required this.name});
 
   @override
   State<Admin_Add_Vehicle> createState() => _Admin_Add_VehicleState();
@@ -36,7 +37,7 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
 
   TextEditingController name = TextEditingController();
   TextEditingController number = TextEditingController();
-  TextEditingController type = TextEditingController();
+  //TextEditingController type = TextEditingController();
 
   TextEditingController price = TextEditingController();
   TextEditingController description = TextEditingController();
@@ -54,10 +55,10 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
 
     imageUploadRequest.fields['Vehicle_Name'] = name.text;
     imageUploadRequest.fields['Vehicle_Number'] = number.text;
-    imageUploadRequest.fields['Vehicle_Type'] = type.text;
+    imageUploadRequest.fields['Vehicle_Type'] = widget.name;
     imageUploadRequest.fields['Rent_Price'] = price.text;
     imageUploadRequest.fields['Vehicle_Description'] = description.text;
-    imageUploadRequest.fields['Category_Id'] = "1";
+    imageUploadRequest.fields['Category_Id'] = widget.id;
     imageUploadRequest.fields['Availability'] = "1";
 
     imageUploadRequest.files.add(file);
@@ -185,23 +186,23 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                       ),
                     ),
                     SizedBox(height: mdheight * 0.025,),
-                    TextFormField(
-                      controller: type,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please Enter Vehicle Type";
-                        }
-                      },
-                      decoration: InputDecoration(
-                          fillColor: Colors.grey.shade100,
-                          filled: true,
-                          hintText: 'Enter Vehicle Type',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          )
-                      ),
-                    ),
-                    SizedBox(height: mdheight * 0.025,),
+                    // TextFormField(
+                    //   controller: type,
+                    //   validator: (val) {
+                    //     if (val!.isEmpty) {
+                    //       return "Please Enter Vehicle Type";
+                    //     }
+                    //   },
+                    //   decoration: InputDecoration(
+                    //       fillColor: Colors.grey.shade100,
+                    //       filled: true,
+                    //       hintText: 'Enter Vehicle Type',
+                    //       border: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(15)
+                    //       )
+                    //   ),
+                    // ),
+                    // SizedBox(height: mdheight * 0.025,),
                     TextFormField(
                       controller: description,
                       validator: (val) {
