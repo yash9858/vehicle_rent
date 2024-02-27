@@ -100,7 +100,8 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Image.network(getUser[index]["Vehicle_Image"],
-                                        height: mdheight * 0.2,
+                                        height: mdheight * 0.18,
+                                        width: mdwidth*0.3,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -150,7 +151,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const Admin_Add_Vehicle()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  Admin_Add_Vehicle()));
         },
         backgroundColor: Colors.deepPurple.shade800,
         shape: const RoundedRectangleBorder(

@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:rentify/Admin/Category_add_admin.dart';
+import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types
@@ -146,6 +148,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
             return Padding(padding: EdgeInsets.symmetric(
                 horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
+
                   elevation: 5.0,
                   shadowColor: Colors.deepPurple.shade800,
                   semanticContainer: true,
@@ -227,7 +230,9 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                                             child: CircleAvatar(
 
                                                               child: IconButton(
-                                                                  onPressed: (){},//_getImage,
+                                                                  onPressed: (){
+                                                                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>Admin_Add_Vehicle(id:getUser[index]["Category_Id"])));
+                                                                  },//_getImage,
                                                                   icon: const Icon(
                                                                       Icons
                                                                           .edit)),
@@ -317,75 +322,77 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(context: context, builder: (context) {
-            return Dialog(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: mdheight * 0.02),
-                        Padding(
-                          padding: EdgeInsets.only(left: mdwidth * 0.05,
-                            right: mdwidth * 0.01,),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(
-                                  child: Stack(
-                                    children: [
-                                      const CircleAvatar(
-                                        radius: 60,
-                                        backgroundImage: AssetImage(
-                                            "assets/img/Logo.jpg"),
-                                      ),
-                                      Positioned(
-                                        left: 80,
-                                        bottom: 1,
-                                        child: CircleAvatar(
-
-                                          child: IconButton(
-                                              onPressed: _getImage,
-                                              icon: const Icon(Icons.edit)),
-                                        ),
-                                      )
-                                    ],
-                                  )),
-                              SizedBox(height: mdheight * 0.02,),
-                              Form(
-                                key: _formKey,
-                                child: TextFormField(
-                                  controller: name1,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      hintText: 'Enter A Category Name',
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              15)
-                                      )
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: mdheight * 0.02,),
-                        MaterialButton(
-                            onPressed:() {uploadImageMedia(_image);},
-                            color: Colors.deepPurple.shade800,
-                            elevation: 5.0,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(15))),
-                            child: const Text('Add Category', style: TextStyle(
-                              color: Colors.white,),)),
-                        SizedBox(height: mdheight * 0.01),
-                      ]
-                  ),
-                ));
-          });
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Category_add()));
+          // showDialog(context: context, builder: (context) {
+          //   return Dialog(
+          //       child: Padding(
+          //         padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
+          //         child: Column(
+          //             mainAxisSize: MainAxisSize.min,
+          //             crossAxisAlignment: CrossAxisAlignment.center,
+          //             children: [
+          //               SizedBox(height: mdheight * 0.02),
+          //               Padding(
+          //                 padding: EdgeInsets.only(left: mdwidth * 0.05,
+          //                   right: mdwidth * 0.01,),
+          //                 child: Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Center(
+          //                         child: Stack(
+          //                           children: [
+          //                             const CircleAvatar(
+          //                               radius: 60,
+          //                               backgroundImage: AssetImage(
+          //                                   "assets/img/Logo.jpg"),
+          //                             ),
+          //                             Positioned(
+          //                               left: 80,
+          //                               bottom: 1,
+          //                               child: CircleAvatar(
+          //
+          //                                 child: IconButton(
+          //                                     onPressed: _getImage,
+          //                                     icon: const Icon(Icons.edit)),
+          //                               ),
+          //                             )
+          //                           ],
+          //                         )),
+          //                     SizedBox(height: mdheight * 0.02,),
+          //                     Form(
+          //                       key: _formKey,
+          //                       child: TextFormField(
+          //                         controller: name1,
+          //                         decoration: InputDecoration(
+          //                             fillColor: Colors.grey.shade100,
+          //                             filled: true,
+          //                             hintText: 'Enter A Category Name',
+          //                             border: OutlineInputBorder(
+          //                                 borderRadius: BorderRadius.circular(
+          //                                     15)
+          //                             )
+          //                         ),
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //               SizedBox(height: mdheight * 0.02,),
+          //               MaterialButton(
+          //                   onPressed:() {uploadImageMedia(_image);},
+          //                   color: Colors.deepPurple.shade800,
+          //                   elevation: 5.0,
+          //                   shape: const RoundedRectangleBorder(
+          //                       borderRadius: BorderRadius.all(
+          //                           Radius.circular(15))),
+          //                   child: const Text('Add Category', style: TextStyle(
+          //                     color: Colors.white,),)),
+          //               SizedBox(height: mdheight * 0.01),
+          //             ]
+          //         ),
+          //       )
+          //   );
+          // });
         },
         backgroundColor: Colors.deepPurple.shade800,
         shape: const RoundedRectangleBorder(
