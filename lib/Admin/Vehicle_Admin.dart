@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
 import 'package:http/http.dart' as http;
+import 'package:rentify/Admin/update_Vehicle.dart';
 
 
 // ignore: camel_case_types
@@ -112,7 +113,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             MaterialButton(onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const Admin_Add_Vehicle()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const update_Vehicle()));
                             },
                                 color: Colors.deepPurple.shade800,
                                 padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),

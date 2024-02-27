@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:rentify/New_password.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class Forget_password extends StatefulWidget {
@@ -10,6 +14,12 @@ class Forget_password extends StatefulWidget {
 }
 
 class _Forget_passwordState extends State<Forget_password> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  var logindata;
+  var data;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -24,40 +34,135 @@ class _Forget_passwordState extends State<Forget_password> {
           backgroundColor: Colors.transparent,
           iconTheme: const IconThemeData(color: Colors.black),
         ),
-     body:
-     Padding(
-       padding: EdgeInsets.all(16),
-       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+     body:isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black)) :
+     Form(
+       key: formKey,
+       child: Padding(
+         padding: EdgeInsets.all(16),
+         child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 
-            TextField(
-             // controller: emailController,
-              decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
-                filled: true,
-                hintText: "Enter Your Email ",
-                prefixIcon: const Icon(Icons.email_outlined),
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(20),
-                ),),
-              keyboardType: TextInputType.emailAddress,
+              TextFormField(
+                controller: emailController,
+                validator: (val) {
+                  if (val!.isEmpty
+                  ) {
+                    return "Email must not be empty";
+                  } else {
+                    if (RegExp(
+                        r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}")
+                        .hasMatch(val)) {
+                      return null;
+                    } else {
+                      return "Enter a valid Email";
+                    }
+                  }
+                },
+                decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
+                  filled: true,
+                  hintText: "Enter Your Email ",
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(20),
+                  ),),
+                keyboardType: TextInputType.emailAddress,
 
-            ),
+              ),
 
-            SizedBox(height: mdheight*0.04),
-            ElevatedButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>New_password()));
-              },
-              child: Text('Reset Password'),
-            ),
-          ],
-        ),
+              SizedBox(height: mdheight*0.04),
+              TextFormField(
+                obscureText: true,
+                 controller: passwordController,
+                validator: (val) {
+                  if (val!.isEmpty
+                  ) {
+                    return "Use Proper Password ";
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
+                  filled: true,
+                  hintText: "New Password ",
+
+                  prefixIcon: const Icon(Icons.key),
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(20),
+                  ),),
+                keyboardType: TextInputType.text,
+
+              ),
+              SizedBox(height: mdheight*0.04),
+              TextField(
+                obscureText: true,
+                // controller: emailController,
+                decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
+                  filled: true,
+                  hintText: "Confirm Password ",
+
+                  prefixIcon: const Icon(Icons.key),
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(20),
+                  ),),
+                keyboardType: TextInputType.text,
+
+              ),
+              SizedBox(height: mdheight*0.04),
+              ElevatedButton(
+              onPressed: _submit,
+                child: Text('Reset Password'),
+              ),
+            ],
+          ),
+       ),
      )
      );
 
   }
+
+Future<void> _submit() async {
+  final form = formKey.currentState;
+  if (form!.validate()) {
+    setState(() {
+      isLoading = true;
+    });
+    final login_url = Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Update_API/Forget_Password.php");
+    final response = await http
+        .post(login_url, body: {
+      "Email": emailController.text,
+      "Password": passwordController.text
+    });
+    if (response.statusCode == 200) {
+      logindata = jsonDecode(response.body);
+      data =
+      jsonDecode(response.body)['user'];
+      print(data);
+      setState(() {
+        isLoading = false;
+      });
+      if (logindata['error'] == false) {
+
+
+       // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => Home()), (Route<dynamic> route) => false);
+      }else{
+        Fluttertoast.showToast(
+            msg: logindata['message'].toString(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2
+        );
+      }
+    }
+  }
+
+}
+
 }
 

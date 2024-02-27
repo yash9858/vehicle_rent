@@ -1,8 +1,14 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types
 class Admin_CategoryPage extends StatefulWidget {
@@ -17,6 +23,8 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
   String? data;
   var getUser;
   bool isLoading = false;
+  TextEditingController NameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
 
   void initState(){
@@ -134,9 +142,7 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                                             child: CircleAvatar(
 
                                                               child: IconButton(
-                                                                  onPressed: (){
-
-                                                                  },
+                                                                 onPressed: _getImage,
                                                                   icon:const Icon(Icons.edit)),
                                                             ),
                                                           )
@@ -234,32 +240,33 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                     child: CircleAvatar(
 
                                       child: IconButton(
-                                          onPressed: (){
-
-                                          },
+                                      onPressed: _getImage,
                                           icon:const Icon(Icons.edit)),
                                     ),
                                   )
                                 ],
                               )),
                               SizedBox(height:  mdheight * 0.02,),
-                              TextField(
-                                decoration: InputDecoration(
-                                    fillColor: Colors.grey.shade100,
-                                    filled: true,
-                                    hintText: 'Enter A Category Name',
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15)
-                                    )
+                              Form(
+                                key:_formKey,
+                                child: TextFormField(
+                                  controller: NameController,
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      hintText: 'Enter A Category Name',
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(15)
+                                      )
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(height:  mdheight * 0.02,),
-                        MaterialButton(onPressed: (){
-                          Navigator.pop(context);
-                        },
+                        MaterialButton(
+                            onPressed: () => uploadImageMedia(_image),
                             color: Colors.deepPurple.shade800,
                             elevation: 5.0,
                             shape: const RoundedRectangleBorder(
@@ -278,5 +285,73 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+
+  Future _getImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile!.path);
+    });
+    print(_image);
+  }
+
+  TextEditingController name = TextEditingController();
+
+  Future uploadImageMedia(File? fileImage) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final mimeTypeData = lookupMimeType(fileImage!.path, headerBytes: [0xFF, 0xD8])?.split('/');
+    final imageUploadRequest = http.MultipartRequest('POST',
+        Uri.parse("https://road-runner24.000webhostapp.com/API/Insert_API/Vehicle_Category_Insert.php"));
+    final file = await http.MultipartFile.fromPath(
+      'cat_image',
+      fileImage.path,
+      contentType: MediaType(mimeTypeData![0], mimeTypeData[1]),
+    );
+
+    imageUploadRequest.fields['name'] = name.text;
+    imageUploadRequest.files.add(file);
+
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      final streamedResponse = await imageUploadRequest.send();
+      streamedResponse.stream.transform(utf8.decoder).listen((value) {
+        if (streamedResponse.statusCode == 200) {
+          setState(() {
+            isLoading = false;
+          });
+          var logindata;
+          logindata = jsonDecode(value);
+
+          Fluttertoast.showToast(
+            msg: logindata['message'].toString(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+          );
+          Navigator.of(context).pop();
+          print(streamedResponse.stream);
+          print(value);
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+          );
+          print(value);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
