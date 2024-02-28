@@ -59,7 +59,8 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
         ),
         centerTitle: true,
       ),
-      body : isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
+      body : isLoading ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+          : ListView.builder(
           itemCount: getUser.length,
           itemBuilder: (BuildContext context, int index)
           {

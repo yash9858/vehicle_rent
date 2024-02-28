@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:line_icons/line_icons.dart';
-
+import 'package:http/http.dart' as http;
 import 'Car_Details.dart';
 
 class Car extends StatefulWidget {
@@ -12,9 +14,34 @@ class Car extends StatefulWidget {
 }
 
 class _CarState extends State<Car> {
+
+  String? data;
+  var getUser;
+  bool isLoading=false;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    var    mheight=MediaQuery.sizeOf(context).height;
+    var mheight=MediaQuery.sizeOf(context).height;
+    var mwidth=MediaQuery.sizeOf(context).width;
 
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +52,8 @@ class _CarState extends State<Car> {
         elevation: 0,
 
       ),
-      body: Container(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      : Container(
         padding: EdgeInsets.only(left: 10,right: 10),
 
         child: GridView.builder(
@@ -35,7 +63,7 @@ class _CarState extends State<Car> {
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 5
             ),
-            itemCount: 20,
+            itemCount: getUser.length,
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
@@ -54,36 +82,38 @@ class _CarState extends State<Car> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 7,right: 7,top: 3),
+                              padding: EdgeInsets.only(left: 7,right: 7,top: 3),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text("Hetchback",style: TextStyle(color: Colors.grey),),
+                                  Text(getUser[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
                                   Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
                             ),
                             ClipRRect(
-                              borderRadius: const BorderRadius.only(
+                              borderRadius:  BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
                               child: Image.network(
-                                "https://imgd-ct.aeplcdn.com/664x415/n/cw/ec/141125/kwid-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80",
+                                getUser[index]["Vehicle_Image"],
                                 fit: BoxFit.cover,
+                                height: mheight * 0.16,
+                                width: mwidth * 0.5,
                               ),
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(
+                                padding:  EdgeInsets.only(
                                     left: 4, bottom: 2, right: 4),
                                 child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      const Text(
-                                        " Kwid",
+                                       Text(
+                                        getUser[index]["Category_Name"],
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
@@ -92,8 +122,9 @@ class _CarState extends State<Car> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            " ₹400/Day",
+                                           Text(
+                                            getUser[index]["Rent_Price"] +
+                                                "/ Day",
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),

@@ -21,12 +21,14 @@ class _HomescreenState extends State<Homescreen> {
   String? data;
   var getUser;
   var getUser2;
+  var getUser3;
   bool isLoading=false;
 
   void initState(){
     super.initState();
     getdata();
     getdata2();
+    getdata3();
   }
   Future getdata() async{
     setState(() {
@@ -54,6 +56,20 @@ class _HomescreenState extends State<Homescreen> {
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
+      });
+    }
+  }
+  Future getdata3() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser3=jsonDecode(data!)["users"];
       });
     }
   }
@@ -365,10 +381,9 @@ class _HomescreenState extends State<Homescreen> {
             //car card
 
 
-
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>car_detail()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail()));
               },
               child: Container(
                 height: MediaQuery.sizeOf(context).height * 0.25,
@@ -377,84 +392,93 @@ class _HomescreenState extends State<Homescreen> {
                   physics: const BouncingScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
-
-
                       mainAxisSpacing: 5
                   ),
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
-                    return Card(
+                      return Card(
 
-                        elevation: 6,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7,right: 7,top: 3),
-                              child:   isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-                              :Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          child:isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                          :Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 7, right: 7, top: 3),
+                                child: isLoading ? Center(
+                                  child: CircularProgressIndicator(
+                                      color: Colors.deepPurple),)
+                                    : Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
 
-                                  Text(getUser2[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
-                                  Icon(LineIcons.heart,color: Colors.red,)
-                                ],
+                                    Text(getUser2[index]["Vehicle_Name"],
+                                      style: TextStyle(color: Colors.grey),),
+                                    Icon(LineIcons.heart, color: Colors.red,)
+                                  ],
+                                ),
                               ),
-                            ),
-                            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-                            : Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(10)),
-                              child: Image.network(
-                                getUser2[index]["Vehicle_Image"],
-                                height: mheight * 0.12,
-                                width: mwidth * 0.5,
-                                fit: BoxFit.cover,
-                              ),
-                            )),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 4, bottom: 2, right: 4),
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(getUser2[index]["Category_Name"],
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                           Text(
-                                            getUser2[index]["Rent_Price"]+"/ Day",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text("4.1"),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.orange,
-                                                size: 18,
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ]),
-                              ),
-                            )
-                          ],
-                        ));
+                              isLoading ? Center(
+                                child: CircularProgressIndicator(
+                                    color: Colors.deepPurple),)
+                                  : Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    child: Image.network(
+                                      getUser2[index]["Vehicle_Image"],
+                                      height: mheight * 0.12,
+                                      width: mwidth * 0.5,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 4, bottom: 2, right: 4),
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(getUser2[index]["Category_Name"],
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              getUser2[index]["Rent_Price"] +
+                                                  "/ Day",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("4.1"),
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Colors.orange,
+                                                  size: 18,
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ]),
+                                ),
+                              )
+                            ],
+                          ));
                   },
                 ),
               ),
@@ -497,89 +521,95 @@ class _HomescreenState extends State<Homescreen> {
 
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  physics:  BouncingScrollPhysics(),
+                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
-
-
                       mainAxisSpacing: 5
                   ),
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
-                    return Card(
+                      return Card(
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:  EdgeInsets.only(
+                                    left: 7, right: 7, top: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
 
-                        elevation: 6,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7,right: 7,top: 3),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-
-                                  Text("Royal Enfield",style: TextStyle(color: Colors.grey),),
-                                  Icon(LineIcons.heart,color: Colors.red,)
-                                ],
+                                    Text(getUser3[index]["Vehicle_Name"],
+                                      style: TextStyle(color: Colors.grey),),
+                                    Icon(LineIcons.heart, color: Colors.red,)
+                                  ],
+                                ),
                               ),
-                            ),
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  topRight: Radius.circular(12)),
-                              child: Image.asset("assets/img/bullet2.jpeg",fit: BoxFit.fitWidth,height: mheight*0.15,width: mwidth*0.75,),
-                            //  child: Image.network("https://5.imimg.com/data5/SELLER/Default/2022/5/HR/UL/BO/3483248/royal-enfield-thunderbird-350-asphalt-500x500.png",fit: BoxFit.cover,),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 4, bottom: 2, right: 4),
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        " Thunderbird 350X",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                " ₹400",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                              Text("/day")
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text("4.1"),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.orange,
-                                                size: 18,
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ]),
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12)),
+                                child: Image.network(
+                                  getUser3[index]["Vehicle_Image"],
+                                  fit: BoxFit.fitWidth,
+                                  height: mheight * 0.15,
+                                  width: mwidth * 0.75,),
+                                //  child: Image.network("https://5.imimg.com/data5/SELLER/Default/2022/5/HR/UL/BO/3483248/royal-enfield-thunderbird-350-asphalt-500x500.png",fit: BoxFit.cover,),
                               ),
-                            )
-                          ],
-                        ));
-                  },
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 4, bottom: 2, right: 4),
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          getUser3[index]["Category_Name"],
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                 Text(
+                                                   getUser3[index]["Rent_Price"] +
+                                                       "/ Day",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight
+                                                          .bold),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("4.1"),
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Colors.orange,
+                                                  size: 18,
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ]),
+                                ),
+                              )
+                            ],
+                          ));
+                    }
                 ),
               ),
             ),

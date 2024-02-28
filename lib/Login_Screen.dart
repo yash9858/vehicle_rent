@@ -32,7 +32,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
      var size=MediaQuery.sizeOf(context);
     return Scaffold(
-      body:isLoading ? const Center(child: CircularProgressIndicator(color: Colors.black)) : Container(
+      body:isLoading ? Center(child: CircularProgressIndicator(color: Colors.deepPurple))
+          : Container(
         height: double.maxFinite,
         decoration: BoxDecoration(
           gradient: LinearGradient(
