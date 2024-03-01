@@ -76,7 +76,7 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                               child:Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Login Id : '+getUser[index]["Login_Id"]),
+                                  Text('Details Id : '+getUser[index]["Details_Id"]),
                                   SizedBox(height: mdheight * 0.01,),
                                   Text('User Name : '+getUser[index]["Name"]),
                                   SizedBox(height: mdheight * 0.01,),

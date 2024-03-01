@@ -94,7 +94,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
       data=response.body;
       setState(() {
         isLoading=false;
-        getUser=jsonDecode(data!)["users"];
+        getUser=jsonDecode(data!)["user"];
       });
     }
 
@@ -107,14 +107,14 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
   Widget build(BuildContext context) {
 
     var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Total Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
-    var total = ['23000', '10', '700', '20972', '1208', '8762', '2875'];
-    var page = const [Admin_UserPage(), Admin_CategoryPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage(), Admin_ComplainPage(), Admin_FeedbackPage()];
+    var total = [getUser["Login_Id"].toString(), getUser["Category_Id"].toString(), getUser["Vehicle_Id"].toString(), getUser["Booking_Id"].toString(), getUser["Payment_Id"].toString(), getUser["Complain_Id"].toString(), getUser["Feedback_Id"].toString()];
+    var page =  [Admin_UserPage(), Admin_CategoryPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage(), Admin_ComplainPage(), Admin_FeedbackPage()];
     var image = ['assets/img/user.json','assets/img/category.json','assets/img/vehicle.json','assets/img/bookings.json','assets/img/payments.json','assets/img/complain.json','assets/img/feedback.json'];
 
     var mdheight = MediaQuery.sizeOf(context).height;
 
     return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-        :Scaffold(
+    : Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.deepPurple.shade800,
         child: SingleChildScrollView(
@@ -126,7 +126,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                 SizedBox(
                   height: mdheight * 0.02,
                 ),
-                const DrawerHeader(),
+                DrawerHeader(),
                  SizedBox(
                   height: mdheight * 0.02,
                 ),
@@ -240,12 +240,12 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
         ),
         leading: Builder(
           builder: (context){
-          return IconButton(icon: const Icon(Icons.sort),
+          return IconButton(icon: Icon(Icons.sort),
           onPressed: () => Scaffold.of(context).openDrawer());
           }),
         title: const Text('Admin Dash Board'),
         backgroundColor: Colors.deepPurple.shade800,
-        iconTheme: const IconThemeData(
+        iconTheme:  IconThemeData(
           color: Colors.white,
         ),
         centerTitle: true,
@@ -259,7 +259,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
             mainAxisSpacing: mdheight * 0.015,
             mainAxisExtent: mdheight * 0.23,
           ),
-          itemCount: page.length,
+          itemCount: total.length,
           itemBuilder: (context, int index)
           {
             return InkWell(
@@ -283,7 +283,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                     style: const TextStyle(fontSize: 18),),
                   SizedBox(height: mdheight * 0.01,),
                   Text(total[index],
-                      style: const TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16),
                   ),
                 ],
               ),

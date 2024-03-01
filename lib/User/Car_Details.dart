@@ -1,24 +1,52 @@
 // ignore_for_file: camel_case_types, depend_on_referenced_packages, file_names
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/Feedback_User.dart';
 import 'package:rentify/User/Homescreen.dart';
 import 'package:rentify/User/Select_date.dart';
 import 'package:rating_summary/rating_summary.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class car_detail extends StatefulWidget {
-  const car_detail({super.key});
+  final int val;
+  final String carid;
+  const car_detail({required this.val,required this.carid,});
   @override
   State<car_detail> createState() => _car_detailState();
 }
 
 class _car_detailState extends State<car_detail> {
   double rating = 0;
+bool isLoading=false;
+var data;
+var getUser2;
+  void initState(){
+    super.initState();
+    getdata2();
+  }
+  Future getdata2() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
-    return Scaffold(
+    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+    : Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child:Stack(
@@ -48,7 +76,7 @@ class _car_detailState extends State<car_detail> {
                     ],
                   ),
                 ),
-                Image.network("https://imgd-ct.aeplcdn.com/664x415/n/cw/ec/141125/kwid-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80")
+                Image.network(getUser2[widget.val]["Vehicle_Image"])
               ],
             ),
             SingleChildScrollView(
@@ -65,15 +93,15 @@ class _car_detailState extends State<car_detail> {
                   //car name and rating
                   children: [
                     SizedBox(height: mdheight*0.02,),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Renault Kwid",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                        Text(getUser2[widget.val]["Vehicle_Name"],style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
                       ],
                     ),
                     //overview
                     SizedBox(height: mdheight*0.022,),
-                    const Text("Renault Kwid is compact hatchback produced by Renault it have a petrol engine that give a perfect power to this car ",style: TextStyle(color: Colors.grey),),
+                     Text(getUser2[widget.val]["Vehicle_Description"],style: TextStyle(color: Colors.grey),),
                     SizedBox(height: mdheight*0.01,),
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

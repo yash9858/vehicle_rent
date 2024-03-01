@@ -222,7 +222,9 @@ void _showtimepicker(){
         height: mheight*0.08,
         child: MaterialButton(
           color: Colors.deepPurple.shade800,
-          onPressed: (){},
+          onPressed: (){
+            Navigator.pop(context);
+          },
           child: Text("Continue", style: TextStyle(color: Colors.white),),
         ),
       ),

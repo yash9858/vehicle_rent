@@ -106,7 +106,6 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                                 context: context,
                                 type: CoolAlertType.success,
                                 text: 'Booking Accepted',
-                                autoCloseDuration: const Duration(seconds: 3),
                                 confirmBtnColor: Colors.deepPurple.shade800,
                                 backgroundColor: Colors.deepPurple.shade800,
                               );

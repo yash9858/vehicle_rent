@@ -15,7 +15,6 @@ class UserDasboard extends StatefulWidget {
 
 class _UserDasboardState extends State<UserDasboard> {
   var _currentIndex=0;
-
   var pagelist=[
     Homescreen(),
     Bike(),

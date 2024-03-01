@@ -8,6 +8,7 @@ import 'package:rentify/User/Available_car.dart';
 import 'package:rentify/User/Bike_Details.dart';
 import 'package:rentify/User/Car_Details.dart';
 import 'package:rentify/User/Category.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -21,6 +22,7 @@ class _HomescreenState extends State<Homescreen> {
   String? data;
   var getUser;
   var getUser2;
+  var x;
   var getUser3;
   bool isLoading=false;
 
@@ -30,11 +32,12 @@ class _HomescreenState extends State<Homescreen> {
     getdata2();
     getdata3();
   }
+
   Future getdata() async{
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Category_Fetch.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Category_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
 
@@ -49,7 +52,7 @@ class _HomescreenState extends State<Homescreen> {
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
 
@@ -60,10 +63,12 @@ class _HomescreenState extends State<Homescreen> {
     }
   }
   Future getdata3() async{
+    SharedPreferences setpreference = await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
+      x=setpreference.getString('uname');
     });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
 
@@ -73,7 +78,6 @@ class _HomescreenState extends State<Homescreen> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -84,7 +88,7 @@ class _HomescreenState extends State<Homescreen> {
        // iconTheme: const IconThemeData(color: Colors.deepPurple),
         backgroundColor: Colors.deepPurple.shade800,
         elevation: 0,
-        title: const Row(
+        title: Row(
           //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
           children: [
@@ -99,9 +103,8 @@ class _HomescreenState extends State<Homescreen> {
             SizedBox(
               width: 5,
             ),
-            Text(
-              "User",
-              style: TextStyle(
+            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+            :Text(x, style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -258,7 +261,7 @@ class _HomescreenState extends State<Homescreen> {
                   return GestureDetector(
                     onTap:() =>
                     {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail())),
+                    //  Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail())),
                       },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -381,22 +384,23 @@ class _HomescreenState extends State<Homescreen> {
             //car card
 
 
-            GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail()));
-              },
-              child: Container(
+
+               Container(
                 height: MediaQuery.sizeOf(context).height * 0.25,
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  physics:  BouncingScrollPhysics(),
+                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       mainAxisSpacing: 5
                   ),
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
-                      return Card(
+                      return GestureDetector(
+                          onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser2[index]["Vehicle_Id"])));
+                      },
+                        child: Card(
 
                           elevation: 6,
                           shape: RoundedRectangleBorder(
@@ -478,11 +482,10 @@ class _HomescreenState extends State<Homescreen> {
                                 ),
                               )
                             ],
-                          ));
+                          )));
                   },
                 ),
               ),
-            ),
 
 
 
@@ -510,12 +513,8 @@ class _HomescreenState extends State<Homescreen> {
               ),
             ),
 
-            //Bike card
-            GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail()));
-              },
-              child: Container(
+            //Bike car
+            Container(
                 height: MediaQuery.sizeOf(context).height * 0.25,
 
 
@@ -528,7 +527,11 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
-                      return Card(
+                      return  GestureDetector(
+                          onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail(val1:index, bikeid:getUser3[index]["Vehicle_Id"])));
+                      },
+                        child: Card(
                           elevation: 6,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
@@ -608,10 +611,9 @@ class _HomescreenState extends State<Homescreen> {
                                 ),
                               )
                             ],
-                          ));
+                          )));
                     }
                 ),
-              ),
             ),
 
           ]),

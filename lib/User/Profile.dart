@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
 import 'package:rentify/User/Payment_Receipt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Profile extends StatefulWidget {
@@ -23,8 +24,33 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
 
-  var getUser;
-  bool isLoading =false;
+  var data;
+  var getUser2;
+  var x;
+  bool isLoading=false;
+  void initState(){
+    super.initState();
+    getdata();
+  }
+
+  Future getdata() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+
+    SharedPreferences setpreference = await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+      x=setpreference.getString('uname');
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Profile_User.php"),body: {'Login_Id':share.getString('id')});
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +65,11 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Colors.transparent,
           iconTheme: const IconThemeData(color: Colors.black),
         ),
-        body:
-        SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(children: [
             // User Image
 
-            const Padding(
+             Padding(
                 padding: EdgeInsets.only(top: 0),
                 child: Center(
                     child: Stack(
@@ -71,7 +96,7 @@ class _ProfileState extends State<Profile> {
             SizedBox(
               height: mHeight * 0.03,
             ),
-            Text('name',
+            Text(getUser2[0]["Name"],
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(

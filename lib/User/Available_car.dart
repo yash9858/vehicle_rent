@@ -15,26 +15,24 @@ class Car extends StatefulWidget {
 
 class _CarState extends State<Car> {
 
-  String? data;
-  var getUser;
   bool isLoading=false;
-
+  var data;
+  var getUser2;
   void initState(){
     super.initState();
-    getdata();
+    getdata2();
   }
-
-  Future getdata() async{
+  Future getdata2() async{
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
 
       setState(() {
         isLoading=false;
-        getUser=jsonDecode(data!)["users"];
+        getUser2=jsonDecode(data!)["users"];
       });
     }
   }
@@ -63,11 +61,11 @@ class _CarState extends State<Car> {
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 5
             ),
-            itemCount: getUser.length,
+            itemCount: getUser2.length,
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>car_detail()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser2[index]["Vehicle_Id"])));
                 },
                 child: Container(
 
@@ -87,7 +85,7 @@ class _CarState extends State<Car> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(getUser[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
+                                  Text(getUser2[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
                                   Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
@@ -97,7 +95,7 @@ class _CarState extends State<Car> {
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
                               child: Image.network(
-                                getUser[index]["Vehicle_Image"],
+                                getUser2[index]["Vehicle_Image"],
                                 fit: BoxFit.cover,
                                 height: mheight * 0.16,
                                 width: mwidth * 0.5,
@@ -113,7 +111,7 @@ class _CarState extends State<Car> {
                                     MainAxisAlignment.spaceEvenly,
                                     children: [
                                        Text(
-                                        getUser[index]["Category_Name"],
+                                        getUser2[index]["Category_Name"],
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
@@ -123,7 +121,7 @@ class _CarState extends State<Car> {
                                         MainAxisAlignment.spaceBetween,
                                         children: [
                                            Text(
-                                            getUser[index]["Rent_Price"] +
+                                            getUser2[index]["Rent_Price"] +
                                                 "/ Day",
                                             style: TextStyle(
                                                 fontSize: 15,

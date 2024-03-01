@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rentify/User/Add_Card.dart';
+import 'package:rentify/User/User_DashBoard.dart';
 
 class Payment_page extends StatefulWidget {
   const Payment_page({super.key});
@@ -146,7 +147,7 @@ class _Payment_pageState extends State<Payment_page> {
         height: mheight*0.08,
         child: ElevatedButton(
           onPressed: (){
-           // Navigator.push(context, MaterialPageRoute(builder: (context)=> Payment_page()));
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

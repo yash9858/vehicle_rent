@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/Homescreen.dart';
 import 'package:rating_summary/rating_summary.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import 'Feedback_User.dart';
 import 'Select_date.dart';
 
 class bike_detail extends StatefulWidget {
-  const bike_detail({super.key});
+  final int val1;
+  final String bikeid;
+  const bike_detail({required this.val1,required this.bikeid,});
 
   @override
   State<bike_detail> createState() => _bike_detailState();
@@ -16,12 +22,38 @@ class bike_detail extends StatefulWidget {
 
 class _bike_detailState extends State<bike_detail> {
   double rating = 0;
+  bool isLoading=false;
+  var data;
+  var getUser2;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+
+  Future getdata() async{
+    SharedPreferences setpreference = await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
     var mwidth = MediaQuery.sizeOf(context).width;
 
-    return Scaffold(
+    return  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+    : Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
 
@@ -56,14 +88,14 @@ class _bike_detailState extends State<bike_detail> {
                         ],
                       ),
                     ),
-                    Image.asset("assets/img/bullet.jpeg",height: mheight*0.33,),
+                    Image.network(getUser2[widget.val1]["Vehicle_Image"],height: mheight*0.33,),
                   ],
                 ),
               ),
               SingleChildScrollView(
                 physics: FixedExtentScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 300),
+                  padding:  EdgeInsets.only(top: 300),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.deepPurple.shade800,
@@ -80,7 +112,7 @@ class _bike_detailState extends State<bike_detail> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Thunder 350X",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                            Text(getUser2[widget.val1]["Vehicle_Name"],style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
                           ],
                         ),
 
@@ -88,7 +120,7 @@ class _bike_detailState extends State<bike_detail> {
                         SizedBox(height: mheight*0.02,),
 
                         Container(
-                          child: Text("Renaul Kwid is compact hetchback produced by Renaut it have a petrol engine that give a perfect power to this car ",style: TextStyle(color: Colors.grey),),
+                          child: Text(getUser2[widget.val1]["Vehicle_Description"],style: TextStyle(color: Colors.grey),),
                         ),
 
 

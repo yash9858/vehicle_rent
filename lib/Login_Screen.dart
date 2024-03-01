@@ -31,9 +31,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
      var size=MediaQuery.sizeOf(context);
-    return Scaffold(
-      body:isLoading ? Center(child: CircularProgressIndicator(color: Colors.deepPurple))
-          : Container(
+    return isLoading ? Center(child: CircularProgressIndicator(color: Colors.deepPurple))
+        :Scaffold(
+      body: Container(
         height: double.maxFinite,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -214,8 +214,7 @@ Future<void> _submit() async {
     });
     if (response.statusCode == 200) {
       logindata = jsonDecode(response.body);
-      data =
-      jsonDecode(response.body)['user'];
+      data = jsonDecode(response.body)['user'];
       print(data);
       setState(() {
         isLoading = false;
@@ -223,6 +222,7 @@ Future<void> _submit() async {
       if (logindata['error'] == false) {
         SharedPreferences setpreference = await SharedPreferences.getInstance();
         setpreference.setString('id', data['Login_Id'].toString());
+        setpreference.setString('uname', data['User_Name'].toString());
         setpreference.setString('email', data['Email'].toString());
         setpreference.setString('Role', data['Role'].toString());
         if(data["Role"]=="1")

@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:line_icons/line_icons.dart';
+
 import 'package:rentify/User/Bike_Details.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Bike extends StatefulWidget {
@@ -15,26 +17,27 @@ class Bike extends StatefulWidget {
 
 class _BikeState extends State<Bike> {
 
-  String? data;
-  var getUser;
   bool isLoading=false;
+  var data;
+  var getUser2;
 
-  void initState() {
+  void initState(){
     super.initState();
     getdata();
   }
 
   Future getdata() async{
+    SharedPreferences setpreference = await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
 
       setState(() {
         isLoading=false;
-        getUser=jsonDecode(data!)["users"];
+        getUser2=jsonDecode(data!)["users"];
       });
     }
   }
@@ -63,11 +66,11 @@ class _BikeState extends State<Bike> {
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 5
             ),
-            itemCount: getUser.length,
+            itemCount: getUser2.length,
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail(val1:index, bikeid:getUser2[index]["Vehicle_Id"])));
                 },
                 child: Container(
 
@@ -87,7 +90,7 @@ class _BikeState extends State<Bike> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(getUser[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
+                                  Text(getUser2[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
                                   Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
@@ -97,7 +100,7 @@ class _BikeState extends State<Bike> {
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
                               child: Image.network(
-                                getUser[index]["Vehicle_Image"],
+                                getUser2[index]["Vehicle_Image"],
                                 fit: BoxFit.cover,
                                 height: mheight * 0.16,
                                 width: mwidth * 0.5,
@@ -112,7 +115,7 @@ class _BikeState extends State<Bike> {
                                     MainAxisAlignment.spaceEvenly,
                                     children: [
                                        Text(
-                                        getUser[index]["Category_Name"],
+                                        getUser2[index]["Category_Name"],
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
@@ -124,7 +127,7 @@ class _BikeState extends State<Bike> {
                                           Row(
                                             children: [
                                               Text(
-                                                getUser[index]["Rent_Price"] +
+                                                getUser2[index]["Rent_Price"] +
                                                     "/ Day",
                                                 style: TextStyle(
                                                     fontSize: 15,
