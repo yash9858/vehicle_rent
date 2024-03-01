@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:rentify/User/Book_summary.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class History_page extends StatefulWidget {
   const History_page({super.key});
@@ -10,7 +14,30 @@ class History_page extends StatefulWidget {
 
 class _History_pageState extends State<History_page> {
 
+  var data;
+  var getUser2;
+  bool isLoading=false;
+  void initState(){
+    super.initState();
+    getdata();
+  }
 
+  Future getdata() async{
+
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_History_User.php"),body: {'Login_Id':share.getString('id')});
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -24,12 +51,13 @@ class _History_pageState extends State<History_page> {
           backgroundColor: Colors.transparent,
           iconTheme: const IconThemeData(color: Colors.black),
         ),
-      body: Container(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      : Container(
         padding: EdgeInsets.only(top: 5,left: 8,right: 8),
         child: ListView.builder(
-          itemCount: 10,
+          itemCount: getUser2.length,
           itemBuilder: (context, index) {
-            return      Card(
+            return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10)
             ),
@@ -41,7 +69,7 @@ class _History_pageState extends State<History_page> {
                   Container(
 
                     child:
-                    Image.network("https://imgd-ct.aeplcdn.com/664x415/n/cw/ec/148477/thar-right-front-three-quarter-5.jpeg?isig=0&q=80",fit: BoxFit.contain,
+                    Image.network(getUser2[index]["Vehicle_Image"],fit: BoxFit.contain,
                       height: mdheight*0.15,width: mwidth*0.4,
 
                     )
@@ -67,7 +95,7 @@ class _History_pageState extends State<History_page> {
                                   color: Colors.pink.shade50,
                                   borderRadius: BorderRadius.circular(6)
                               ),
-                              child: Text("suv")),
+                              child: Text(getUser2[index]["Category_Name"])),
                           Row(
                             children: [
                               const Text("4.1"),
@@ -82,7 +110,7 @@ class _History_pageState extends State<History_page> {
                       SizedBox(height: mdheight*0.01,),
 
                       //Car Name
-                      Text("Kia Seltos Htk",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                      Text(getUser2[index]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                       // SizedBox(height: mheight*0.01,),
                       //last Row
                       Row(
@@ -92,15 +120,15 @@ class _History_pageState extends State<History_page> {
                           Row(
                             children: [
                               Text(
-                                "₹750",
-                                style: TextStyle(
+                                "₹"+getUser2[index]["Rent_Price"]
+                                ,style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Text("/day"),
                             ],
                           ),
                           TextButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Book_summary()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Book_summary(bookid:getUser2[index]["Booking_Id"])));
                           }, child: Text("View"))
                         ],
                       ),

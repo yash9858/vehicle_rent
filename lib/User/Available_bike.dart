@@ -46,7 +46,8 @@ class _BikeState extends State<Bike> {
     var mheight=MediaQuery.sizeOf(context).height;
     var mwidth =MediaQuery.sizeOf(context).width;
 
-    return Scaffold(
+    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+        : Scaffold(
       appBar: AppBar(
 
         backgroundColor: Colors.transparent,
@@ -55,8 +56,7 @@ class _BikeState extends State<Bike> {
         elevation: 0,
 
       ),
-      body:  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-      :Container(
+      body: Container(
         padding: EdgeInsets.only(left: 10,right: 10),
 
         child: GridView.builder(

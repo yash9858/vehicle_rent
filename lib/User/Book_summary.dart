@@ -1,11 +1,16 @@
 //shri Gneshay Nam:
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-class Book_summary extends StatefulWidget {
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-  const Book_summary({super.key});
+class Book_summary extends StatefulWidget {
+  final String bookid;
+  const Book_summary({required this.bookid});
 
 
   @override
@@ -14,6 +19,34 @@ class Book_summary extends StatefulWidget {
 
 
 class _Book_summaryState extends State<Book_summary> {
+  var data;
+  var getUser2;
+  var cat;
+  bool isLoading=false;
+  void initState(){
+    super.initState();
+    getdata();
+  }
+
+  Future getdata() async {
+    SharedPreferences share = await SharedPreferences.getInstance();
+
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response = await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_Summery_User.php"));
+    if (response.statusCode == 200) {
+      data = response.body;
+
+      setState(() {
+        isLoading = false;
+        getUser2 = jsonDecode(data!)["users"];
+      });
+    }
+  }
+
+
 DateTime _dateTime=DateTime(2023,1,12);
 TimeOfDay _timeOfDay = TimeOfDay(hour: 8,minute: 10);
 void _showdatepicker(){
@@ -82,7 +115,7 @@ void _showtimepicker(){
                                 color: Colors.pink.shade50,
                                 borderRadius: BorderRadius.circular(6)
                             ),
-                            child: Text("suv")),
+                            child: Text('')),
                         Row(
                           children: [
                             const Text("4.1"),

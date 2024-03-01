@@ -78,6 +78,7 @@ class _HomescreenState extends State<Homescreen> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -212,7 +213,7 @@ class _HomescreenState extends State<Homescreen> {
                           child: Image.network(
                             getUser[index]["Category_Image"],
                             fit: BoxFit.cover,
-                            height: mwidth * 0.17,
+                            height: mwidth * 0.15,
                           ),
                         ),
                       ),

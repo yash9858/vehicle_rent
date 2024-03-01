@@ -26,7 +26,6 @@ class _ProfileState extends State<Profile> {
 
   var data;
   var getUser2;
-  var x;
   bool isLoading=false;
   void initState(){
     super.initState();
@@ -39,7 +38,6 @@ class _ProfileState extends State<Profile> {
     SharedPreferences setpreference = await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
-      x=setpreference.getString('uname');
     });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Profile_User.php"),body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
@@ -77,21 +75,9 @@ class _ProfileState extends State<Profile> {
                         CircleAvatar(
                           radius: 60,
                           backgroundImage: NetworkImage(
-                              "https://launchwebsitedesign.com/wp-content/uploads/2017/09/josh-d-avatar.jpg"),
+                             getUser2[0]["Profile_Image"],
                         ),
-                        // Positioned(
-                        //   left: 80,
-                        //   bottom: 1,
-                        //   child: CircleAvatar(
-                        //
-                        //       child: IconButton(
-                        //         onPressed: (){
-                        //
-                        //         },
-                        //       icon:Icon(Icons.edit)),
-                        //       ),
-                        // )
-                      ],
+                        )],
                     ))),
             SizedBox(
               height: mHeight * 0.03,

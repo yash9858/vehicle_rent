@@ -9,6 +9,7 @@ import 'package:rentify/User/Select_date.dart';
 import 'package:rating_summary/rating_summary.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class car_detail extends StatefulWidget {
   final int val;
   final String carid;
@@ -19,12 +20,16 @@ class car_detail extends StatefulWidget {
 
 class _car_detailState extends State<car_detail> {
   double rating = 0;
-bool isLoading=false;
-var data;
-var getUser2;
+  bool isLoading=false;
+  var data;
+  var data1;
+  var getUser2;
+  var getUser3;
+
   void initState(){
     super.initState();
     getdata2();
+    getdata3();
   }
   Future getdata2() async{
     setState(() {
@@ -40,15 +45,29 @@ var getUser2;
       });
     }
   }
+  Future getdata3() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"), body: {'Vehicle_Id': widget.carid});
+    if(response.statusCode==200) {
+      data1 = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser3=jsonDecode(data1!)["users"];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
-    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple,),)
     : Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body:SafeArea(
         child:Stack(
           children: [
             Column(
@@ -126,10 +145,10 @@ var getUser2;
                                       }, child: const Text('View All Review', style: TextStyle(color: Colors.black),),),
                                   ],
                                 ),
-                                const SizedBox(
+                                 SizedBox(
                                   height: 15,
                                 ),
-                                const RatingSummary(
+                                RatingSummary(
                                   counter: 15,
                                   average: 4,
                                   averageStyle: TextStyle(
@@ -173,7 +192,7 @@ var getUser2;
                                       children: [
                                         ListTile(
                                           trailing: const Text("Timestamp", style: TextStyle(color: Colors.white),),
-                                          title: const Text("Name",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                          title:  Text('name',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                                           subtitle: RatingBar.builder(
                                             unratedColor: Colors.white,
                                             initialRating: 0,
@@ -182,7 +201,7 @@ var getUser2;
                                             itemSize: 25,
                                             itemCount: 5,
                                             allowHalfRating: true,
-                                            itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
+                                            itemBuilder: (context,_) =>  Icon(Icons.star,color: Colors.amber,),
                                             onRatingUpdate: (value) {
                                               setState(() {
                                                 rating = value;
@@ -191,9 +210,9 @@ var getUser2;
                                           ),
                                           leading: Image.asset("assets/img/Logo.jpg",height: mdheight * 0.5,width: mdwidth * 0.1,),
                                         ),
-                                        const Padding(
+                                        Padding(
                                             padding:EdgeInsets.all(10),
-                                            child: Text("your review", style: TextStyle(
+                                            child: Text(getUser3[index]["Comment"].toString(),style: TextStyle(
                                               color: Colors.white,),))
                                       ],
                                     ),
@@ -219,7 +238,7 @@ var getUser2;
         child:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("₹450/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
+            Text(getUser2[widget.val]["Rent_Price"].toString()+"/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
             SizedBox(
               height: mdheight*0.07,
               width: mdwidth*0.40,
