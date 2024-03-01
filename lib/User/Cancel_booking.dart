@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Cancel_booking extends StatefulWidget {
-  const Cancel_booking({super.key});
+class Cancel_booking_user extends StatefulWidget {
+  const Cancel_booking_user({super.key});
 
   @override
-  State<Cancel_booking> createState() => _Cancel_bookingState();
+  State<Cancel_booking_user> createState() => _Cancel_bookingState();
 }
 
-class _Cancel_bookingState extends State<Cancel_booking> {
+class _Cancel_bookingState extends State<Cancel_booking_user> {
   var selectedOption;
   var Reason=['Schedule change',
     'Book Another Car',

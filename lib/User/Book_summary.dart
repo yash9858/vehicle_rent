@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rentify/Admin/CancelBooking_Admin.dart';
+import 'package:rentify/User/Cancel_booking.dart';
 class Book_summary extends StatefulWidget {
 
   const Book_summary({super.key});
@@ -223,9 +225,9 @@ void _showtimepicker(){
         child: MaterialButton(
           color: Colors.deepPurple.shade800,
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user()));
           },
-          child: Text("Continue", style: TextStyle(color: Colors.white),),
+          child: Text("Cancel", style: TextStyle(color: Colors.white),),
         ),
       ),
     );

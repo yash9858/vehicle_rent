@@ -9,6 +9,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:rentify/Admin/Category_add_admin.dart';
+import 'package:rentify/Admin/Edit_category.dart';
 import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -198,88 +199,10 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            MaterialButton(onPressed: () {
-                              showDialog(context: context, builder: (context) {
-                                return Dialog(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: mdwidth * 0.03),
-                                      child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .center,
-                                          children: [
-                                            SizedBox(height: mdheight * 0.02),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                left: mdwidth * 0.05,
-                                                right: mdwidth * 0.01,),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment
-                                                    .start,
-                                                children: [
-                                                  Center(
-                                                      child: Stack(
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            radius: 60,
-                                                            backgroundImage: AssetImage(
-                                                                "assets/img/Logo.jpg"),
-                                                          ),
-                                                          Positioned(
-                                                            left: 80,
-                                                            bottom: 1,
-                                                            child: CircleAvatar(
-
-                                                              child: IconButton(
-                                                                  onPressed: (){
-                                                                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>Admin_Add_Vehicle(id:getUser[index]["Category_Id"])));
-                                                                  },//_getImage,
-                                                                  icon: const Icon(
-                                                                      Icons
-                                                                          .edit)),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      )),
-                                                  SizedBox(
-                                                    height: mdheight * 0.02,),
-                                                  TextField(
-                                                    decoration: InputDecoration(
-                                                        fillColor: Colors.grey
-                                                            .shade100,
-                                                        filled: true,
-                                                        hintText: 'Enter A Category Name',
-                                                        border: OutlineInputBorder(
-                                                            borderRadius: BorderRadius
-                                                                .circular(15)
-                                                        )
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(height: mdheight * 0.02,),
-                                            MaterialButton(onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                                color: Colors.deepPurple
-                                                    .shade800,
-                                                elevation: 5.0,
-                                                shape: const RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius
-                                                        .all(
-                                                        Radius.circular(15))),
-                                                child: const Text(
-                                                  'Update Category',
-                                                  style: TextStyle(
-                                                    color: Colors.white,),)),
-                                            SizedBox(height: mdheight * 0.01),
-                                          ]
-                                      ),
-                                    ));
-                              });
-                            },
+                            MaterialButton(
+                              onPressed:(){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Edit_category(val:index)));
+                              },
                                 color: Colors.deepPurple.shade800,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: mdwidth * 0.05,

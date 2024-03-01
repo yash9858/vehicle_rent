@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:rentify/User/Available_car.dart';
 import 'package:http/http.dart' as http;
+import 'package:rentify/User/Category_Vehicle_User.dart';
 
 class Category extends StatefulWidget {
   const Category({super.key});
@@ -60,7 +61,8 @@ class _CategoryState extends State<Category> {
             itemBuilder: (BuildContext context,int index){
           return GestureDetector(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Car()));
+             // Navigator.push(context, MaterialPageRoute(builder: (context)=>Car()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Category_Vehicle_User(val:getUser[index]["Category_Id"],name:getUser[index]["Category_Name"])));
             },
             child:  Column(
               children: [

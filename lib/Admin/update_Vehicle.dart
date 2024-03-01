@@ -3,9 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'dart:io';
+import 'package:flutter/Material.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 // ignore: camel_case_types
 class update_Vehicle extends StatefulWidget {
-  const update_Vehicle({super.key});
+  final int val;
+  const update_Vehicle({super.key,required this.val});
 
   @override
   State<update_Vehicle> createState() => _update_VehicleState();
@@ -21,7 +32,7 @@ class _update_VehicleState extends State<update_Vehicle> {
   TextEditingController DescriptionController = TextEditingController();
   TextEditingController PriceController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
+
 
   String? data;
   var getUser;
@@ -30,7 +41,7 @@ class _update_VehicleState extends State<update_Vehicle> {
   void initState(){
     super.initState();
     getdata();
-    getdata2();
+
   }
 
   Future getdata() async{
@@ -43,27 +54,76 @@ class _update_VehicleState extends State<update_Vehicle> {
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
-        NameController.text = getUser[0]["Vehicle_Name"];
-        NumberController.text = getUser[0]["Vehicle_Number"];
-        TypeController.text = getUser[0]["Vehicle_Type"];
-        DescriptionController.text = getUser[0]["Vehicle_Description"];
-        PriceController.text = getUser[0]["Rent_Price"];
+        NameController.text = getUser[widget.val]["Vehicle_Name"];
+        NumberController.text = getUser[widget.val]["Vehicle_Number"];
+        TypeController.text = getUser[widget.val]["Vehicle_Type"];
+        DescriptionController.text = getUser[widget.val]["Vehicle_Description"];
+        PriceController.text = getUser[widget.val]["Rent_Price"];
       });
     }
   }
 
-  Future getdata2() async{
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+  Future _getImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      isLoading = true;
+      _image = File(pickedFile!.path);
     });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Update_API/Vehicle_Update.php"));
-    if(response.statusCode==200){
-      data=response.body;
-      setState(() {
-        isLoading=false;
-        getUser=jsonDecode(data!)["users"];
+    print(_image);
+  }
+  uploadImageMedia(File fileImage) async {
+    print(fileImage);
+   // SharedPreferences prefs = await SharedPreferences.getInstance();
+    final mimeTypeData = lookupMimeType(fileImage.path, headerBytes: [0xFF, 0xD8])?.split('/');
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse("https://road-runner24.000webhostapp.com/API/Update_API/Vehicle_Update.php"));
+    final file = await http.MultipartFile.fromPath('Vehicle_Image', fileImage.path,
+        contentType: MediaType(mimeTypeData![0], mimeTypeData[1]));
 
+    imageUploadRequest.fields['Vehicle_Name'] = NameController.text;
+    imageUploadRequest.fields['Vehicle_Number'] = NumberController.text;
+    imageUploadRequest.fields['Vehicle_Type'] = TypeController.text;
+    imageUploadRequest.fields['Rent_Price'] = PriceController.text;
+    imageUploadRequest.fields['Vehicle_Description'] = DescriptionController.text;
+
+
+    imageUploadRequest.fields['Vehicle_Id'] = getUser[widget.val]["Vehicle_Id"];
+    imageUploadRequest.files.add(file);
+    try {
+      //_isLoading = true;
+      final streamedResponse = await imageUploadRequest.send();
+      streamedResponse.stream.transform(utf8.decoder).listen((value) {
+        if(streamedResponse.statusCode==200){
+          setState(() {
+            //_isLoading=false;
+          });
+          var logindata;
+          logindata = jsonDecode(value);
+          print(logindata);
+          Fluttertoast.showToast(
+              msg: logindata['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          Navigator.of(context).pop();
+          print(streamedResponse.stream);
+          print(value);
+        }else{
+          setState(() {
+            //_isLoading=false;
+          });
+          Fluttertoast.showToast(
+              msg: "Something went wrong",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          print(value);
+        }
       });
+    } catch (e) {
+      print(e);
     }
   }
   @override
@@ -92,10 +152,16 @@ class _update_VehicleState extends State<update_Vehicle> {
               Center(
                   child: Stack(
                     children: [
-                      const CircleAvatar(
+                       CircleAvatar(
                         radius: 60,
-                        backgroundImage: AssetImage(
-                            "assets/img/Logo.jpg"),
+                        child: _image==null?Image.network(getUser[widget.val]["Vehicle_Image"],height: 150,width: 150,fit: BoxFit.fill,):
+                        Image.file(
+                          _image!,height: 150,width: 150,
+                          fit: BoxFit.fill,),
+
+                        // backgroundImage:
+                        // AssetImage(
+                        //     "assets/img/Logo.jpg"),
                       ),
                       Positioned(
                         left: 80,
@@ -103,9 +169,7 @@ class _update_VehicleState extends State<update_Vehicle> {
                         child: CircleAvatar(
 
                           child: IconButton(
-                              onPressed: (){
-
-                              },
+                             onPressed: _getImage,
                               icon:const Icon(Icons.edit)),
                         ),
                       )
@@ -113,7 +177,7 @@ class _update_VehicleState extends State<update_Vehicle> {
                   )),
               SizedBox(height: mdheight * 0.04),
               Form(
-                  key: _formKey,
+
                   child: Column(children: [
                     TextFormField(
                       controller: NameController,
@@ -211,9 +275,11 @@ class _update_VehicleState extends State<update_Vehicle> {
                 width: mdwidth * 0.7,
                 child: MaterialButton(
                   onPressed: (){
-                    getdata2();
-                    Navigator.pop(context);
+                    uploadImageMedia(_image!);
+
+                   // Navigator.pop(context);
                   },
+
                   child: Text('Update Details',
                       style: TextStyle(
                           color: Colors.white,

@@ -1,41 +1,109 @@
 import 'package:flutter/material.dart';
 
-class About_us extends StatefulWidget {
-  const About_us({super.key});
-
-  @override
-  State<About_us> createState() => _About_usState();
-}
-
-class _About_usState extends State<About_us> {
+class About_us extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("About Us",
-          style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),),
+        title: Text(
+          "About Us",
+          style: TextStyle(fontSize: 20),
+        ),
         elevation: 0,
-      backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Container(
-          padding: EdgeInsets.only(top: 10,left: 18,right: 18),
-          child: Text(
-            " The Vehicle Rental Application Is A Mobile App Developed Using The Flutter Framework Designed  To Provide Users With A Convenient And Efficient Platform For Rent Vehicle.\n "
-                "\n  This System Aim To Provide A User Friendly Platform For User And High Quality Vehicle.\n"
-                "\n  We Can Provide Various Type Of Vehicles Like Car , Bike And Electric Vehicles (EV).\n "
-                "\n • This Application Offers Flexible Rental Options Allowing Users To Rent Vehicles By Hour Or The Day Based On Their Specific Needs.\n "
-                "\n • The Application Categorized Vehicle Into Different Types Making It Easy For User To Find Specific Vehicle They Need.\n"
-                "\n • This Application Allowing The User To Pay For Their Rental Various Payment Methods Such As Credit Card , Online Banking etc . \n"
-                "\n • User Have The Flexible To Cancel Their Booking And Get Refund .\n "
-                "\n • Our System Cancelation Policies Are Very Clearly Communicated\n "
-                "\n• Vehicle Renting System Are A Convenient And Affordable Way To Get Access To Vehicle When Needed.",style: TextStyle(fontSize: 17),
-          ),
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSectionTitle("Welcome to Our Vehicle Rental App"),
+            _buildParagraph(
+              "Our Vehicle Rental Application is a mobile app developed using the Flutter framework, designed to provide users with a convenient and efficient platform for renting vehicles.",
+            ),
+            _buildParagraph(
+              "We aim to offer a user-friendly experience and a diverse range of high-quality vehicles, including cars, bikes, and electric vehicles (EV).",
+            ),
+            _buildSectionTitle("Key Features"),
+            _buildFeature(
+              "Flexible Rental Options",
+              "Rent vehicles by the hour or the day based on your specific needs.",
+            ),
+            _buildFeature(
+              "Categorized Vehicles",
+              "Easily find the specific type of vehicle you need with our categorized system.",
+            ),
+            _buildFeature(
+              "Convenient Payments",
+              "Pay for your rental using various methods such as credit cards and online banking.",
+            ),
+            _buildFeature(
+              "Cancellation Flexibility",
+              "Cancel your booking and get a refund with our user-friendly cancellation policy.",
+            ),
+            _buildSectionTitle("Why Choose Us"),
+            _buildParagraph(
+              "Our vehicle renting system offers a convenient and affordable way to access vehicles when needed. We prioritize user satisfaction and strive to make your renting experience enjoyable.",
+            ),
+            _buildParagraph(
+              "With a commitment to excellence, we stand out in the market by providing top-notch customer service, reliable vehicles, and transparent transactions.",
+            ),
+            _buildSectionTitle("Our Mission"),
+            _buildParagraph(
+              "Our mission is to revolutionize the vehicle rental industry by offering a seamless, technologically advanced platform that caters to the diverse needs of our users. We strive to make transportation accessible, efficient, and eco-friendly.",
+            ),
+            _buildSectionTitle("Contact Us"),
+            _buildParagraph(
+              "If you have any questions, suggestions, or concerns, feel free to reach out to us. We value your feedback and are dedicated to continually improving our services.",
+            ),
+            _buildParagraph(
+              "Email: contact@vehicleRental.com\nPhone: (123) 456-7890",
+            ),
+          ],
         ),
       ),
     );
   }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildParagraph(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 16),
+      ),
+    );
+  }
+
+  Widget _buildFeature(String title, String description) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 4),
+          Text(
+            description,
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
+

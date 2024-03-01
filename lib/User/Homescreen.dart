@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
+import 'package:rentify/Admin/Category_add_admin.dart';
 import 'package:rentify/User/Available_bike.dart';
 import 'package:rentify/User/Available_car.dart';
 import 'package:rentify/User/Bike_Details.dart';
 import 'package:rentify/User/Car_Details.dart';
 import 'package:rentify/User/Category.dart';
+import 'package:rentify/User/Category_Vehicle_User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Homescreen extends StatefulWidget {
@@ -198,7 +200,7 @@ class _HomescreenState extends State<Homescreen> {
                   itemBuilder: (BuildContext contect, int index){
                 return GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Car()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Category_Vehicle_User(val: getUser[index]["Category_Id"], name: getUser[index]["Category_Name"])));
                   },
                   child:  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
                   :Column(

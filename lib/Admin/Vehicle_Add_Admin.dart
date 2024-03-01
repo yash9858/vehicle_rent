@@ -133,8 +133,8 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        backgroundImage: AssetImage(
-                            "assets/img/Logo.jpg"),
+                        child:_image==null?Image.asset(
+                          "assets/img/Logo.jpg",height: 150,width: 150,fit: BoxFit.fill,):Image.file(_image!,height: 150,width: 150,fit: BoxFit.fill,),
                       ),
                       Positioned(
                         left: 80,
