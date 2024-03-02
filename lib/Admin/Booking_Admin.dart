@@ -87,12 +87,18 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                          Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Start Time: '+getUser[index]["Start_Datetime"],),
-
+                            Text('Start Date : '+getUser[index]["Start_Date"],),
+                            Text('Return Date : '+getUser[index]["Return_Date"]),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.01,),
-                        Text('Return Time: '+getUser[index]["Return_Datetime"]),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Start Time : '+getUser[index]["Start_Time"],),
+                            Text('Return Time : '+getUser[index]["Return_Time"]),
+                          ],
+                        ),
                         SizedBox(height: mdheight * 0.01,),
                          Text('Address: '+getUser[index]["Address"]),
                         SizedBox(height: mdheight * 0.01,),

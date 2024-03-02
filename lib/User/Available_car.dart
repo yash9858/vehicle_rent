@@ -121,7 +121,7 @@ class _CarState extends State<Car> {
                                         MainAxisAlignment.spaceBetween,
                                         children: [
                                            Text(
-                                            getUser2[index]["Rent_Price"] +
+                                      "₹" +getUser2[index]["Rent_Price"] +
                                                 "/ Day",
                                             style: TextStyle(
                                                 fontSize: 15,

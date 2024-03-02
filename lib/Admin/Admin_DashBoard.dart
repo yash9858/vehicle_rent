@@ -107,7 +107,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
   Widget build(BuildContext context) {
 
     var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Total Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
-    var total = [getUser["Login_Id"].toString(), getUser["Category_Id"].toString(), getUser["Vehicle_Id"].toString(), getUser["Booking_Id"].toString(), getUser["Payment_Id"].toString(), getUser["Complain_Id"].toString(), getUser["Feedback_Id"].toString()];
+    var total = [getUser["Details_Id"].toString(), getUser["Category_Id"].toString(), getUser["Vehicle_Id"].toString(), getUser["Booking_Id"].toString(), getUser["Payment_Id"].toString(), getUser["Complain_Id"].toString(), getUser["Feedback_Id"].toString()];
     var page =  [Admin_UserPage(), Admin_CategoryPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage(), Admin_ComplainPage(), Admin_FeedbackPage()];
     var image = ['assets/img/user.json','assets/img/category.json','assets/img/vehicle.json','assets/img/bookings.json','assets/img/payments.json','assets/img/complain.json','assets/img/feedback.json'];
 
@@ -250,7 +250,8 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      : Padding(
       padding: EdgeInsets.all(mdheight * 0.01),
       child: GridView.builder(
           gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(

@@ -1,19 +1,51 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:rentify/User/Payment_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 
 class Select_date extends StatefulWidget {
-  const Select_date({super.key});
+  final int num;
+  final String v_id;
+  const Select_date({required this.num, required this.v_id});
 
   @override
   State<Select_date> createState() => _Select_dateState();
 }
 
 class _Select_dateState extends State<Select_date> {
+
+  bool isLoading=false;
+  var data;
+  var getUser2;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+
+  Future getdata() async{
+    SharedPreferences setpreference = await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Select_Fetch_Vehicle.php"), body: {'Vehicle_Type': setpreference.getString('type')});
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+      });
+    }
+  }
+
   DateTime _PickupDate=DateTime(2023,1,12);
   TimeOfDay _PickupTime = TimeOfDay(hour: 8,minute: 10);
   DateTime _ReturnDate=DateTime(2023,1,12);
@@ -77,7 +109,8 @@ class _Select_dateState extends State<Select_date> {
 
 
 
-      body: SingleChildScrollView(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      : SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(
           padding: const EdgeInsets.only(top:15,left: 15,right: 15,),
@@ -91,7 +124,7 @@ class _Select_dateState extends State<Select_date> {
                   Container(
 
                     child:
-                    Image.network("https://i.pinimg.com/736x/5f/33/2d/5f332d3fbad470d3109cab05fb99beb6.jpg",fit: BoxFit.contain,
+                    Image.network(getUser2[widget.num]["Vehicle_Image"],fit: BoxFit.contain,
                       height: mheight*0.15,width: mwidth*0.4,
 
                     )
@@ -112,7 +145,7 @@ class _Select_dateState extends State<Select_date> {
                                   color: Colors.pink.shade50,
                                   borderRadius: BorderRadius.circular(6)
                               ),
-                              child: Text("suv")),
+                              child: Text(getUser2[widget.num]["Category_Name"])),
                           Row(
                             children: [
                               const Text("4.1"),
@@ -127,12 +160,12 @@ class _Select_dateState extends State<Select_date> {
                       SizedBox(height: mheight*0.01,),
 
                       //Car Name
-                      Text("Kia Seltos Htk",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                      Text(getUser2[widget.num]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                       SizedBox(height: mheight*0.03,),
                       Row(
                         children: [
                           Text(
-                            "₹750",
+                            "₹"+getUser2[widget.num]["Rent_Price"],
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),

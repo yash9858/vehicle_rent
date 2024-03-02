@@ -1,6 +1,9 @@
 // ignore_for_file: file_names, depend_on_referenced_packages, camel_case_types
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:rating_summary/rating_summary.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class FeedBack_User extends StatefulWidget {
@@ -11,6 +14,31 @@ class FeedBack_User extends StatefulWidget {
 }
 
 class _FeedBack_UserState extends State<FeedBack_User> {
+
+  bool isLoading=false;
+  var data;
+  var getUser;
+
+  void initState(){
+    super.initState();
+    getdata();
+  }
+
+  Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+  }
+
   double rating = 0;
   @override
   Widget build(BuildContext context) {
@@ -43,28 +71,30 @@ class _FeedBack_UserState extends State<FeedBack_User> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ListTile(
-                                  trailing: const Text("Timestamp"),
-                                  title: const Text("Name",style: TextStyle(fontWeight: FontWeight.bold,),),
-                                  subtitle: RatingBar.builder(
-                                          initialRating: 0,
-                                          minRating: 0,
-                                          direction: Axis.horizontal,
-                                          itemSize: 30,
-                                          itemCount: 5,
-                                          allowHalfRating: true,
-                                          itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
-                                          onRatingUpdate: (value) {
-                                            setState(() {
-                                              rating =value;
-                                            });
-                                          },
+                                  ListTile(
+                                    trailing: Text('getUser[widget.index]["Feedback_Time"]', style: TextStyle(color: Colors.white),),
+                                    title: Text('getUser[index]["Name"]',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                    subtitle: RatingBar.builder(
+                                      unratedColor: Colors.white,
+                                      initialRating: 0,
+                                      minRating: 0,
+                                      direction: Axis.horizontal,
+                                      itemSize: 25,
+                                      itemCount: 5,
+                                      allowHalfRating: true,
+                                      itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
+                                      onRatingUpdate: (value) {
+                                        setState(() {
+                                          rating = value;
+                                        });
+                                      },
                                     ),
-                                  leading: Image.asset("assets/img/Logo.jpg",height: mdheight * 0.5,width: mdwidth * 0.1,),
-                                ),
-                                const Padding(
-                                    padding:EdgeInsets.all(10),
-                                    child: Text("your review"))
+                                    leading: Image.network('getUser[index]["Profile_Image"]',height: mdheight * 0.5,width: mdwidth * 0.1,),
+                                  ),
+                                  Padding(
+                                      padding:EdgeInsets.all(10),
+                                      child: Text('getUser[index]["Comment"]', style: TextStyle(
+                                        color: Colors.white,),))
                               ],
                             ),
                           const Divider(
