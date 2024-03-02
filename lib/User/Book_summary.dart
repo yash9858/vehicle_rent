@@ -80,7 +80,8 @@ void _showtimepicker(){
         elevation: 0,
 
       ),
-      body: SingleChildScrollView(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple,),)
+      : SingleChildScrollView(
 
         child: Padding(
           padding: const EdgeInsets.only(top:15,left: 15,right: 15,),
@@ -162,7 +163,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      children: [
                        Text("Pick-Up Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                       Text(getUser2[widget.val3]["Start_Datetime"],style: TextStyle(fontSize: 16,)),
+                       Text(getUser2[widget.val3]["Start_Time"],style: TextStyle(fontSize: 16,)),
 
                      ],
                     ),
@@ -173,7 +174,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Pick-Up Date",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(DateFormat('d MMM yy').format(_dateTime),style: TextStyle(fontSize: 16,)),
+                        Text(getUser2[widget.val3]["Start_Date"],style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
@@ -184,7 +185,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Return  Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(_timeOfDay.format(context).toString(),style: TextStyle(fontSize: 16,)),
+                        Text(getUser2[widget.val3]["Return_Time"],style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
@@ -195,7 +196,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Return Date",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(DateFormat('d MMM yy').format(_dateTime),style: TextStyle(fontSize: 16,)),
+                        Text(getUser2[widget.val3]["Return_Date"],style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
