@@ -104,7 +104,7 @@ class _HomescreenState extends State<Homescreen> {
             SizedBox(
               width: 5,
             ),
-            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.transparent),)
             :Text(x, style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -421,7 +421,7 @@ class _HomescreenState extends State<Homescreen> {
                                       .spaceBetween,
                                   children: [
 
-                                    Text(getUser2[index]["Vehicle_Name"],
+                                    Text(getUser2[index]["Category_Name"],
                                       style: TextStyle(color: Colors.grey),),
                                     Icon(LineIcons.heart, color: Colors.red,)
                                   ],
@@ -452,7 +452,7 @@ class _HomescreenState extends State<Homescreen> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Text(getUser2[index]["Category_Name"],
+                                        Text(getUser2[index]["Vehicle_Name"],
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),),
@@ -461,7 +461,7 @@ class _HomescreenState extends State<Homescreen> {
                                           MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              getUser2[index]["Rent_Price"] +
+                                              "₹"+getUser2[index]["Rent_Price"] +
                                                   "/ Day",
                                               style: TextStyle(
                                                   fontSize: 15,
@@ -547,7 +547,7 @@ class _HomescreenState extends State<Homescreen> {
                                       .spaceBetween,
                                   children: [
 
-                                    Text(getUser3[index]["Vehicle_Name"],
+                                    Text(getUser3[index]["Category_Name"],
                                       style: TextStyle(color: Colors.grey),),
                                     Icon(LineIcons.heart, color: Colors.red,)
                                   ],
@@ -575,7 +575,7 @@ class _HomescreenState extends State<Homescreen> {
                                       MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
-                                          getUser3[index]["Category_Name"],
+                                          getUser3[index]["Vehicle_Name"],
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
@@ -587,7 +587,7 @@ class _HomescreenState extends State<Homescreen> {
                                             Row(
                                               children: [
                                                  Text(
-                                                   getUser3[index]["Rent_Price"] +
+                                                  "₹" +getUser3[index]["Rent_Price"] +
                                                        "/ Day",
                                                   style: TextStyle(
                                                       fontSize: 15,

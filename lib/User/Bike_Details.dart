@@ -25,14 +25,15 @@ class _bike_detailState extends State<bike_detail> {
   bool isLoading=false;
   var data;
   var getUser2;
+  var getUser3;
 
   void initState(){
     super.initState();
     getdata();
+    getdata2();
   }
 
   Future getdata() async{
-    SharedPreferences setpreference = await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
     });
@@ -44,6 +45,25 @@ class _bike_detailState extends State<bike_detail> {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
       });
+      if (getUser2['error'] == false) {
+        SharedPreferences setpreference = await SharedPreferences.getInstance();
+        setpreference.setString('type', data['Vehicle_Type'].toString());
+      }
+    }
+  }
+
+  Future getdata2() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser3=jsonDecode(data!)["users"];
+      });
     }
   }
 
@@ -52,10 +72,10 @@ class _bike_detailState extends State<bike_detail> {
     var mheight = MediaQuery.sizeOf(context).height;
     var mwidth = MediaQuery.sizeOf(context).width;
 
-    return  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-    : Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
+        body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+          : SafeArea(
 
           child:Stack(
             children: [
@@ -192,8 +212,8 @@ class _bike_detailState extends State<bike_detail> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             ListTile(
-                                              trailing: const Text("Timestamp", style: TextStyle(color: Colors.white),),
-                                              title: const Text("Name",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                              trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
+                                              title: Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                                               subtitle: RatingBar.builder(
                                                 unratedColor: Colors.white,
                                                 initialRating: 0,
@@ -209,11 +229,11 @@ class _bike_detailState extends State<bike_detail> {
                                                   });
                                                 },
                                               ),
-                                              leading: Image.asset("assets/img/Logo.jpg",height: mheight * 0.5,width: mwidth * 0.1,),
+                                              leading: Image.network(getUser3[index]["Profile_Image"],height: mheight * 0.5,width: mwidth * 0.1,),
                                             ),
-                                            const Padding(
+                                             Padding(
                                                 padding:EdgeInsets.all(10),
-                                                child: Text("your review", style: TextStyle(
+                                                child: Text(getUser3[index]["Comment"], style: TextStyle(
                                                   color: Colors.white,),))
                                           ],
                                         ),
@@ -234,13 +254,14 @@ class _bike_detailState extends State<bike_detail> {
           ),
         ),
 
-      bottomNavigationBar: Container(
+      bottomNavigationBar: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      :Container(
         color: Colors.deepPurple.shade800,
         padding: EdgeInsets.only(top: 10,left: 20,right: 15,bottom: 10),
         child:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("₹450/Day",style: TextStyle(fontSize: mheight*0.03,color: Colors.white),),
+            Text("₹"+ getUser2[widget.val1]["Rent_Price"].toString()+ "/Day",style: TextStyle(fontSize: mheight*0.03,color: Colors.white),),
             Container(
 
               height: mheight*0.07,
@@ -253,7 +274,7 @@ class _bike_detailState extends State<bike_detail> {
 
 
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val1, v_id: widget.bikeid)));
                 },child: Text("Book",
                 style: TextStyle(
                     fontSize: 17,

@@ -46,8 +46,7 @@ class _BikeState extends State<Bike> {
     var mheight=MediaQuery.sizeOf(context).height;
     var mwidth =MediaQuery.sizeOf(context).width;
 
-    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-        : Scaffold(
+    return Scaffold(
       appBar: AppBar(
 
         backgroundColor: Colors.transparent,
@@ -56,7 +55,8 @@ class _BikeState extends State<Bike> {
         elevation: 0,
 
       ),
-      body: Container(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      :Container(
         padding: EdgeInsets.only(left: 10,right: 10),
 
         child: GridView.builder(
@@ -127,7 +127,7 @@ class _BikeState extends State<Bike> {
                                           Row(
                                             children: [
                                               Text(
-                                                getUser2[index]["Rent_Price"] +
+                                                "₹"+ getUser2[index]["Rent_Price"] +
                                                     "/ Day",
                                                 style: TextStyle(
                                                     fontSize: 15,

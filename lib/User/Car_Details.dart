@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class car_detail extends StatefulWidget {
   final int val;
   final String carid;
-  const car_detail({required this.val,required this.carid,});
+  const car_detail({required this.val,required this.carid});
   @override
   State<car_detail> createState() => _car_detailState();
 }
@@ -22,7 +22,6 @@ class _car_detailState extends State<car_detail> {
   double rating = 0;
   bool isLoading=false;
   var data;
-  var data1;
   var getUser2;
   var getUser3;
 
@@ -43,22 +42,27 @@ class _car_detailState extends State<car_detail> {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
       });
+      if (getUser2['error'] == false) {
+        SharedPreferences setpreference = await SharedPreferences.getInstance();
+        setpreference.setString('type', data['Vehicle_Type'].toString());
+      }
     }
   }
   Future getdata3() async{
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"), body: {'Vehicle_Id': widget.carid});
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"));
     if(response.statusCode==200) {
-      data1 = response.body;
+      data = response.body;
 
       setState(() {
         isLoading=false;
-        getUser3=jsonDecode(data1!)["users"];
+        getUser3=jsonDecode(data!)["users"];
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +187,7 @@ class _car_detailState extends State<car_detail> {
                           ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 3,
+                              itemCount: 1,
                               itemBuilder: (BuildContext context,int index){
                                 return Column(
                                   children: [
@@ -191,8 +195,8 @@ class _car_detailState extends State<car_detail> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         ListTile(
-                                          trailing: const Text("Timestamp", style: TextStyle(color: Colors.white),),
-                                          title:  Text('name',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                          trailing: Text(getUser3[widget.val]["Feedback_Time"], style: TextStyle(color: Colors.white),),
+                                          title:  Text(getUser3[widget.val]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                                           subtitle: RatingBar.builder(
                                             unratedColor: Colors.white,
                                             initialRating: 0,
@@ -208,11 +212,11 @@ class _car_detailState extends State<car_detail> {
                                               });
                                             },
                                           ),
-                                          leading: Image.asset("assets/img/Logo.jpg",height: mdheight * 0.5,width: mdwidth * 0.1,),
+                                          leading: Image.network(getUser3[widget.val]["Profile_Image"],height: mdheight * 0.5,width: mdwidth * 0.1,),
                                         ),
                                         Padding(
                                             padding:EdgeInsets.all(10),
-                                            child: Text(getUser3[index]["Comment"].toString(),style: TextStyle(
+                                            child: Text(getUser3[widget.val]["Comment"],style: TextStyle(
                                               color: Colors.white,),))
                                       ],
                                     ),
@@ -238,7 +242,7 @@ class _car_detailState extends State<car_detail> {
         child:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(getUser2[widget.val]["Rent_Price"].toString()+"/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
+            Text("₹"+getUser2[widget.val]["Rent_Price"].toString()+"/Day",style: TextStyle(fontSize: mdheight*0.03,color: Colors.white),),
             SizedBox(
               height: mdheight*0.07,
               width: mdwidth*0.40,
@@ -247,7 +251,7 @@ class _car_detailState extends State<car_detail> {
                   backgroundColor: Colors.white.withOpacity(0.9), // Background color
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const Select_date()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val, v_id :widget.carid)));
                 },child: const Text("Book",
                 style: TextStyle(
                     fontSize: 17,

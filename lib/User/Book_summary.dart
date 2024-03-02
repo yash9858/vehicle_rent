@@ -9,8 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Book_summary extends StatefulWidget {
-  final String bookid;
-  const Book_summary({required this.bookid});
+  final int val3;
+  final String? bookid;
+  const Book_summary({required this.val3, required this.bookid});
 
 
   @override
@@ -21,7 +22,6 @@ class Book_summary extends StatefulWidget {
 class _Book_summaryState extends State<Book_summary> {
   var data;
   var getUser2;
-  var cat;
   bool isLoading=false;
   void initState(){
     super.initState();
@@ -94,7 +94,7 @@ void _showtimepicker(){
                   Container(
 
                     child:
-                  Image.network("https://i.pinimg.com/736x/5f/33/2d/5f332d3fbad470d3109cab05fb99beb6.jpg",fit: BoxFit.contain,
+                  Image.network(getUser2[widget.val3]["Vehicle_Image"],fit: BoxFit.contain,
                     height: mheight*0.15,width: mwidth*0.4,
 
                   )
@@ -115,7 +115,7 @@ void _showtimepicker(){
                                 color: Colors.pink.shade50,
                                 borderRadius: BorderRadius.circular(6)
                             ),
-                            child: Text('')),
+                            child: Text(getUser2[widget.val3]["Category_Name"])),
                         Row(
                           children: [
                             const Text("4.1"),
@@ -130,12 +130,12 @@ void _showtimepicker(){
                       SizedBox(height: mheight*0.01,),
 
                       //Car Name
-                      Text("Kia Seltos Htk",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                      Text(getUser2[widget.val3]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                       SizedBox(height: mheight*0.03,),
                       Row(
                         children: [
                           Text(
-                            "₹750",
+                            "₹"+getUser2[widget.val3]["Rent_Price"],
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -162,7 +162,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      children: [
                        Text("Pick-Up Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                       Text(_timeOfDay.format(context).toString(),style: TextStyle(fontSize: 16,)),
+                       Text(getUser2[widget.val3]["Start_Datetime"],style: TextStyle(fontSize: 16,)),
 
                      ],
                     ),
@@ -215,7 +215,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Amount",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
-                        Text("₹450/day",),
+                        Text("₹"+getUser2[widget.val3]["Rent_Price"]+"/day",),
                       ],
                     ),
                     SizedBox(height: mheight*0.02,),
@@ -234,7 +234,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Total",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
-                        Text("₹5990/day"),
+                        Text("₹"+getUser2[widget.val3]["Total_Price"] +"/day"),
                       ],
                     )
                   ],

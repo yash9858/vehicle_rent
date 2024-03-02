@@ -7,6 +7,7 @@ import 'package:rentify/User/About_us.dart';
 import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Edit_Profile.dart';
 import 'package:http/http.dart' as http;
+import 'package:rentify/User/Favorite_Vehicle.dart';
 
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
@@ -34,8 +35,6 @@ class _ProfileState extends State<Profile> {
 
   Future getdata() async{
     SharedPreferences share=await SharedPreferences.getInstance();
-
-    SharedPreferences setpreference = await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
     });
@@ -53,8 +52,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     var mHeight=MediaQuery.sizeOf(context).height;
-    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-    :Scaffold(
+    return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: const Text("Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
@@ -63,7 +61,8 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Colors.transparent,
           iconTheme: const IconThemeData(color: Colors.black),
         ),
-        body: SingleChildScrollView(
+        body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+        : SingleChildScrollView(
           child: Column(children: [
             // User Image
 
@@ -75,7 +74,7 @@ class _ProfileState extends State<Profile> {
                         CircleAvatar(
                           radius: 60,
                           backgroundImage: NetworkImage(
-                             getUser2[0]["Profile_Image"],
+                            getUser2[0]["Profile_Image"],
                         ),
                         )],
                     ))),
@@ -129,7 +128,7 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Forget_password()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
                   },
                   child:ListTile(
                   leading: const Icon(LineIcons.heart,color: Colors.deepPurple,),
@@ -140,7 +139,7 @@ class _ProfileState extends State<Profile> {
                   trailing:
                   IconButton(
                     onPressed: (){
-                     // Navigator.push(context, MaterialPageRoute(builder: (context)=> const Payment_Receipt()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
                     },
                     icon:const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),
