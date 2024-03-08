@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:rentify/Forget_Password.dart';
 import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/About_us.dart';
 import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Edit_Profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:rentify/User/Favorite_Vehicle.dart';
-
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
 import 'package:rentify/User/Payment_Receipt.dart';
@@ -38,7 +36,8 @@ class _ProfileState extends State<Profile> {
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Profile_User.php"),body: {'Login_Id':share.getString('id')});
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Profile_User.php"),
+        body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data = response.body;
 
@@ -48,6 +47,8 @@ class _ProfileState extends State<Profile> {
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +179,7 @@ class _ProfileState extends State<Profile> {
                   //  Navigator.push(context, MaterialPageRoute(builder: (context)=> const FeedBack_User()));
                   },
                   child: ListTile(
-                    leading: const Icon(Icons.info_outline,color: Colors.deepPurple,),
+                    leading: const Icon(Icons.payment_outlined,color: Colors.deepPurple,),
                     title: const Text(
                       "Payment"
                           ,
@@ -213,7 +214,7 @@ class _ProfileState extends State<Profile> {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> const About_us()));
                   },
                 child:ListTile(
-                    leading: const Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
+                    leading: const Icon(Icons.info_outline,color: Colors.deepPurple,),
                     title: const Text(
                       "About_Us",
                       style: TextStyle(fontSize: 20),
@@ -226,10 +227,13 @@ class _ProfileState extends State<Profile> {
                     ))),
                 const Divider(),
                 InkWell(
-                  onTap: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+                  onTap: () async {
+                    final pref = await SharedPreferences.getInstance();
+                    await pref.clear();
+                    await pref.setBool('seen', true);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
                   },
-                child: const ListTile(
+                child: ListTile(
                   leading: Icon(Icons.logout,color: Colors.deepPurple,),
                   title: Text(
                     "Log Out",

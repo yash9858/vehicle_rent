@@ -34,7 +34,8 @@ class _car_detailState extends State<car_detail> {
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"
+    ));
     if(response.statusCode==200) {
       data = response.body;
 
@@ -52,10 +53,17 @@ class _car_detailState extends State<car_detail> {
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"));
+
+    final loginUrl = Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php");
+    final response = await http
+        .post(loginUrl, body: {
+      "Vehicle_Id": widget.carid,
+    });
+
+
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         getUser3=jsonDecode(data!)["users"];
@@ -195,8 +203,8 @@ class _car_detailState extends State<car_detail> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         ListTile(
-                                          trailing: Text(getUser3[widget.val]["Feedback_Time"], style: TextStyle(color: Colors.white),),
-                                          title:  Text(getUser3[widget.val]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                          trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
+                                          title:  Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                                           subtitle: RatingBar.builder(
                                             unratedColor: Colors.white,
                                             initialRating: 0,
@@ -251,7 +259,7 @@ class _car_detailState extends State<car_detail> {
                   backgroundColor: Colors.white.withOpacity(0.9), // Background color
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val, v_id :widget.carid)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val, v_id :widget.carid,v_type: "car",)));
                 },child: const Text("Book",
                 style: TextStyle(
                     fontSize: 17,

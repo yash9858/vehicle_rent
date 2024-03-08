@@ -56,7 +56,8 @@ class _bike_detailState extends State<bike_detail> {
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",));
+
     if(response.statusCode==200) {
       data = response.body;
 
@@ -274,7 +275,7 @@ class _bike_detailState extends State<bike_detail> {
 
 
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val1, v_id: widget.bikeid)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val1, v_id: widget.bikeid,v_type: "bike", )));
                 },child: Text("Book",
                 style: TextStyle(
                     fontSize: 17,

@@ -13,7 +13,8 @@ import 'package:http/http.dart' as http;
 class Select_date extends StatefulWidget {
   final int num;
   final String v_id;
-  const Select_date({required this.num, required this.v_id});
+  final String v_type;
+  const Select_date({required this.num, required this.v_id,required this.v_type});
 
   @override
   State<Select_date> createState() => _Select_dateState();
@@ -21,30 +22,61 @@ class Select_date extends StatefulWidget {
 
 class _Select_dateState extends State<Select_date> {
 
+  TextEditingController address = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   bool isLoading=false;
   var data;
+  var getUser;
   var getUser2;
 
   void initState(){
     super.initState();
     getdata();
+    getdata2();
   }
 
   Future getdata() async{
-    SharedPreferences setpreference = await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Select_Fetch_Vehicle.php"), body: {'Vehicle_Type': setpreference.getString('type')});
+    final loginUrl = Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Select_Fetch_Vehicle.php");
+
+    final response = await http
+        .post(loginUrl, body: {
+      "Vehicle_Type": widget.v_type,
+    });
+
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data!)["users"];
+      });
+    }
+  }
+
+  Future getdata2() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Address_Booking.php"),
+        body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data = response.body;
 
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
+        address.text = getUser2[0]["Address"];
       });
     }
   }
+
 
   DateTime _PickupDate=DateTime(2023,1,12);
   TimeOfDay _PickupTime = TimeOfDay(hour: 8,minute: 10);
@@ -111,7 +143,6 @@ class _Select_dateState extends State<Select_date> {
 
       body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
       : SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
         child: Container(
           padding: const EdgeInsets.only(top:15,left: 15,right: 15,),
           child: Column(
@@ -124,7 +155,7 @@ class _Select_dateState extends State<Select_date> {
                   Container(
 
                     child:
-                    Image.network(getUser2[widget.num]["Vehicle_Image"],fit: BoxFit.contain,
+                    Image.network(getUser[widget.num]["Vehicle_Image"],fit: BoxFit.contain,
                       height: mheight*0.15,width: mwidth*0.4,
 
                     )
@@ -145,7 +176,7 @@ class _Select_dateState extends State<Select_date> {
                                   color: Colors.pink.shade50,
                                   borderRadius: BorderRadius.circular(6)
                               ),
-                              child: Text(getUser2[widget.num]["Category_Name"])),
+                              child: Text(getUser[widget.num]["Category_Name"])),
                           Row(
                             children: [
                               const Text("4.1"),
@@ -160,12 +191,12 @@ class _Select_dateState extends State<Select_date> {
                       SizedBox(height: mheight*0.01,),
 
                       //Car Name
-                      Text(getUser2[widget.num]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                      Text(getUser[widget.num]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                       SizedBox(height: mheight*0.03,),
                       Row(
                         children: [
                           Text(
-                            "₹"+getUser2[widget.num]["Rent_Price"],
+                            "₹"+getUser[widget.num]["Rent_Price"],
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -327,9 +358,11 @@ class _Select_dateState extends State<Select_date> {
               //Address
               Text("Address",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
               SizedBox(height: mheight*0.01,),
-              Container(
+              Form(
+                key : _formKey,
                 //  padding: EdgeInsets.only(left: 12,right: 12),
-                child: TextField(
+                child: TextFormField(
+                  controller: address,
                   keyboardType: TextInputType.multiline,
                   maxLines: 4,
                   cursorColor: Colors.deepPurple.shade800,
@@ -348,10 +381,7 @@ class _Select_dateState extends State<Select_date> {
                       )
                   ),
                 ),
-              ),
-
-
-
+                ),
             ],
           ),
         ),
