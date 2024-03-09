@@ -24,6 +24,8 @@ class _car_detailState extends State<car_detail> {
   var data;
   var getUser2;
   var getUser3;
+  var getSelectedVechicle;
+  List<String>? user;
 
   void initState(){
     super.initState();
@@ -63,6 +65,7 @@ class _car_detailState extends State<car_detail> {
       setState(() {
         isLoading=false;
         getUser3=jsonDecode(data!)["users"];
+
       });
     }
   }

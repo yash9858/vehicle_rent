@@ -7,7 +7,7 @@ import 'package:rentify/User/About_us.dart';
 import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Edit_Profile.dart';
 import 'package:http/http.dart' as http;
-import 'package:rentify/User/Favorite_Vehicle.dart';
+
 
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
@@ -128,7 +128,7 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
+                  //  Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
                   },
                   child:ListTile(
                   leading: const Icon(LineIcons.heart,color: Colors.deepPurple,),
@@ -139,7 +139,7 @@ class _ProfileState extends State<Profile> {
                   trailing:
                   IconButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
+                    //  Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
                     },
                     icon:const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),
@@ -193,7 +193,7 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking_user()));
                   },
                   child:ListTile(
                     leading: const Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
@@ -203,14 +203,14 @@ class _ProfileState extends State<Profile> {
                     ),
                     trailing:IconButton(
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking_user()));
                       },
                       icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                     ))),
                 const Divider(),
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const About_us()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> About_us()));
                   },
                 child:ListTile(
                     leading: const Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
@@ -220,7 +220,7 @@ class _ProfileState extends State<Profile> {
                     ),
                     trailing:IconButton(
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const About_us()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>  About_us()));
                       },
                       icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                     ))),

@@ -5,6 +5,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rentify/Admin/CancelBooking_Admin.dart';
+import 'package:rentify/User/Cancel_booking.dart';
+import 'package:rentify/User/Complain.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -258,18 +261,45 @@ void _showtimepicker(){
           ),
         ),
       ),
-      bottomSheet: Container(
+      bottomSheet:
+      Container(
         padding: EdgeInsets.only(bottom: 5,left: 10,right: 10),
-        width: double.infinity,
-        height: mheight*0.08,
-        child: MaterialButton(
-          color: Colors.deepPurple.shade800,
-          onPressed: (){
-            Navigator.pop(context);
-          },
-          child: Text("Continue", style: TextStyle(color: Colors.white),),
+      //  width: double.infinity,
+      //  height: mheight*0.08,
+        child:   Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+                 width: mwidth*0.45,
+                height: mheight*0.065,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+
+                        backgroundColor:    Colors.deepPurple.shade800,),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user()));
+                    },
+                    child: Text(
+                      "Cancel",
+                    ))),
+            Container(
+                width: mwidth*0.45,
+                height: mheight*0.065,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Complain(v_id:getUser2[widget.val3]["Vehicle_Id"])));
+                    },
+                    child: Text(
+                      "Complain",
+                    ))),
+          ],
         ),
+
       ),
+
     );
 
   }

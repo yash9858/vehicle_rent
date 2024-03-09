@@ -68,7 +68,7 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
-               //  Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser[index]["Vehicle_Id"])));
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser[index]["Vehicle_Id"])));
                 },
                 child: Container(
 
@@ -133,9 +133,9 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          Row(
+                                          const Row(
                                             children: [
-                                              const Text("4.1"),
+                                              Text("4.1"),
                                               Icon(
                                                 Icons.star,
                                                 color: Colors.orange,
