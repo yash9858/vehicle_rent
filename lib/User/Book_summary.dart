@@ -215,6 +215,14 @@ void _showtimepicker(){
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Text("Payment Mode",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                        Text(getUser2[widget.val3]["Payment_Mode"]),
+                      ],
+                    ),
+                    SizedBox(height: mheight*0.02,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Text("Amount",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
                         Text("₹"+getUser2[widget.val3]["Rent_Price"]+"/day",),
                       ],

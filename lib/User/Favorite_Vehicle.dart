@@ -18,7 +18,7 @@ class _FavoriteState extends State<Favorite> {
    return Scaffold(
      appBar: AppBar(
        centerTitle: true,
-       title: const Text("Favorite Vehicles",style: TextStyle(color: Colors.black,fontSize: 20),),
+       title:  Text("Favorite Vehicles",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight *0.030),),
        elevation: 0,
        backgroundColor: Colors.transparent,
        iconTheme: const IconThemeData(color: Colors.black),

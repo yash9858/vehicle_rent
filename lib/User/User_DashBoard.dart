@@ -51,21 +51,17 @@ class _UserDasboardState extends State<UserDasboard> {
             selectedColor: Colors.deepPurple.shade300,
           ),
 
-          /// Likes
           SalomonBottomBarItem(
             icon: Icon(Icons.directions_bike_outlined),
             title: Text("Bike"),
             selectedColor: Colors.pink,
           ),
 
-          /// Search
           SalomonBottomBarItem(
             icon: Icon(LineIcons.car),
             title: Text("Car"),
             selectedColor: Colors.blueAccent,
           ),
-
-          /// Profile
           SalomonBottomBarItem(
             icon: Icon(Icons.person),
             title: Text("Profile"),

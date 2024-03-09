@@ -54,12 +54,8 @@ class _car_detailState extends State<car_detail> {
       isLoading = true;
     });
 
-    final loginUrl = Uri.parse(
-        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php");
-    final response = await http
-        .post(loginUrl, body: {
-      "Vehicle_Id": widget.carid,
-    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
+    ),body: {'Vehicle_Id' : widget.carid});
 
 
     if(response.statusCode==200) {
@@ -97,7 +93,7 @@ class _car_detailState extends State<car_detail> {
                             },
                             icon: const Icon(Icons.arrow_back,)),
                       ),
-                      const Text("Car Details",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                      Text("Car Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mdheight*0.028),),
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: IconButton(
@@ -153,7 +149,7 @@ class _car_detailState extends State<car_detail> {
                                             BorderRadius.circular(mdheight * 0.02),
                                           )),
                                       onPressed: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const FeedBack_User()));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User()));
                                       }, child: const Text('View All Review', style: TextStyle(color: Colors.black),),),
                                   ],
                                 ),

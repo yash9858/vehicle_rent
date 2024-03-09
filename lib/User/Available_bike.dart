@@ -50,7 +50,7 @@ class _BikeState extends State<Bike> {
       appBar: AppBar(
 
         backgroundColor: Colors.transparent,
-        title: Text("Available Bikes",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.033),),
+        title: Text("Available Bikes",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.030),),
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 
@@ -90,7 +90,7 @@ class _BikeState extends State<Bike> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(getUser2[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
+                                  Text(getUser2[index]["Category_Name"],style: TextStyle(color: Colors.grey),),
                                   Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
@@ -115,7 +115,7 @@ class _BikeState extends State<Bike> {
                                     MainAxisAlignment.spaceEvenly,
                                     children: [
                                        Text(
-                                        getUser2[index]["Category_Name"],
+                                        getUser2[index]["Vehicle_Name"],
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),

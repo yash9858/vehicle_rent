@@ -78,7 +78,7 @@ class _HelpCenterState extends State<HelpCenter> {
         child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title:const Text("Help Center",style: TextStyle(color: Colors.black,fontSize: 20),),
+              title: Text("Help Center",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mdheight*0.030),),
 
               elevation: 0,
               backgroundColor: Colors.transparent,

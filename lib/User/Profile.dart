@@ -163,6 +163,7 @@ class _ProfileState extends State<Profile> {
                 ))),
                 const Divider(),
                 InkWell(
+                  onTap: (){},
                   child:ListTile(
                   leading: const Icon(Icons.policy_outlined,color: Colors.deepPurple,),
                   title: const Text(
@@ -173,41 +174,6 @@ class _ProfileState extends State<Profile> {
                   onPressed: (){},
                   icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),
-                const Divider(),
-                InkWell(
-                  onTap: (){
-                  //  Navigator.push(context, MaterialPageRoute(builder: (context)=> const FeedBack_User()));
-                  },
-                  child: ListTile(
-                    leading: const Icon(Icons.payment_outlined,color: Colors.deepPurple,),
-                    title: const Text(
-                      "Payment"
-                          ,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing:IconButton(
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Payment_Receipt()));
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                    ))),
-                const Divider(),
-                InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking()));
-                  },
-                  child:ListTile(
-                    leading: const Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
-                    title: const Text(
-                      "Cancel Booking",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing:IconButton(
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking()));
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                    ))),
                 const Divider(),
                 InkWell(
                   onTap: (){
