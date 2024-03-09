@@ -24,7 +24,7 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Cancel Booking",style: TextStyle(color: Colors.black,fontSize: 20),),
+        title: Text("Cancel Booking",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.030),),
 
         elevation: 0,
         backgroundColor: Colors.transparent,

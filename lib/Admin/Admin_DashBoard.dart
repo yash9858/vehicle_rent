@@ -16,6 +16,7 @@ import 'package:rentify/Admin/UserList_Admin.dart';
 import 'package:rentify/Admin/Vehicle_Admin.dart';
 import 'package:rentify/Admin/Vehicle_Category_Admin.dart';
 import 'package:rentify/Login_Screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class DrawerNavigationItem extends StatelessWidget {
@@ -222,10 +223,13 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   iconData: Icons.logout_outlined,
                   title: "Log Out",
                   selected: _currentIndex == 9,
-                  onTap: () =>
+                  onTap: () async
                   {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage())),
-                    _currentIndex = 0
+                    final pref = await SharedPreferences.getInstance();
+                    await pref.clear();
+                    await pref.setBool('seen', true);
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
+                    _currentIndex = 0;
                   },
                 ),
               ],

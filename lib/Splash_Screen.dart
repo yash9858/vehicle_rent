@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
     else
     {
       await pref.setBool('seen', true);
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => IntroScreen()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
 
     }
   }

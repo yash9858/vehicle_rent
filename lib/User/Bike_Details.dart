@@ -21,6 +21,26 @@ class bike_detail extends StatefulWidget {
 }
 
 class _bike_detailState extends State<bike_detail> {
+
+  bool _isfav = false;
+  int fav = 0;
+
+  void favcount()
+  {
+    setState(() {
+      if(_isfav)
+        {
+          fav -= 1;
+          _isfav = false;
+        }
+      else
+        {
+          fav += 1;
+          _isfav = true;
+        }
+    });
+  }
+
   double rating = 0;
   bool isLoading=false;
   var data;
@@ -56,7 +76,9 @@ class _bike_detailState extends State<bike_detail> {
     setState(() {
       isLoading = true;
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
+    ),body: {'Vehicle_Id' : widget.bikeid});
+
     if(response.statusCode==200) {
       data = response.body;
 
@@ -97,14 +119,15 @@ class _bike_detailState extends State<bike_detail> {
 
                                 icon: Icon(Icons.arrow_back,)),
                           ),
-                          Text("Bike Details",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          Text("Bike Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mheight*0.028),),
                           Padding(
                             padding: const EdgeInsets.only(right: 8),
                             child: IconButton(
                                 onPressed: (){},
-                                icon: Icon(LineIcons.heart)),
-                          )
-
+                                icon: (
+                                    _isfav ? Icon(Icons.favorite): Icon(Icons.favorite_border)),
+                              color: Colors.red,
+                          )),
                         ],
                       ),
                     ),
@@ -274,7 +297,7 @@ class _bike_detailState extends State<bike_detail> {
 
 
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val1, v_id: widget.bikeid)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val1, v_id: widget.bikeid,v_type: "bike", )));
                 },child: Text("Book",
                 style: TextStyle(
                     fontSize: 17,

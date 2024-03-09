@@ -45,8 +45,7 @@ class _History_pageState extends State<History_page> {
     return Scaffold(
         appBar: AppBar(
         centerTitle: true,
-          title: Text("Booking History",style: TextStyle(color: Colors.black,fontSize: 20),),
-
+          title: Text("Booking History",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mdheight*0.030),),
           elevation: 0,
           backgroundColor: Colors.transparent,
           iconTheme: const IconThemeData(color: Colors.black),

@@ -19,7 +19,7 @@ class _Payment_pageState extends State<Payment_page> {
       appBar: AppBar(
           centerTitle: true,
         backgroundColor: Colors.transparent,
-        title: Text("Payment Methods",style: TextStyle(color: Colors.black,fontSize: mheight*0.030),),
+        title: Text("Payment Methods",style: TextStyle(color: Colors.black,fontSize: mheight*0.030, fontWeight: FontWeight.bold),),
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 

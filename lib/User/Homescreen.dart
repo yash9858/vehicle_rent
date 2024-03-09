@@ -115,12 +115,17 @@ class _HomescreenState extends State<Homescreen> {
           ],
         ),
         actions: [
-          const Padding(
+           Padding(
               padding: EdgeInsets.all(8),
-              child: CircleAvatar(
-
+              child: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.white),)
+              : CircleAvatar(
                 backgroundColor: Colors.black,
-                child: Text("S"),
+                child: Text(x.toString().characters.first,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ))
         ],
       ),

@@ -1,6 +1,10 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class Edit_Profile extends StatefulWidget {
   const Edit_Profile({super.key});
@@ -10,6 +14,43 @@ class Edit_Profile extends StatefulWidget {
 }
 
 class _Edit_ProfileState extends State<Edit_Profile> {
+
+  TextEditingController user = TextEditingController();
+  TextEditingController dob = TextEditingController();
+  TextEditingController li = TextEditingController();
+  TextEditingController address = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  var data;
+  var getUser2;
+  bool isLoading=false;
+  void initState(){
+    super.initState();
+    getdata();
+  }
+
+  Future getdata() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/Insert_API/Edit_Profile_User.php"),
+        body: {'Login_Id':share.getString('id')});
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+        user.text = getUser2[0]["Name"];
+        dob.text = getUser2[0]["Dob"];
+        li.text = getUser2[0]["Lincence_Number"];
+        address.text = getUser2[0]["Address"];
+      });
+    }
+  }
+
 
   void _showDatePicker(){
     showDatePicker(
@@ -33,7 +74,8 @@ class _Edit_ProfileState extends State<Edit_Profile> {
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: SingleChildScrollView(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+          : SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(mdheight * 0.02),
           child: Column(
@@ -41,10 +83,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               Center(
                   child: Stack(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 60,
-                        backgroundImage: AssetImage(
-                            "assets/img/Logo.jpg"),
+                        // backgroundImage: (
+                        //   getUser2[0]["Profile_Image"]
+                        // ),
                       ),
                       Positioned(
                         left: 80,
@@ -58,34 +101,41 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     ],
                   )),
               SizedBox(height: mdheight * 0.04),
-              TextField(
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: "Enter Your Name",
-                    labelText: "Name",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(mdheight * 0.02)),
-                  )),
-              SizedBox(height: mdheight * 0.025,),
-              TextField(
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Your Address',
-                    labelText: "Address",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(mdheight * 0.02)),
-                ),
-              ),
-              SizedBox(height: mdheight * 0.025,),
-              TextField(
-                keyboardType: TextInputType.datetime,
-                textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextField(
+                        controller: user,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey.shade100,
+                          filled: true,
+                          hintText: "Enter Your Name",
+                          labelText: "Name",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(mdheight * 0.02)),
+                        )),
+                    SizedBox(height: mdheight * 0.025,),
+                    TextField(
+                      controller: address,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey.shade100,
+                        filled: true,
+                        hintText: 'Enter Your Address',
+                        labelText: "Address",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(mdheight * 0.02)),
+                      ),
+                    ),
+                    SizedBox(height: mdheight * 0.025,),
+                    TextField(
+                      controller: dob,
+                      keyboardType: TextInputType.datetime,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
                         fillColor: Colors.grey.shade100,
                         filled: true,
                         hintText: 'Enter Your DOB',
@@ -96,21 +146,24 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(mdheight * 0.02)),
+                      ),
                     ),
-                  ),
-              SizedBox(height: mdheight * 0.025,),
-              TextField(
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    hintText: 'Enter Your Licence Number',
-                    labelText: "Licence Number",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(mdheight * 0.02)),
-                ),
-              ),
-              SizedBox(height: mdheight * 0.025,),
+                    SizedBox(height: mdheight * 0.025,),
+                    TextFormField(
+                      controller: li,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey.shade100,
+                        filled: true,
+                        hintText: 'Enter Your Licence Number',
+                        labelText: "Licence Number",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(mdheight * 0.02)),
+                      ),
+                    ),
+                    SizedBox(height: mdheight * 0.025,),
+                  ],
+                )),
               Row(
                 children:[
                 Radio(

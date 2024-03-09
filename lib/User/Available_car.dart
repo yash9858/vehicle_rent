@@ -45,7 +45,7 @@ class _CarState extends State<Car> {
       appBar: AppBar(
 
         backgroundColor: Colors.transparent,
-        title: Text("Available cars",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.033),),
+        title: Text("Available cars",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.030),),
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 
@@ -85,7 +85,7 @@ class _CarState extends State<Car> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(getUser2[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
+                                  Text(getUser2[index]["Category_Name"],style: TextStyle(color: Colors.grey),),
                                   Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
@@ -111,7 +111,7 @@ class _CarState extends State<Car> {
                                     MainAxisAlignment.spaceEvenly,
                                     children: [
                                        Text(
-                                        getUser2[index]["Category_Name"],
+                                        getUser2[index]["Vehicle_Name"],
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
