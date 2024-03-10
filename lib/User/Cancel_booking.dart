@@ -139,7 +139,7 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
         width: mwidth,
         child: MaterialButton(
           color: Colors.deepPurple.shade800,
-          onPressed: _submit,
+          onPressed: (){_submit();_submit2();},
 
           child: Text("Cancel Ride", style: TextStyle(color: Colors.white),),
         ),
@@ -196,7 +196,51 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
       }
     }
   }
+
+
+
+//Booking Status update
+Future<void> _submit2() async {
+  // final form = formKey.currentState;
+  // if (form!.validate()) {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+    final login_url = Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Update_API/Booking_Status_update.php");
+    final response = await http
+        .post(login_url, body: {
+      "Booking_Id": widget.b_id,
+
+    });
+    if (response.statusCode == 200) {
+      logindata = jsonDecode(response.body);
+      data =
+      jsonDecode(response.body)['user'];
+      print(data);
+      setState(() {
+        isLoading = false;
+      });
+      if (logindata['error'] == false) {
+
+
+        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => Home()), (Route<dynamic> route) => false);
+      }else{
+        Fluttertoast.showToast(
+            msg: logindata['message'].toString(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2
+        );
+      }
+    }
+  }
+
 }
+
+
+
+
 
 
 

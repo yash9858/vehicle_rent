@@ -91,20 +91,20 @@ class _ProfileState extends State<Profile> {
               children: [
                 InkWell(
                   onTap: (){
-                    Navigator.push(context , MaterialPageRoute(builder: (context)=> const Edit_Profile()));
+                   // Navigator.push(context , MaterialPageRoute(builder: (context)=>  Edit_Profile(lid:getUser2["Login_Id"])));
                   },
                 child: ListTile(
                   leading: const Icon(
                     Icons.account_circle_outlined,
                     color: Colors.deepPurple,
                   ),
-                  title: const Text(
+                  title:  Text(
                     "Edit Profile",
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing:IconButton(
                     onPressed: (){
-                      Navigator.push(context , MaterialPageRoute(builder: (context)=> const Edit_Profile()));
+                      Navigator.push(context , MaterialPageRoute(builder: (context)=>  Edit_Profile()));
                     },
                     icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),
@@ -198,7 +198,7 @@ class _ProfileState extends State<Profile> {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> About_us()));
                   },
                 child:ListTile(
-                    leading: const Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
+                    leading: const Icon(Icons.info,color: Colors.deepPurple,),
                     title: const Text(
                       "About_Us",
                       style: TextStyle(fontSize: 20),

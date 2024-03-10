@@ -273,35 +273,36 @@ void _showtimepicker(){
         child:   Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-       //  if(getUser2[widget.val3]["Booking_Status"]==1)
+       if(getUser2[widget.val3]["Booking_Status"]=="1") ...[
+         Expanded(
+           child: Container(
+               height: mheight*0.065,
+               child: ElevatedButton(
+                 style: ElevatedButton.styleFrom(
 
-
-             Container(
-                 width: mwidth*0.45,
-                height: mheight*0.065,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-
-                        backgroundColor:    Colors.deepPurple.shade800,),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[widget.val3]["Payment_Id"],b_id:getUser2[widget.val3]["Booking_Id"])));
-                    },
-                    child: Text(
-                      "Cancel"),)),
-
-            Container(
-                width: mwidth*0.45,
-                height: mheight*0.065,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Complain(v_id:getUser2[widget.val3]["Vehicle_Id"])));
-                    },
-                    child: Text(
-                      "Complain",
-                    ))),
+                   backgroundColor:    Colors.deepPurple.shade800,),
+                 onPressed: () {
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[widget.val3]["Payment_Id"],b_id:getUser2[widget.val3]["Booking_Id"])));
+                 },
+                 child: Text(
+                     "Cancel"),)),
+         ),
+         SizedBox(width: 16,),
+       ],
+            Expanded(
+              child: Container(
+                  height: mheight*0.065,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Complain(v_id:getUser2[widget.val3]["Vehicle_Id"])));
+                      },
+                      child: Text(
+                        "Complain",
+                      ))),
+            ),
           ],
         ),
 
@@ -311,7 +312,3 @@ void _showtimepicker(){
 
   }
 }
-Widget cat(){
-  return Container();
-}
-

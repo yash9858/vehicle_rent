@@ -1,13 +1,20 @@
 // ignore_for_file: camel_case_types
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 
 class Edit_Profile extends StatefulWidget {
-  const Edit_Profile({super.key});
+ 
+   Edit_Profile({super.key});
 
   @override
   State<Edit_Profile> createState() => _Edit_ProfileState();
@@ -28,26 +35,95 @@ class _Edit_ProfileState extends State<Edit_Profile> {
   void initState(){
     super.initState();
     getdata();
+  //  print(widget.lid);
   }
 
   Future getdata() async{
     SharedPreferences share=await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
+     // print(share.getString('id'));
     });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/Insert_API/Edit_Profile_User.php"),
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Edit_Profile_User.php"),
         body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data = response.body;
 
       setState(() {
         isLoading=false;
+
         getUser2=jsonDecode(data!)["users"];
         user.text = getUser2[0]["Name"];
         dob.text = getUser2[0]["Dob"];
         li.text = getUser2[0]["Lincence_Number"];
         address.text = getUser2[0]["Address"];
       });
+    }
+  }
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+  Future _getImage() async {
+
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile!.path);
+    });
+    print(_image);
+  }
+  uploadImageMedia(File fileImage) async {
+    print(fileImage);
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final mimeTypeData = lookupMimeType(fileImage.path, headerBytes: [0xFF, 0xD8])?.split('/');
+    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse("https://road-runner24.000webhostapp.com/API/Update_API/Edit_Profile.php"));
+    final file = await http.MultipartFile.fromPath('Profile_Image', fileImage.path,
+        contentType: MediaType(mimeTypeData![0], mimeTypeData[1]));
+
+    imageUploadRequest.fields['Name'] = user.text;
+    imageUploadRequest.fields['Lincence_Number'] = li.text;
+    imageUploadRequest.fields['DOB'] = dob.text;
+    imageUploadRequest.fields['Address'] = address.text;
+    imageUploadRequest.fields['Gender'] = "male";
+
+
+
+   imageUploadRequest.fields['Login_Id'] = prefs.getString('id')!;
+   print(prefs.getString('heelo'));
+    imageUploadRequest.files.add(file);
+    try {
+      //_isLoading = true;
+      final streamedResponse = await imageUploadRequest.send();
+      streamedResponse.stream.transform(utf8.decoder).listen((value) {
+        if(streamedResponse.statusCode==200){
+          setState(() {
+            //_isLoading=false;
+          });
+          var logindata;
+          logindata = jsonDecode(value);
+          print(logindata);
+          Fluttertoast.showToast(
+              msg: logindata['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          Navigator.of(context).pop();
+          print(streamedResponse.stream);
+          print(value);
+        }else{
+          setState(() {
+            //_isLoading=false;
+          });
+          Fluttertoast.showToast(
+              msg: "Something went wrong",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          print(value);
+        }
+      });
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -85,7 +161,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        // backgroundImage: (
+                      child:     _image==null?Image.network(getUser2[0]["Profile_Image"],height: 150,width: 150,fit: BoxFit.fill,):
+          Image.file(
+          _image!,height: 150,width: 150,
+          fit: BoxFit.fill,),
+                        // child:Image.network (
                         //   getUser2[0]["Profile_Image"]
                         // ),
                       ),
@@ -94,7 +174,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         bottom: 1,
                         child: CircleAvatar(
                           child: IconButton(
-                              onPressed: (){},
+                              onPressed: (){
+                                _getImage();
+                              },
                               icon:const Icon(Icons.edit)),
                         ),
                       )
@@ -207,7 +289,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
         width: mdwidth,
         child: MaterialButton(
           onPressed: (){
-            Navigator.pop(context);
+            uploadImageMedia(_image!);
           },
           child: Text('Save Details',
               style: TextStyle(
