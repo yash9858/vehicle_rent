@@ -13,8 +13,8 @@ import 'package:http/http.dart' as http;
 
 class Book_summary extends StatefulWidget {
   final int val3;
-  final String? bookid;
-  const Book_summary({required this.val3, required this.bookid});
+  final String? Booking_Id;
+  const Book_summary({required this.val3, required this.Booking_Id});
 
 
   @override
@@ -24,6 +24,7 @@ class Book_summary extends StatefulWidget {
 
 class _Book_summaryState extends State<Book_summary> {
   var data;
+
   var getUser2;
   bool isLoading=false;
   void initState(){
@@ -37,8 +38,11 @@ class _Book_summaryState extends State<Book_summary> {
     setState(() {
       isLoading = true;
     });
+    Map senddata ={
+      'Booking_Id': widget.Booking_Id
+    };
     http.Response response = await http.post(Uri.parse(
-        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_Summery_User.php"));
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_Summery_User.php" ),body:senddata);
     if (response.statusCode == 200) {
       data = response.body;
 
@@ -269,7 +273,10 @@ void _showtimepicker(){
         child:   Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+       //  if(getUser2[widget.val3]["Booking_Status"]==1)
+
+
+             Container(
                  width: mwidth*0.45,
                 height: mheight*0.065,
                 child: ElevatedButton(
@@ -277,11 +284,11 @@ void _showtimepicker(){
 
                         backgroundColor:    Colors.deepPurple.shade800,),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[widget.val3]["Payment_Id"],b_id:getUser2[widget.val3]["Booking_Id"])));
                     },
                     child: Text(
-                      "Cancel",
-                    ))),
+                      "Cancel"),)),
+
             Container(
                 width: mwidth*0.45,
                 height: mheight*0.065,
@@ -303,5 +310,8 @@ void _showtimepicker(){
     );
 
   }
+}
+Widget cat(){
+  return Container();
 }
 

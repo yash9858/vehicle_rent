@@ -36,6 +36,10 @@ class _History_pageState extends State<History_page> {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
       });
+      if (getUser2['error'] == false) {
+        // SharedPreferences setpreference = await SharedPreferences.getInstance();
+        // setpreference.setString('b_id', getUser2['Booking_Id']);
+      }
     }
   }
   @override
@@ -127,7 +131,8 @@ class _History_pageState extends State<History_page> {
                             ],
                           ),
                           TextButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Book_summary(val3: index,bookid: getUser2[index]["Booking_Id"])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Book_summary(val3: index,Booking_Id: getUser2[index]["Booking_Id"])));
+
                           }, child: Text("View"))
                         ],
                       ),

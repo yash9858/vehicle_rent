@@ -191,23 +191,8 @@ class _ProfileState extends State<Profile> {
                       icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                     ))),
                 const Divider(),
-                InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking_user()));
-                  },
-                  child:ListTile(
-                    leading: const Icon(Icons.cancel_outlined,color: Colors.deepPurple,),
-                    title: const Text(
-                      "Cancel Booking",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing:IconButton(
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Cancel_booking_user()));
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                    ))),
-                const Divider(),
+
+
                 InkWell(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> About_us()));
