@@ -131,7 +131,7 @@ class _History_pageState extends State<History_page> {
                             ],
                           ),
                           TextButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Book_summary(val3: index,Booking_Id: getUser2[index]["Booking_Id"])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Book_summary(Booking_Id: getUser2[index]["Booking_Id"])));
 
                           }, child: Text("View"))
                         ],

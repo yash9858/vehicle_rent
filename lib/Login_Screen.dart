@@ -225,6 +225,7 @@ Future<void> _submit() async {
         setpreference.setString('uname', data['User_Name'].toString());
         setpreference.setString('email', data['Email'].toString());
         setpreference.setString('Role', data['Role'].toString());
+        setpreference.setString('vid', data['Vehicle_Id'].toString());
         if(data["Role"]=="1")
           {
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const UserDasboard()), (Route<dynamic> route) => false);

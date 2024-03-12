@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Car_Details.dart';
 
 class Car extends StatefulWidget {
@@ -17,10 +18,15 @@ class _CarState extends State<Car> {
 
   bool isLoading=false;
   var data;
+  var data3;
   var getUser2;
+  var getUser3;
+  List list = [];
+
   void initState(){
     super.initState();
     getdata2();
+    ratings();
   }
   Future getdata2() async{
     setState(() {
@@ -36,6 +42,41 @@ class _CarState extends State<Car> {
       });
     }
   }
+
+  Future ratings() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
+    ),body: {'Vehicle_Id' : share.getString('vid')});
+
+    if(response.statusCode==200) {
+      data3 = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser3=jsonDecode(data3!)["users"];
+        for(var data in getUser3){
+          list.add(double.parse(data["Ratings"]));
+        }
+      }
+      );
+    }
+  }
+
+  double avg()
+  {
+    if(list.isEmpty)
+      return 0.0;
+    double sum = 0.0;
+    for(var rating in list)
+    {
+      sum += rating;
+    }
+    return sum /list.length;
+  }
+
   @override
   Widget build(BuildContext context) {
     var mheight=MediaQuery.sizeOf(context).height;
@@ -129,7 +170,7 @@ class _CarState extends State<Car> {
                                           ),
                                           Row(
                                             children: [
-                                              const Text("4.1"),
+                                              Text(avg().toString()),
                                               Icon(
                                                 Icons.star,
                                                 color: Colors.orange,

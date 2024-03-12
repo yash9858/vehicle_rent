@@ -1,14 +1,10 @@
-
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:rentify/User/Payment_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
 
 class Select_date extends StatefulWidget {
   final int num;
@@ -22,21 +18,36 @@ class Select_date extends StatefulWidget {
 
 class _Select_dateState extends State<Select_date> {
 
+  TextEditingController startdate = TextEditingController();
+  TextEditingController returndate = TextEditingController();
+  TextEditingController starttime = TextEditingController();
+  TextEditingController returntime = TextEditingController();
+  final _formKey2 = GlobalKey<FormState>();
+  var logindata;
+
   TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   bool isLoading=false;
   var data;
+  var data2;
+  var data3;
+  var data4;
+  List list= [];
   var getUser;
   var getUser2;
+  var getUser3;
+  var getUser4;
 
   void initState(){
     super.initState();
-    getdata();
-    getdata2();
+    v_det();
+    address_fetch();
+    ratings();
+    address_update();
   }
 
-  Future getdata() async{
+  Future v_det() async{
     setState(() {
       isLoading = true;
     });
@@ -58,7 +69,7 @@ class _Select_dateState extends State<Select_date> {
     }
   }
 
-  Future getdata2() async{
+  Future address_fetch() async{
     SharedPreferences share=await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
@@ -77,19 +88,137 @@ class _Select_dateState extends State<Select_date> {
     }
   }
 
+  Future address_update() async {
+    SharedPreferences share = await SharedPreferences.getInstance();
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      final login_url = Uri.parse(
+          "https://road-runner24.000webhostapp.com/API/Update_API/Address_Booking.php");
+      final response = await http
+          .post(login_url, body: {
+        "Login_Id": share.getString('id'),
+        "Address": address.text,
+      });
+      if (response.statusCode == 200) {
+        data2 = jsonDecode(response.body);
+        getUser4 = jsonDecode(response.body)["users"];
+        setState(() {
+          isLoading = false;
+        });
+        if (data2['error'] == false) {
+          Fluttertoast.showToast(
+              msg: data2['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page()));
+        }else{
+          Fluttertoast.showToast(
+              msg: data2['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+        }
+      }
+    }
+  }
 
-  DateTime _PickupDate=DateTime(2023,1,12);
-  TimeOfDay _PickupTime = TimeOfDay(hour: 8,minute: 10);
-  DateTime _ReturnDate=DateTime(2023,1,12);
-  TimeOfDay _ReturnTime = TimeOfDay(hour: 8,minute: 10);
+
+  Future ratings() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
+    ),body: {'Vehicle_Id' : widget.v_id});
+
+    if(response.statusCode==200) {
+      data3 = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser3=jsonDecode(data3!)["users"];
+        for(var data in getUser3){
+          list.add(double.parse(data["Ratings"]));
+        }
+      }
+      );
+    }
+  }
+
+  double avg()
+  {
+    if(list.isEmpty)
+      return 0.0;
+    double sum = 0.0;
+    for(var rating in list)
+    {
+      sum += rating;
+    }
+    return sum /list.length;
+  }
+
+  Future<void> _submit() async {
+    SharedPreferences s=await SharedPreferences.getInstance();
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      final login_url = Uri.parse(
+          "https://road-runner24.000webhostapp.com/API/Insert_API/Booking_Insert.php");
+      final response = await http
+          .post(login_url, body: {
+        "Start_Date": (_PickupDate.year).toString()+"-"+(_PickupDate.month).toString()+"-"+(_PickupDate.day).toString(),
+        "Start_Time": (_PickupTime.hour).toString()+":"+(_PickupTime.minute).toString(),
+        "Return_Date": (_ReturnDate.year).toString()+"-"+(_ReturnDate.month).toString()+"-"+(_ReturnDate.day).toString(),
+        "Return_Time": (_ReturnTime.hour).toString()+":"+(_ReturnTime.minute).toString(),
+        "Vehicle_Id": widget.v_id,
+        "Vehicle_Type": widget.v_type,
+        "Login_Id":s.getString('id'),
+      });
+      if (response.statusCode == 200) {
+        logindata = jsonDecode(response.body);
+        data = jsonDecode(response.body)['user'];
+        setState(() {
+          isLoading = false;
+        });
+        if (logindata['error'] == false) {
+          Fluttertoast.showToast(
+              msg: logindata['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page()));
+        }else{
+          Fluttertoast.showToast(
+              msg: logindata['message'].toString(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+        }
+      }
+    }
+
+  }
+
+  DateTime _PickupDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
+  TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour,minute: DateTime.now().minute);
+  DateTime _ReturnDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
+  TimeOfDay _ReturnTime = TimeOfDay(hour: DateTime.now().hour,minute: DateTime.now().minute);
+
   void Pickupdate(){
     showDatePicker(
       context: context,
-      firstDate: DateTime(2020), lastDate: DateTime(2025), initialDate: _PickupDate,).then((value){
+      firstDate: DateTime(DateTime.now().year, DateTime.now().month , DateTime.now().day), lastDate: DateTime(2025), initialDate: _PickupDate,).then((value){
       setState(() {
         _PickupDate=value!;
-
-
       });
     });
 
@@ -97,7 +226,7 @@ class _Select_dateState extends State<Select_date> {
   void ReturnDate(){
     showDatePicker(
       context: context,
-      firstDate: DateTime(2020), lastDate: DateTime(2025), initialDate: _PickupDate,).then((value){
+      firstDate: DateTime(DateTime.now().year, DateTime.now().month , DateTime.now().day), lastDate: DateTime(2025), initialDate: _PickupDate,).then((value){
       setState(() {
 
         _ReturnDate=value!;
@@ -110,7 +239,6 @@ class _Select_dateState extends State<Select_date> {
     showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value){
       setState(() {
         _PickupTime=value!;
-
       });
     });
   }
@@ -122,30 +250,26 @@ class _Select_dateState extends State<Select_date> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
     var mwidth = MediaQuery.sizeOf(context).width;
-    //var time.text="helo";
     return Scaffold(
       appBar: AppBar(
-
         backgroundColor: Colors.transparent,
         title: Text("Select Date and Time",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: mheight*0.030),),
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-
       ),
-
-
-
-
 
       body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
       : SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.only(top:15,left: 15,right: 15,),
-          child: Column(
+          child: Form(
+              key: _formKey2,
+              child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -170,16 +294,18 @@ class _Select_dateState extends State<Select_date> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
+                          isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                          : Container(
                               padding: EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
                               decoration: BoxDecoration(
                                   color: Colors.pink.shade50,
                                   borderRadius: BorderRadius.circular(6)
                               ),
                               child: Text(getUser[widget.num]["Category_Name"])),
-                          Row(
+                          isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                          : Row(
                             children: [
-                              const Text("4.1"),
+                              Text(avg().toString()),
                               Icon(
                                 Icons.star,
                                 color: Colors.orange,
@@ -238,16 +364,15 @@ class _Select_dateState extends State<Select_date> {
                               )
 
                           ),
-                          child: Row(
+                            child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                             children: [
                               Text(_PickupTime.format(context).toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
                               IconButton(onPressed: PickupTime, icon: Icon(Icons.timer_outlined,color: Colors.deepPurple.shade400,))
                             ],
-                          ),
+                          )),
 
-                        ),
 
 
                         //Day Row
@@ -360,7 +485,6 @@ class _Select_dateState extends State<Select_date> {
               SizedBox(height: mheight*0.01,),
               Form(
                 key : _formKey,
-                //  padding: EdgeInsets.only(left: 12,right: 12),
                 child: TextFormField(
                   controller: address,
                   keyboardType: TextInputType.multiline,
@@ -385,14 +509,15 @@ class _Select_dateState extends State<Select_date> {
             ],
           ),
         ),
-      ),
+      )),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(bottom: 5,left: 10,right: 10),
         width: double.infinity,
         height: mheight*0.08,
         child: ElevatedButton(
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> Payment_page()));
+            address_update();
+            _submit();
           },
           child: Text("Payment",style: TextStyle(fontSize: 15),),
         ),

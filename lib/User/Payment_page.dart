@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:rentify/User/Add_Card.dart';
 import 'package:rentify/User/User_DashBoard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class Payment_page extends StatefulWidget {
   const Payment_page({super.key});
@@ -10,7 +14,68 @@ class Payment_page extends StatefulWidget {
 }
 
 class _Payment_pageState extends State<Payment_page> {
+
+  bool isLoading=false;
+  var data;
+  var data2;
+  var getUser2;
+  var getUser3;
+  var bid;
+
+
+  void initState(){
+    super.initState();
+    booking();
+    payment();
+  }
+
+
+  Future booking() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Payment_Booking_Fetch.php"),
+        body: {'Login_Id':share.getString('id')});
+    if(response.statusCode==200) {
+      data = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+        bid = jsonDecode(data!)["users"][0]["Booking_Id"];
+      });
+    }
+  }
+  Future payment() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Insert_API/Payment_Insert.php"),
+        body: {
+          'Payment_Mode': selectedOption,
+          'Booking_Id': bid,
+          'Total_Price': "3000",
+          'Login_Id':share.getString('id')});
+    if(response.statusCode==200) {
+      data2 = response.body;
+      print(data2);
+      setState(() {
+        isLoading=false;
+        getUser3=jsonDecode(data2!)["users"];
+      });
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
+    }
+  }
+
+
+
+
   var selectedOption;
+
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -49,7 +114,7 @@ class _Payment_pageState extends State<Payment_page> {
                     leading: Icon(Icons.money,color: Colors.deepPurple.shade400,),
                     title: const Text('cash',style: TextStyle(color: Colors.grey)),
                     trailing: Radio(
-                      value: 1,
+                      value: 'cash',
                       activeColor: Colors.deepPurple.shade400,
                       groupValue: selectedOption,
                       onChanged: (value) {
@@ -147,7 +212,7 @@ class _Payment_pageState extends State<Payment_page> {
         height: mheight*0.08,
         child: ElevatedButton(
           onPressed: (){
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
+            payment();
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

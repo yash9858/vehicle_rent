@@ -22,38 +22,29 @@ class bike_detail extends StatefulWidget {
 
 class _bike_detailState extends State<bike_detail> {
 
-  bool _isfav = false;
-  int fav = 0;
-
-  void favcount()
-  {
-    setState(() {
-      if(_isfav)
-        {
-          fav -= 1;
-          _isfav = false;
-        }
-      else
-        {
-          fav += 1;
-          _isfav = true;
-        }
-    });
-  }
-
   double rating = 0;
   bool isLoading=false;
   var data;
+  var data2;
+  var data3;
   var getUser2;
   var getUser3;
+  List list=[];
+  var f1;
+  var f2;
+  var f3;
+  var f4;
+  var f5;
 
   void initState(){
     super.initState();
-    getdata();
-    getdata2();
+    bike_det();
+    star_avg();
+    star_count();
+
   }
 
-  Future getdata() async{
+  Future bike_det() async{
     setState(() {
       isLoading = true;
     });
@@ -72,7 +63,7 @@ class _bike_detailState extends State<bike_detail> {
     }
   }
 
-  Future getdata2() async{
+  Future star_avg() async{
     setState(() {
       isLoading = true;
     });
@@ -80,15 +71,55 @@ class _bike_detailState extends State<bike_detail> {
     ),body: {'Vehicle_Id' : widget.bikeid});
 
     if(response.statusCode==200) {
-      data = response.body;
+      data2 = response.body;
 
       setState(() {
         isLoading=false;
-        getUser3=jsonDecode(data!)["users"];
-      });
+        getUser3=jsonDecode(data2!)["users"];
+        for(var data in getUser3){
+          list.add(double.parse(data["Ratings"]));
+        }
+        }
+      );
     }
   }
 
+  Future star_count() async{
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse(""
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Feedback_Star_Avg.php",
+    ),body: {'Vehicle_Id' : widget.bikeid});
+
+    if(response.statusCode==200) {
+      data3 = response.body;
+
+      setState(() {
+        isLoading=false;
+        f1 = jsonDecode(data3!)["FEEDBACK1"];
+        f2 = jsonDecode(data3!)["FEEDBACK2"];
+        f3 = jsonDecode(data3!)["FEEDBACK3"];
+        f4 = jsonDecode(data3!)["FEEDBACK4"];
+        f5 = jsonDecode(data3!)["FEEDBACK5"];
+      }
+      );
+    }
+  }
+
+
+
+  double avg()
+  {
+    if(list.isEmpty)
+      return 0.0;
+    double sum = 0.0;
+    for(var rating in list)
+      {
+        sum += rating;
+      }
+    return sum /list.length;
+  }
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -98,7 +129,6 @@ class _bike_detailState extends State<bike_detail> {
         backgroundColor: Colors.white,
         body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
           : SafeArea(
-
           child:Stack(
             children: [
               Container(
@@ -125,7 +155,7 @@ class _bike_detailState extends State<bike_detail> {
                             child: IconButton(
                                 onPressed: (){},
                                 icon: (
-                                    _isfav ? Icon(Icons.favorite): Icon(Icons.favorite_border)),
+                                    Icon(Icons.favorite)),
                               color: Colors.red,
                           )),
                         ],
@@ -136,16 +166,15 @@ class _bike_detailState extends State<bike_detail> {
                 ),
               ),
               SingleChildScrollView(
-                physics: FixedExtentScrollPhysics(),
                 child: Padding(
-                  padding:  EdgeInsets.only(top: 300),
+                  padding:  EdgeInsets.only(top: mheight * 0.37),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.deepPurple.shade800,
                         borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
                     ),
 
-                    padding: EdgeInsets.only(left: 20,right: 20),
+                    padding:  EdgeInsets.symmetric(horizontal: mwidth * 0.035),
                     child: Column(
                       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,11 +189,10 @@ class _bike_detailState extends State<bike_detail> {
                         ),
 
                         //overview
-                        SizedBox(height: mheight*0.02,),
+                        SizedBox(height: mheight*0.022,),
 
-                        Container(
-                          child: Text(getUser2[widget.val1]["Vehicle_Description"],style: TextStyle(color: Colors.grey),),
-                        ),
+                        Text(getUser2[widget.val1]["Vehicle_Description"],style: TextStyle(color: Colors.grey),),
+                        SizedBox(height: mheight*0.01,),
 
 
                         Column(
@@ -186,37 +214,66 @@ class _bike_detailState extends State<bike_detail> {
                                                 BorderRadius.circular(mheight * 0.02),
                                               )),
                                           onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val1, v_id: widget.bikeid,v_type: "bike")));
                                           }, child: Text('View All Review', style: TextStyle(color: Colors.black),),),
                                       ],
                                     ),
                                     const SizedBox(
                                       height: 15,
                                     ),
-                                    const RatingSummary(
-                                      counter: 15,
-                                      average: 4,
+                                    f1==null && f2==null && f3==null && f4==null && f5==null?
+                                    RatingSummary(
+                                      counter: 1,
+                                      average: 0,
                                       averageStyle: TextStyle(
                                         color: Colors.white,
                                         fontSize: 30,
                                       ),
-                                      counterFiveStars: 7,
+                                      counterFiveStars: 0,
                                       labelCounterFiveStarsStyle: TextStyle(
                                         color: Colors.white,
                                       ),
-                                      counterFourStars: 4,
+                                      counterFourStars: 0,
                                       labelCounterFourStarsStyle: TextStyle(
                                         color: Colors.white,
                                       ),
-                                      counterThreeStars: 2,
+                                      counterThreeStars: 0,
                                       labelCounterThreeStarsStyle: TextStyle(
                                         color: Colors.white,
                                       ),
-                                      counterTwoStars: 1,
+                                      counterTwoStars: 0,
                                       labelCounterTwoStarsStyle: TextStyle(
                                         color: Colors.white,
                                       ),
-                                      counterOneStars: 1,
+                                      counterOneStars: 0,
+                                      labelCounterOneStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                     : RatingSummary(
+                                      counter: f1.length + f2.length + f3.length + f4.length + f5.length,
+                                      average: avg(),
+                                      averageStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                      ),
+                                      counterFiveStars: f5.length,
+                                      labelCounterFiveStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterFourStars: f4.length,
+                                      labelCounterFourStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterThreeStars: f3.length,
+                                      labelCounterThreeStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterTwoStars: f2.length,
+                                      labelCounterTwoStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterOneStars: f1.length,
                                       labelCounterOneStarsStyle: TextStyle(
                                         color: Colors.white,
                                       ),
@@ -224,10 +281,16 @@ class _bike_detailState extends State<bike_detail> {
                                   ],
                                 ),
                               ),
-                              ListView.builder(
+                              SizedBox(height: mheight * 0.02),
+                              getUser3==null?Column(children:[
+                                SizedBox(height: 42,),
+                                Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
+                                SizedBox(height: 42,),
+                              ])
+                              : ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: 3,
+                                  itemCount: getUser3.length,
                                   itemBuilder: (BuildContext context,int index){
                                     return Column(
                                       children: [
@@ -238,14 +301,16 @@ class _bike_detailState extends State<bike_detail> {
                                               trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
                                               title: Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                                               subtitle: RatingBar.builder(
+
+                                                ignoreGestures: true,
                                                 unratedColor: Colors.white,
-                                                initialRating: 0,
+                                                initialRating: double.parse(getUser3[index]["Ratings"]),
                                                 minRating: 0,
                                                 direction: Axis.horizontal,
-                                                itemSize: 25,
+                                                itemSize: 23,
                                                 itemCount: 5,
                                                 allowHalfRating: true,
-                                                itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
+                                                itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber, size: 2),
                                                 onRatingUpdate: (value) {
                                                   setState(() {
                                                     rating = value;
@@ -266,10 +331,10 @@ class _bike_detailState extends State<bike_detail> {
                                       ],
                                     );
                                   }),
-                              SizedBox(height: mheight * 0.012,),
-                            ]),
+                              SizedBox(height: mheight * 0.012,)
+                            ])
                         // Price and button
-                      ],
+                      ]
                     ),
                   ),
                 )

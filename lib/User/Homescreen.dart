@@ -22,6 +22,7 @@ class Homescreen extends StatefulWidget {
 class _HomescreenState extends State<Homescreen> {
 
   String? data;
+  String? data2;
   var getUser;
   var getUser2;
   var x;
@@ -56,11 +57,11 @@ class _HomescreenState extends State<Homescreen> {
     });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
     if(response.statusCode==200) {
-      data = response.body;
+      data2 = response.body;
 
       setState(() {
         isLoading=false;
-        getUser2=jsonDecode(data!)["users"];
+        getUser2=jsonDecode(data2!)["users"];
       });
     }
   }
@@ -454,19 +455,16 @@ class _HomescreenState extends State<Homescreen> {
                                   padding: EdgeInsets.only(
                                       left: 4, bottom: 2, right: 4),
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Text(getUser2[index]["Vehicle_Name"],
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),),
                                         Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
+                                            Text(getUser2[index]["Vehicle_Name"],
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),),
                                             Text(
                                               "₹"+getUser2[index]["Rent_Price"] +
                                                   "/ Day",
@@ -474,16 +472,6 @@ class _HomescreenState extends State<Homescreen> {
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            Row(
-                                              children: [
-                                                const Text("4.1"),
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.orange,
-                                                  size: 18,
-                                                )
-                                              ],
-                                            )
                                           ],
                                         ),
                                       ]),
@@ -537,7 +525,7 @@ class _HomescreenState extends State<Homescreen> {
                   itemBuilder: (BuildContext context, int index) {
                       return  GestureDetector(
                           onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail(val1:index, bikeid:getUser3[index]["Vehicle_Id"])));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> bike_detail(val1:index, bikeid:getUser3[index]["Vehicle_Id"])));
                       },
                         child: Card(
                           elevation: 6,
@@ -581,18 +569,17 @@ class _HomescreenState extends State<Homescreen> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Text(
-                                          getUser3[index]["Vehicle_Name"],
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+
                                         Row(
                                           mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              children: [
+                                                Text(
+                                                  getUser3[index]["Vehicle_Name"],
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
                                                  Text(
                                                   "₹" +getUser3[index]["Rent_Price"] +
                                                        "/ Day",
@@ -601,18 +588,6 @@ class _HomescreenState extends State<Homescreen> {
                                                       fontWeight: FontWeight
                                                           .bold),
                                                 ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Text("4.1"),
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.orange,
-                                                  size: 18,
-                                                )
-                                              ],
-                                            )
                                           ],
                                         ),
                                       ]),
