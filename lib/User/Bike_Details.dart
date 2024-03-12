@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
+
 import 'package:rentify/User/Homescreen.dart';
 import 'package:rating_summary/rating_summary.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -23,7 +23,7 @@ class bike_detail extends StatefulWidget {
 class _bike_detailState extends State<bike_detail> {
 
   double rating = 0;
-  bool isLoading=false;
+  bool isLoading=true;
   var data;
   var data2;
   var data3;
@@ -45,13 +45,9 @@ class _bike_detailState extends State<bike_detail> {
   }
 
   Future bike_det() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
@@ -64,37 +60,28 @@ class _bike_detailState extends State<bike_detail> {
   }
 
   Future star_avg() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.bikeid});
-
     if(response.statusCode==200) {
       data2 = response.body;
-
       setState(() {
         isLoading=false;
         getUser3=jsonDecode(data2!)["users"];
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
         }
+        star_count();
         }
       );
     }
   }
 
   Future star_count() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse(""
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Feedback_Star_Avg.php",
     ),body: {'Vehicle_Id' : widget.bikeid});
-
     if(response.statusCode==200) {
       data3 = response.body;
-
       setState(() {
         isLoading=false;
         f1 = jsonDecode(data3!)["FEEDBACK1"];

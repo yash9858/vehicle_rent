@@ -7,7 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Payment_page extends StatefulWidget {
-  const Payment_page({super.key});
+  final String v2_id;
+  const Payment_page({super.key ,required this.v2_id});
 
   @override
   State<Payment_page> createState() => _Payment_pageState();
@@ -18,15 +19,21 @@ class _Payment_pageState extends State<Payment_page> {
   bool isLoading=false;
   var data;
   var data2;
+  var data3;
+  var data4;
   var getUser2;
   var getUser3;
   var bid;
+  var aval;
+  var bstat;
 
 
   void initState(){
     super.initState();
     booking();
     payment();
+    available();
+    Bstatus();
   }
 
 
@@ -48,6 +55,7 @@ class _Payment_pageState extends State<Payment_page> {
       });
     }
   }
+
   Future payment() async{
     SharedPreferences share=await SharedPreferences.getInstance();
     setState(() {
@@ -71,7 +79,44 @@ class _Payment_pageState extends State<Payment_page> {
     }
   }
 
+  Future available() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Update_API/Available_Status.php"),
+        body: {'Vehicle_Id' : widget.v2_id}
+        );
+    if(response.statusCode==200) {
+      data3 = response.body;
+      print(data3);
+      setState(() {
+        isLoading=false;
+        aval=jsonDecode(data3!)["users"];
+      });
+    }
+  }
 
+  Future Bstatus() async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    setState(() {
+      isLoading = true;
+    });
+    http.Response response= await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Update_API/Booking_Status_Update_Payment.php"),
+        body: {
+          'Booking_Id': bid,});
+    if(response.statusCode==200) {
+      data4 = response.body;
+      print(data4);
+      setState(() {
+        isLoading=false;
+        bstat=jsonDecode(data4!)["users"];
+      });
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
+    }
+  }
 
 
   var selectedOption;
@@ -213,6 +258,8 @@ class _Payment_pageState extends State<Payment_page> {
         child: ElevatedButton(
           onPressed: (){
             payment();
+            available();
+            Bstatus();
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

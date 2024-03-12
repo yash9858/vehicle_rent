@@ -27,7 +27,7 @@ class _HomescreenState extends State<Homescreen> {
   var getUser2;
   var x;
   var getUser3;
-  bool isLoading=false;
+  bool isLoading=true;
 
   void initState(){
     super.initState();
@@ -37,13 +37,9 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Category_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
@@ -52,9 +48,6 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future getdata2() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
     if(response.statusCode==200) {
       data2 = response.body;
@@ -67,15 +60,12 @@ class _HomescreenState extends State<Homescreen> {
   }
   Future getdata3() async{
     SharedPreferences setpreference = await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-      x=setpreference.getString('uname');
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
 
       setState(() {
+        x=setpreference.getString('uname');
         isLoading=false;
         getUser3=jsonDecode(data!)["users"];
       });
@@ -89,14 +79,10 @@ class _HomescreenState extends State<Homescreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-       // iconTheme: const IconThemeData(color: Colors.deepPurple),
         backgroundColor: Colors.deepPurple.shade800,
         elevation: 0,
         title: Row(
-          //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
           children: [
-
             Text(
               "Hy,",
               style: TextStyle(
@@ -107,8 +93,8 @@ class _HomescreenState extends State<Homescreen> {
             SizedBox(
               width: 5,
             ),
-            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.transparent),)
-            :Text(x, style: TextStyle(
+            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                : Text(x, style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -118,8 +104,7 @@ class _HomescreenState extends State<Homescreen> {
         actions: [
            Padding(
               padding: EdgeInsets.all(8),
-              child: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.white),)
-              : CircleAvatar(
+              child: CircleAvatar(
                 backgroundColor: Colors.black,
                 child: Text(x.toString().characters.first,
                   style: TextStyle(
@@ -209,8 +194,7 @@ class _HomescreenState extends State<Homescreen> {
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Category_Vehicle_User(val: getUser[index]["Category_Id"], name: getUser[index]["Category_Name"])));
                   },
-                  child:  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-                  :Column(
+                  child: Column(
                     children: [
                       Card(
                         elevation: 5,
@@ -414,17 +398,13 @@ class _HomescreenState extends State<Homescreen> {
                           elevation: 6,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
-                          child:isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-                          :Column(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 7, right: 7, top: 3),
-                                child: isLoading ? Center(
-                                  child: CircularProgressIndicator(
-                                      color: Colors.deepPurple),)
-                                    : Row(
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment
                                       .spaceBetween,
                                   children: [
@@ -435,10 +415,7 @@ class _HomescreenState extends State<Homescreen> {
                                   ],
                                 ),
                               ),
-                              isLoading ? Center(
-                                child: CircularProgressIndicator(
-                                    color: Colors.deepPurple),)
-                                  : Padding(
+                             Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: ClipRRect(
                                     borderRadius: const BorderRadius.all(

@@ -16,7 +16,7 @@ class Car extends StatefulWidget {
 
 class _CarState extends State<Car> {
 
-  bool isLoading=false;
+  bool isLoading=true;
   var data;
   var data3;
   var getUser2;
@@ -26,12 +26,8 @@ class _CarState extends State<Car> {
   void initState(){
     super.initState();
     getdata2();
-    ratings();
   }
   Future getdata2() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
@@ -41,40 +37,6 @@ class _CarState extends State<Car> {
         getUser2=jsonDecode(data!)["users"];
       });
     }
-  }
-
-  Future ratings() async{
-    SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
-    ),body: {'Vehicle_Id' : share.getString('vid')});
-
-    if(response.statusCode==200) {
-      data3 = response.body;
-
-      setState(() {
-        isLoading=false;
-        getUser3=jsonDecode(data3!)["users"];
-        for(var data in getUser3){
-          list.add(double.parse(data["Ratings"]));
-        }
-      }
-      );
-    }
-  }
-
-  double avg()
-  {
-    if(list.isEmpty)
-      return 0.0;
-    double sum = 0.0;
-    for(var rating in list)
-    {
-      sum += rating;
-    }
-    return sum /list.length;
   }
 
   @override
@@ -154,7 +116,7 @@ class _CarState extends State<Car> {
                                        Text(
                                         getUser2[index]["Vehicle_Name"],
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Row(
@@ -168,16 +130,6 @@ class _CarState extends State<Car> {
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(avg().toString()),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.orange,
-                                                size: 18,
-                                              )
-                                            ],
-                                          )
                                         ],
                                       ),
                                     ]),

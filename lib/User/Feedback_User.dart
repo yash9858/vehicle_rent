@@ -18,7 +18,7 @@ class FeedBack_User extends StatefulWidget {
 
 class _FeedBack_UserState extends State<FeedBack_User> {
 
-  bool isLoading=false;
+  bool isLoading=true;
   var data;
   var allrat;
 
@@ -28,10 +28,6 @@ class _FeedBack_UserState extends State<FeedBack_User> {
   }
 
   Future allrating() async{
-    setState(() {
-      isLoading = true;
-    });
-
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.v_id});
 
@@ -68,6 +64,17 @@ class _FeedBack_UserState extends State<FeedBack_User> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              allrat == null ?
+                  Column(
+                    children:[
+                      SizedBox(height: mdheight * 0.32,),
+                      Center(
+                    child: Text('No Data Found',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold
+                    ),),
+                  )]):
               ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -87,7 +94,6 @@ class _FeedBack_UserState extends State<FeedBack_User> {
                                       direction: Axis.horizontal,
                                       itemSize: 25,
                                       itemCount: 5,
-                                      allowHalfRating: true,
                                       itemBuilder: (context,_) => const Icon(Icons.star, color: Colors.amber,),
                                       onRatingUpdate: (value) {
                                         setState(() {
@@ -183,7 +189,6 @@ class _reviewState extends State<review> {
               minRating: 0,
               direction: Axis.horizontal,
               itemCount: 5,
-              allowHalfRating: true,
               itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
               onRatingUpdate: (value) {
                 setState(() {

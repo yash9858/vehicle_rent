@@ -28,7 +28,7 @@ class _Select_dateState extends State<Select_date> {
   TextEditingController address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  bool isLoading=false;
+  bool isLoading=true;
   var data;
   var data2;
   var data3;
@@ -48,9 +48,6 @@ class _Select_dateState extends State<Select_date> {
   }
 
   Future v_det() async{
-    setState(() {
-      isLoading = true;
-    });
     final loginUrl = Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Select_Fetch_Vehicle.php");
 
@@ -71,9 +68,6 @@ class _Select_dateState extends State<Select_date> {
 
   Future address_fetch() async{
     SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Address_Booking.php"),
         body: {'Login_Id':share.getString('id')});
@@ -92,9 +86,6 @@ class _Select_dateState extends State<Select_date> {
     SharedPreferences share = await SharedPreferences.getInstance();
     final form = _formKey.currentState;
     if (form!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
       final login_url = Uri.parse(
           "https://road-runner24.000webhostapp.com/API/Update_API/Address_Booking.php");
       final response = await http
@@ -115,7 +106,7 @@ class _Select_dateState extends State<Select_date> {
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2
           );
-          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page()));
+          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page(v2_id: widget.v_id)));
         }else{
           Fluttertoast.showToast(
               msg: data2['message'].toString(),
@@ -130,9 +121,6 @@ class _Select_dateState extends State<Select_date> {
 
 
   Future ratings() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.v_id});
 
@@ -166,9 +154,6 @@ class _Select_dateState extends State<Select_date> {
     SharedPreferences s=await SharedPreferences.getInstance();
     final form = _formKey.currentState;
     if (form!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
       final login_url = Uri.parse(
           "https://road-runner24.000webhostapp.com/API/Insert_API/Booking_Insert.php");
       final response = await http
@@ -194,7 +179,7 @@ class _Select_dateState extends State<Select_date> {
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2
           );
-          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page()));
+          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page(v2_id: widget.v_id)));
         }else{
           Fluttertoast.showToast(
               msg: logindata['message'].toString(),
@@ -209,9 +194,9 @@ class _Select_dateState extends State<Select_date> {
   }
 
   DateTime _PickupDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
-  TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour,minute: DateTime.now().minute);
+  TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour,minute: 00);
   DateTime _ReturnDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
-  TimeOfDay _ReturnTime = TimeOfDay(hour: DateTime.now().hour,minute: DateTime.now().minute);
+  TimeOfDay _ReturnTime = TimeOfDay(hour: DateTime.now().hour+1,minute: 00);
 
   void Pickupdate(){
     showDatePicker(
@@ -228,7 +213,6 @@ class _Select_dateState extends State<Select_date> {
       context: context,
       firstDate: DateTime(DateTime.now().year, DateTime.now().month , DateTime.now().day), lastDate: DateTime(2025), initialDate: _PickupDate,).then((value){
       setState(() {
-
         _ReturnDate=value!;
 
       });
@@ -236,16 +220,16 @@ class _Select_dateState extends State<Select_date> {
 
   }
   void PickupTime(){
-    showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value){
+    showTimePicker(
+        context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour, minute: 00)).then((value){
       setState(() {
         _PickupTime=value!;
       });
     });
   }
   void ReturnTime(){
-    showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value){
+    showTimePicker(context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour + 1 , minute: 00)).then((value){
       setState(() {
-
         _ReturnTime=value!;
       });
     });

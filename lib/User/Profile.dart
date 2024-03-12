@@ -1,14 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:rentify/Forget_Password.dart';
 import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/About_us.dart';
-import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Edit_Profile.dart';
 import 'package:http/http.dart' as http;
-
-
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
 import 'package:rentify/User/Payment_Receipt.dart';
@@ -27,21 +23,19 @@ class _ProfileState extends State<Profile> {
 
   var data;
   var getUser2;
-  bool isLoading=false;
+  bool isLoading=true;
   void initState(){
     super.initState();
-    getdata();
+    profile();
   }
 
-  Future getdata() async{
+  Future profile() async{
     SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Profile_User.php"),body: {'Login_Id':share.getString('id')});
+    http.Response response= await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Profile_User.php"),
+        body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
@@ -56,7 +50,6 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           centerTitle: true,
           title: const Text("Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
-
           elevation: 0,
           backgroundColor: Colors.transparent,
           iconTheme: const IconThemeData(color: Colors.black),
@@ -175,30 +168,10 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 InkWell(
                   onTap: (){
-                  //  Navigator.push(context, MaterialPageRoute(builder: (context)=> const FeedBack_User()));
-                  },
-                  child: ListTile(
-                    leading: const Icon(Icons.info_outline,color: Colors.deepPurple,),
-                    title: const Text(
-                      "Payment"
-                          ,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    trailing:IconButton(
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const Payment_Receipt()));
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                    ))),
-                const Divider(),
-
-
-                InkWell(
-                  onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> About_us()));
                   },
                 child:ListTile(
-                    leading: const Icon(Icons.info,color: Colors.deepPurple,),
+                    leading: const Icon(Icons.info_outline_rounded,color: Colors.deepPurple,),
                     title: const Text(
                       "About_Us",
                       style: TextStyle(fontSize: 20),

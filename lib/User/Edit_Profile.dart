@@ -31,19 +31,14 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
   var data;
   var getUser2;
-  bool isLoading=false;
+  bool isLoading=true;
   void initState(){
     super.initState();
     getdata();
-  //  print(widget.lid);
   }
 
   Future getdata() async{
     SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-     // print(share.getString('id'));
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Edit_Profile_User.php"),
         body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
@@ -94,9 +89,6 @@ class _Edit_ProfileState extends State<Edit_Profile> {
       final streamedResponse = await imageUploadRequest.send();
       streamedResponse.stream.transform(utf8.decoder).listen((value) {
         if(streamedResponse.statusCode==200){
-          setState(() {
-            //_isLoading=false;
-          });
           var logindata;
           logindata = jsonDecode(value);
           print(logindata);
@@ -110,9 +102,6 @@ class _Edit_ProfileState extends State<Edit_Profile> {
           print(streamedResponse.stream);
           print(value);
         }else{
-          setState(() {
-            //_isLoading=false;
-          });
           Fluttertoast.showToast(
               msg: "Something went wrong",
               toastLength: Toast.LENGTH_LONG,

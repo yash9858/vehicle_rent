@@ -17,24 +17,19 @@ class Bike extends StatefulWidget {
 
 class _BikeState extends State<Bike> {
 
-  bool isLoading=false;
+  bool isLoading=true;
   var data;
   var getUser2;
 
   void initState(){
     super.initState();
-    getdata();
+    bikedata();
   }
 
-  Future getdata() async{
-    SharedPreferences setpreference = await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
+  Future bikedata() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
@@ -117,7 +112,7 @@ class _BikeState extends State<Bike> {
                                        Text(
                                         getUser2[index]["Vehicle_Name"],
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Row(
@@ -135,16 +130,6 @@ class _BikeState extends State<Bike> {
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            children: [
-                                              const Text("4.1"),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.orange,
-                                                size: 18,
-                                              )
-                                            ],
-                                          )
                                         ],
                                       ),
                                     ]),
