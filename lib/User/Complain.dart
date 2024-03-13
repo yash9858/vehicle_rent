@@ -5,7 +5,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 class Complain extends StatefulWidget {
-   final String v_id;
+    String v_id;
    Complain({super.key,required this.v_id});
 
   @override
@@ -19,6 +19,7 @@ class _ComplainState extends State<Complain> {
   var logindata;
   var data;
   bool isLoading = false;
+
 
 
   @override
@@ -122,6 +123,8 @@ class _ComplainState extends State<Complain> {
     if (form!.validate()) {
       setState(() {
         isLoading = true;
+        print(widget.v_id);
+
       });
       SharedPreferences s = await SharedPreferences.getInstance();
       final login_url = Uri.parse(
@@ -140,6 +143,7 @@ class _ComplainState extends State<Complain> {
         print(logindata);
         setState(() {
           isLoading = false;
+          print(widget.v_id);
         });
         if (logindata['error'] == false) {
           Fluttertoast.showToast(

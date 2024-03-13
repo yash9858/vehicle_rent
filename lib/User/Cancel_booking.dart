@@ -10,7 +10,8 @@ class Cancel_booking_user extends StatefulWidget {
  //  final String Booking_id;
   String?  p_id;
   String? b_id;
-   Cancel_booking_user({super.key,required this.p_id, required this.b_id});
+  String amount;
+   Cancel_booking_user({super.key,required this.p_id, required this.b_id,required this.amount});
 
   @override
   State<Cancel_booking_user> createState() => _Cancel_bookingState();
@@ -155,6 +156,7 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
         isLoading = true;
 
 
+
       });
       SharedPreferences s = await SharedPreferences.getInstance();
       final login_url = Uri.parse(
@@ -164,7 +166,8 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
         "Reason": _cancel.text,
         "Login_Id": s.getString('id'),
         "Booking_Id": widget.b_id,
-
+        "Refund_Amount":widget.amount,
+        "Refund_Status":"1",
         "Payment_Id": widget.p_id,
       });
       if (response.statusCode == 200) {
@@ -174,6 +177,10 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
         print(logindata);
         setState(() {
           isLoading = false;
+         // print(widget.b_id);
+         //  print("helo");
+         //  print(s.getString('b_id'));
+         //  print(widget.p_id);
         });
         if (logindata['error'] == false) {
           Fluttertoast.showToast(

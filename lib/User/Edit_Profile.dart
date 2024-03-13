@@ -52,6 +52,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
         dob.text = getUser2[0]["Dob"];
         li.text = getUser2[0]["Lincence_Number"];
         address.text = getUser2[0]["Address"];
+        _value=getUser2[0]["Gender"];
+
+
       });
     }
   }
@@ -77,7 +80,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
     imageUploadRequest.fields['Lincence_Number'] = li.text;
     imageUploadRequest.fields['DOB'] = dob.text;
     imageUploadRequest.fields['Address'] = address.text;
-    imageUploadRequest.fields['Gender'] = "male";
+    imageUploadRequest.fields['Gender'] = _value.toString();
 
 
 
@@ -125,7 +128,13 @@ class _Edit_ProfileState extends State<Edit_Profile> {
         lastDate: DateTime.now(),
     );
   }
-  int _value = 1;
+  // String  _genderRadioBtnVal="Male";
+  // void _handleGenderChange(String value) {
+  //   setState(() {
+  //     _genderRadioBtnVal = value;
+  //   });
+  // }
+  String _value="";
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -238,36 +247,39 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               Row(
                 children:[
                 Radio(
-                value: 1,
+                value: "Male",
                 groupValue: _value,
                 onChanged: (value){
                   setState(() {
-                    _value = value!;
+                    _value = value as String;
                   });
                 },
               ),
                   const Text('Male', style: TextStyle(fontSize: 18)),
                   Radio(
-                  value: 2,
+                  value: "Female",
                   groupValue: _value,
                   onChanged: (value){
                     setState(() {
-                      _value = value!;
+                      _value = value as String;
                     });
                 },
               ),
               const Text('Female', style: TextStyle(fontSize: 18)),
                   Radio(
-                  value: 3,
+                  value: "Other",
                   groupValue: _value,
                   onChanged: (value){
                     setState(() {
-                      _value = value!;
+                      _value = value as String;
+
                     });
                 },
               ),
               const Text('Other', style: TextStyle(fontSize: 18)),
               ]),
+
+
               SizedBox(height: mdheight * 0.03,),
       Container(
         decoration: BoxDecoration(

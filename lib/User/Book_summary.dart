@@ -12,8 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Book_summary extends StatefulWidget {
+  final int val3;
   final String? Booking_Id;
-  const Book_summary({required this.Booking_Id});
+  const Book_summary({required this.val3, required this.Booking_Id});
 
 
   @override
@@ -281,7 +282,7 @@ void _showtimepicker(){
 
                    backgroundColor:    Colors.deepPurple.shade800,),
                  onPressed: () {
-                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[0]["Payment_Id"],b_id:getUser2[0]["Booking_Id"])));
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[0]["Payment_Id"],b_id:getUser2[0]["Booking_Id"],amount:getUser2[0]['Total_Price'])));
                  },
                  child: Text(
                      "Cancel"),)),
