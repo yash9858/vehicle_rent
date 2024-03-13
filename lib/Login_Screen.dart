@@ -232,7 +232,7 @@ Future<void> _submit() async {
           }
         else
           {
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const Admin_DashBoard()), (Route<dynamic> route) => false);
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => Admin_DashBoard()), (Route<dynamic> route) => false);
           }
       }else{
         Fluttertoast.showToast(

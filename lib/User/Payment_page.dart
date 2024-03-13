@@ -8,7 +8,17 @@ import 'package:http/http.dart' as http;
 
 class Payment_page extends StatefulWidget {
   final String v2_id;
-  const Payment_page({super.key ,required this.v2_id});
+  final String price;
+  final String startd;
+  final String startt;
+  final String returnd;
+  final String returnt;
+
+  const Payment_page({super.key ,required this.v2_id,required this.price,
+    required this.startd,
+    required this.startt,
+    required this.returnd,
+    required this.returnt});
 
   @override
   State<Payment_page> createState() => _Payment_pageState();
@@ -32,12 +42,51 @@ class _Payment_pageState extends State<Payment_page> {
     super.initState();
     booking();
     payment();
-    available();
     Bstatus();
+    // paymentdata();
   }
+// var cv;
+//   var d1;
+//   Future paymentdata() async{
+//     print(bid);
+//     http.Response response= await http.post(Uri.parse(
+//         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Payment_Booking_data.php"),
+//         body: {'Booking_Id': bid});
+//     if(response.statusCode==200) {
+//       d1 = jsonDecode(response.body);
+//
+//       setState(() {
+//         isLoading=false;
+//         cv=jsonDecode(data!)["users"];
+//         print(cv);
+//       });
+//     }
+//   }
 
+var x;
+  double calculateTotalPrice(DateTime startDate, double startHour, DateTime endDate, double endHour) {
+    double pricePerDate = double.parse(widget.price);
+    // Remove time component from start and end dates
+    DateTime startDateWithoutTime = DateTime(startDate.year, startDate.month, startDate.day);
+    DateTime endDateWithoutTime = DateTime(endDate.year, endDate.month, endDate.day);
 
+    int totalDays = endDateWithoutTime.difference(startDateWithoutTime).inDays;
+    if (totalDays == 0 && endHour > startHour) {
+      totalDays = 1;
+    }
+    // Calculate total price
+    double totalPrice = totalDays * pricePerDate;
+    // the start and end hours are different, add extra charge
+    if (endHour > startHour) {
+      totalPrice += (endHour - startHour) * (pricePerDate / 24).toInt();
+      setState(() {
+        x=totalPrice;
+      });
+    }
+    return totalPrice;
+  }
   Future booking() async{
+    print(widget.startt);
     SharedPreferences share=await SharedPreferences.getInstance();
     setState(() {
       isLoading = true;
@@ -79,24 +128,7 @@ class _Payment_pageState extends State<Payment_page> {
     }
   }
 
-  Future available() async{
-    SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
-    http.Response response= await http.post(Uri.parse(
-        "https://road-runner24.000webhostapp.com/API/Update_API/Available_Status.php"),
-        body: {'Vehicle_Id' : widget.v2_id}
-        );
-    if(response.statusCode==200) {
-      data3 = response.body;
-      print(data3);
-      setState(() {
-        isLoading=false;
-        aval=jsonDecode(data3!)["users"];
-      });
-    }
-  }
+
 
   Future Bstatus() async{
     SharedPreferences share=await SharedPreferences.getInstance();
@@ -120,7 +152,7 @@ class _Payment_pageState extends State<Payment_page> {
 
 
   var selectedOption;
-
+var total;
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -257,9 +289,10 @@ class _Payment_pageState extends State<Payment_page> {
         height: mheight*0.08,
         child: ElevatedButton(
           onPressed: (){
-            payment();
-            available();
-            Bstatus();
+            // payment();
+            // available();
+            // Bstatus();
+            total=calculateTotalPrice(DateTime.parse(widget.startd), double.parse(widget.startt),  DateTime.parse(widget.returnd), double.parse(widget.returnt));
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

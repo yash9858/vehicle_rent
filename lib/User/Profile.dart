@@ -114,7 +114,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   trailing:IconButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const History_page()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> History_page()));
                     },
                     icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),

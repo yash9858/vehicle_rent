@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class car_detail extends StatefulWidget {
   final int val;
   final String carid;
-  const car_detail({required this.val,required this.carid});
+  const car_detail({super.key , required this.val,required this.carid});
   @override
   State<car_detail> createState() => _car_detailState();
 }
@@ -26,7 +26,6 @@ class _car_detailState extends State<car_detail> {
   var data3;
   var getUser2;
   var getUser3;
-  var getSelectedVechicle;
   List list=[];
   var feed1;
   var feed2;
@@ -34,20 +33,19 @@ class _car_detailState extends State<car_detail> {
   var feed4;
   var feed5;
 
-
   void initState(){
     super.initState();
-    getdata();
+    cardet();
     getdata2();
-    getdata3();
   }
-  Future getdata() async{
+  Future cardet() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"
     ));
     if(response.statusCode==200) {
       data = response.body;
 
       setState(() {
+        isLoading=false;
         getUser2=jsonDecode(data!)["users"];
         getdata2();
       });
@@ -70,7 +68,7 @@ class _car_detailState extends State<car_detail> {
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
         }
-        getdata3();
+        getUser3();
       }
       );
     }
@@ -108,7 +106,7 @@ class _car_detailState extends State<car_detail> {
   }
 
     @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
@@ -141,7 +139,7 @@ class _car_detailState extends State<car_detail> {
                     ],
                   ),
                 ),
-                Image.network(getUser2[widget.val]["Vehicle_Image"],height: 300,width: double.infinity,fit: BoxFit.fill,)
+                Image.network(getUser2[widget.val]["Vehicle_Image"],height: 300,width: double.infinity,fit: BoxFit.fill)
               ],
             ),
             SingleChildScrollView(
@@ -262,7 +260,6 @@ class _car_detailState extends State<car_detail> {
                           ])
                               :ListView.builder(
                               shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: getUser3.length,
                               itemBuilder: (BuildContext context,int index){
                                 return Column(

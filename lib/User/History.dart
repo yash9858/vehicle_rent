@@ -16,7 +16,7 @@ class _History_pageState extends State<History_page> {
 
   var data;
   var getUser2;
-  bool isLoading=false;
+  bool isLoading=true;
   void initState(){
     super.initState();
     getdata();
@@ -25,9 +25,6 @@ class _History_pageState extends State<History_page> {
   Future getdata() async{
 
     SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_History_User.php"),body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data = response.body;
@@ -36,10 +33,6 @@ class _History_pageState extends State<History_page> {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
       });
-      if (getUser2['error'] == false) {
-        // SharedPreferences setpreference = await SharedPreferences.getInstance();
-        // setpreference.setString('b_id', getUser2['Booking_Id']);
-      }
     }
   }
   @override

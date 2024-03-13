@@ -106,7 +106,6 @@ class _Select_dateState extends State<Select_date> {
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2
           );
-          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page(v2_id: widget.v_id)));
         }else{
           Fluttertoast.showToast(
               msg: data2['message'].toString(),
@@ -179,7 +178,12 @@ class _Select_dateState extends State<Select_date> {
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2
           );
-          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page(v2_id: widget.v_id)));
+          Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page(v2_id: widget.v_id,price:getUser[0]["Rent_Price"],
+          startd:(_PickupDate.year).toString()+"-"+(_PickupDate.month).toString()+"-"+(_PickupDate.day).toString(),
+          startt:(_PickupTime.hour).toString()+":"+(_PickupTime.minute).toString(),
+            returnd:(_ReturnDate.year).toString()+"-"+(_ReturnDate.month).toString()+"-"+(_ReturnDate.day).toString(),
+            returnt:(_ReturnTime.hour).toString()+":"+(_ReturnTime.minute).toString(),
+          )));
         }else{
           Fluttertoast.showToast(
               msg: logindata['message'].toString(),

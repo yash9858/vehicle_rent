@@ -80,25 +80,35 @@ class Admin_DashBoard extends StatefulWidget {
 class _Admin_DashBoardState extends State<Admin_DashBoard> {
   String? data;
   var getUser;
-  bool isLoading=false;
+  var det;
+  var cat;
+  var vehicle;
+  var book;
+  var pay;
+  var com;
+  var feed;
+  bool isLoading=true;
 
   void initState(){
     super.initState();
     getdata();
   }
   Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Admin_DashBoard.php"));
     if(response.statusCode==200){
       data=response.body;
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["user"];
+        det=jsonDecode(data!)["user"][0]["Details_Id"];
+        cat=jsonDecode(data!)["user"][0]["Category_Id"];
+        vehicle=jsonDecode(data!)["user"][0]["Vehicle_Id"];
+        book=jsonDecode(data!)["user"][0]["Booking_Id"];
+        pay=jsonDecode(data!)["user"][0]["Payment_Id"];
+        com=jsonDecode(data!)["user"][0]["Complain_Id"];
+        feed=jsonDecode(data!)["user"][0]["Complain_Id"];
       });
     }
-
   }
 
   int _currentIndex = 0;
@@ -108,14 +118,13 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
   Widget build(BuildContext context) {
 
     var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Total Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
-    var total = [getUser["Details_Id"].toString(), getUser["Category_Id"].toString(), getUser["Vehicle_Id"].toString(), getUser["Booking_Id"].toString(), getUser["Payment_Id"].toString(), getUser["Complain_Id"].toString(), getUser["Feedback_Id"].toString()];
+    var total = [det.toString(), cat.toString(), vehicle.toString(), book.toString(), pay.toString(), com.toString(), feed.toString()];
     var page =  [Admin_UserPage(), Admin_CategoryPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage(), Admin_ComplainPage(), Admin_FeedbackPage()];
     var image = ['assets/img/user.json','assets/img/category.json','assets/img/vehicle.json','assets/img/bookings.json','assets/img/payments.json','assets/img/complain.json','assets/img/feedback.json'];
 
     var mdheight = MediaQuery.sizeOf(context).height;
 
-    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-    : Scaffold(
+    return Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.deepPurple.shade800,
         child: SingleChildScrollView(

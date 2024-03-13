@@ -32,8 +32,6 @@ class _HomescreenState extends State<Homescreen> {
   void initState(){
     super.initState();
     getdata();
-    getdata2();
-    getdata3();
   }
 
   Future getdata() async{
@@ -41,7 +39,7 @@ class _HomescreenState extends State<Homescreen> {
     if(response.statusCode==200) {
       data = response.body;
       setState(() {
-        isLoading=false;
+        getdata2();
         getUser=jsonDecode(data!)["users"];
       });
     }
@@ -51,9 +49,8 @@ class _HomescreenState extends State<Homescreen> {
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
     if(response.statusCode==200) {
       data2 = response.body;
-
       setState(() {
-        isLoading=false;
+        getdata3();
         getUser2=jsonDecode(data2!)["users"];
       });
     }
@@ -93,8 +90,8 @@ class _HomescreenState extends State<Homescreen> {
             SizedBox(
               width: 5,
             ),
-            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-                : Text(x, style: TextStyle(
+            isLoading ?  Center(child: CircularProgressIndicator(color: Colors.transparent),)
+                : Text(x.toString(), style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -189,7 +186,7 @@ class _HomescreenState extends State<Homescreen> {
 
               ),
                   itemCount: 4,
-                  itemBuilder: (BuildContext contect, int index){
+                  itemBuilder: (BuildContext context, int index){
                 return GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Category_Vehicle_User(val: getUser[index]["Category_Id"], name: getUser[index]["Category_Name"])));
@@ -375,20 +372,17 @@ class _HomescreenState extends State<Homescreen> {
             ),
             // SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
             //car card
-
-
-
                Container(
                 height: MediaQuery.sizeOf(context).height * 0.25,
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
-                  physics:  BouncingScrollPhysics(),
+                  //physics:  BouncingScrollPhysics(),
                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       mainAxisSpacing: 5
                   ),
                   itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
+                  itemBuilder: (context, int index) {
                       return GestureDetector(
                           onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser2[index]["Vehicle_Id"])));
@@ -493,13 +487,13 @@ class _HomescreenState extends State<Homescreen> {
 
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
-                  physics:  BouncingScrollPhysics(),
+                  //physics:  BouncingScrollPhysics(),
                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       mainAxisSpacing: 5
                   ),
                   itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
+                  itemBuilder: (context, int index) {
                       return  GestureDetector(
                           onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> bike_detail(val1:index, bikeid:getUser3[index]["Vehicle_Id"])));

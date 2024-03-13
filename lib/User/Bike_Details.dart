@@ -40,8 +40,6 @@ class _bike_detailState extends State<bike_detail> {
     super.initState();
     bike_det();
     star_avg();
-    star_count();
-
   }
 
   Future bike_det() async{
@@ -54,7 +52,7 @@ class _bike_detailState extends State<bike_detail> {
       });
       if (getUser2['error'] == false) {
         SharedPreferences setpreference = await SharedPreferences.getInstance();
-        setpreference.setString('type', data['Vehicle_Type'].toString());
+        setpreference.setString('type', data['Vehicle_Type']);
       }
     }
   }
@@ -65,7 +63,6 @@ class _bike_detailState extends State<bike_detail> {
     if(response.statusCode==200) {
       data2 = response.body;
       setState(() {
-        isLoading=false;
         getUser3=jsonDecode(data2!)["users"];
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
