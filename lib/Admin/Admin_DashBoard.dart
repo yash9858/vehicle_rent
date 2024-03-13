@@ -100,13 +100,13 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["user"];
-        det=jsonDecode(data!)["user"][0]["Details_Id"];
-        cat=jsonDecode(data!)["user"][0]["Category_Id"];
-        vehicle=jsonDecode(data!)["user"][0]["Vehicle_Id"];
-        book=jsonDecode(data!)["user"][0]["Booking_Id"];
-        pay=jsonDecode(data!)["user"][0]["Payment_Id"];
-        com=jsonDecode(data!)["user"][0]["Complain_Id"];
-        feed=jsonDecode(data!)["user"][0]["Complain_Id"];
+        det=jsonDecode(data!)["user"]["Details_Id"];
+        cat=jsonDecode(data!)["user"]["Category_Id"];
+        vehicle=jsonDecode(data!)["user"]["Vehicle_Id"];
+        book=jsonDecode(data!)["user"]["Booking_Id"];
+        pay=jsonDecode(data!)["user"]["Payment_Id"];
+        com=jsonDecode(data!)["user"]["Complain_Id"];
+        feed=jsonDecode(data!)["user"]["Complain_Id"];
       });
     }
   }

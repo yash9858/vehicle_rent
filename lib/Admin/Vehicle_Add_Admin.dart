@@ -59,7 +59,6 @@ class _Admin_Add_VehicleState extends State<Admin_Add_Vehicle> {
     imageUploadRequest.fields['Rent_Price'] = price.text;
     imageUploadRequest.fields['Vehicle_Description'] = description.text;
     imageUploadRequest.fields['Category_Id'] = widget.id;
-    imageUploadRequest.fields['Availability'] = "1";
 
     imageUploadRequest.files.add(file);
     try {

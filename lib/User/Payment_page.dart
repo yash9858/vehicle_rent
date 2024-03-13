@@ -34,7 +34,6 @@ class _Payment_pageState extends State<Payment_page> {
   var getUser2;
   var getUser3;
   var bid;
-  var aval;
   var bstat;
 
 

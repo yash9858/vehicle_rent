@@ -41,7 +41,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
     }
 
   }
- // var name = ['Tesla', 'BMW', 'Ferrari', 'Ford', 'Honda', 'Toyota'];
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -93,8 +93,6 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
 
                                   SizedBox(height: 10),
                                    Text('Rent Price: '+getUser[index]["Rent_Price"]+'/day'),
-                                  SizedBox(height: 10),
-                                   Text('Availability :'+getUser[index]["Availability"]),
                                   SizedBox(height: 10),
                                 ],
                               ),
