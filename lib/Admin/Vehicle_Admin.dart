@@ -19,7 +19,9 @@ class Admin_VehiclePage extends StatefulWidget {
 // ignore: camel_case_types
 class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
   String? data;
+  String? data2;
   var getUser;
+  var getUser2;
   bool isLoading=false;
 
   void initState(){
@@ -39,8 +41,22 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
         getUser=jsonDecode(data!)["users"];
       });
     }
-
   }
+
+  Future vehicle(String vid) async{
+    http.Response response= await http.post(Uri.parse(
+      "https://road-runner24.000webhostapp.com/API/Delete_API/Vehicle.php",
+    ), body: {'Vehicle_Id' : vid});
+    if(response.statusCode==200){
+      data2=response.body;
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data2!)["users"];
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +148,9 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                   type: CoolAlertType.confirm,
                                   text: 'Do you Remove Vehicle',
                                   confirmBtnColor: Colors.red,
+                                  onConfirmBtnTap: (){
+                                    vehicle(getUser[index]["Vehicle_Id"]).whenComplete(() {getdata();});
+                                  },
                                   animType: CoolAlertAnimType.slideInDown,
                                   backgroundColor: Colors.red,
                                   cancelBtnTextStyle: const TextStyle(

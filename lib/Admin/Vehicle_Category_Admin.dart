@@ -26,7 +26,9 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
 
 
   String? data;
+  String? data2;
   var getUser;
+  var getUser2;
   bool isLoading = false;
   TextEditingController NameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -48,6 +50,20 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
       setState(() {
         isLoading = false;
         getUser = jsonDecode(data!)["users"];
+      });
+    }
+  }
+  Future cat(String cid) async{
+    SharedPreferences share=await SharedPreferences.getInstance();
+    http.Response response= await http.post(Uri.parse(
+      "https://road-runner24.000webhostapp.com/API/Delete_API/Category_Vehicle.php",
+    ), body: {'Category_Id' : cid});
+    if(response.statusCode==200){
+      data2=response.body;
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data2!)["users"];
+
       });
     }
   }
@@ -220,6 +236,10 @@ class _Admin_CategoryPageState extends State<Admin_CategoryPage> {
                                   type: CoolAlertType.confirm,
                                   text: 'Do you Remove Category',
                                   confirmBtnColor: Colors.red,
+                                  onConfirmBtnTap: ()
+                                  {
+                                    cat(getUser[index]["Category_Id"]).whenComplete(() {getdata();});
+                                  },
                                   animType: CoolAlertAnimType.slideInDown,
                                   backgroundColor: Colors.red,
                                   cancelBtnTextStyle: const TextStyle(

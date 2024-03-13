@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types
 class Admin_UserPage extends StatefulWidget {
@@ -15,7 +16,9 @@ class Admin_UserPage extends StatefulWidget {
 // ignore: camel_case_types
 class _Admin_UserPageState extends State<Admin_UserPage> {
   String? data;
+  String? data2;
   var getUser;
+  var getUser2;
   bool isLoading=false;
 
   void initState(){
@@ -34,8 +37,22 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
         getUser=jsonDecode(data!)["users"];
       });
     }
-
   }
+
+  Future user(String lid) async{
+      http.Response response= await http.post(Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Delete_API/User.php",
+    ), body: {'Login_Id' : lid});
+    if(response.statusCode==200){
+      data2=response.body;
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data2!)["users"];
+      });
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -76,15 +93,13 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                               child:Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Details Id : '+getUser[index]["Details_Id"]),
-                                  SizedBox(height: mdheight * 0.01,),
-                                  Text('User Name : '+getUser[index]["Name"]),
+                                  Text('Name : '+getUser[index]["Name"]),
                                   SizedBox(height: mdheight * 0.01,),
                                    Text('Dob : '+getUser[index]["Dob"]),
                                   SizedBox(height: mdheight * 0.01,),
                                    Text('Gender : '+getUser[index]["Gender"]),
                                   SizedBox(height: mdheight * 0.01,),
-                                   Text('Address :'+getUser[index]["Address"]),
+                                   Text('Address : '+getUser[index]["Address"]),
                                   SizedBox(height: mdheight * 0.01,),
                                    Text('Licence Number : '+getUser[index]["Lincence_Number"]),
                                   SizedBox(height: mdheight * 0.01,),
@@ -107,13 +122,16 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                           ]
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             MaterialButton(onPressed: (){
                               CoolAlert.show(context: context,
                                   type: CoolAlertType.confirm,
                                   text: 'Do you Remove User',
                                   confirmBtnColor: Colors.red,
+                                  onConfirmBtnTap: (){
+                                    user(getUser[index]["Login_Id"]).whenComplete(() {getdata();});
+                                  },
                                   animType: CoolAlertAnimType.slideInDown,
                                   backgroundColor: Colors.red,
                                   cancelBtnTextStyle: const TextStyle(
@@ -126,7 +144,7 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
                                   borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
                                 ),
 
-                              child: const Text('Delete User', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                              child: Text('Delete User', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                               )),
                           ],
                         )
