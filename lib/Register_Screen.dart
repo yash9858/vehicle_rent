@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'Login_Screen.dart';
@@ -237,7 +238,6 @@ class _RegisterPageState extends State<RegisterPage> {
         "Email": emailController.text,
         "Password": passwordController.text,
         "User_Name": NameController.text,
-
         "Role": "1",
         "Status": "0",
 

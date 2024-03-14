@@ -4,6 +4,7 @@ import 'package:line_icons/line_icons.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:rentify/Admin/Category_add_admin.dart';
+import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/Available_bike.dart';
 import 'package:rentify/User/Available_car.dart';
 import 'package:rentify/User/Bike_Details.dart';
@@ -122,7 +123,8 @@ class _HomescreenState extends State<Homescreen> {
               padding: EdgeInsets.all(8),
               child: CircleAvatar(
                 backgroundColor: Colors.black,
-                child: Text(x.toString().characters.first,
+                child: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.transparent),)
+                : Text(x.toString().characters.first,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w400,
@@ -153,6 +155,7 @@ class _HomescreenState extends State<Homescreen> {
               IconButton(
               icon: const Icon(Icons.keyboard_voice_rounded),
               onPressed: () {
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
                 print('Use voice command');
               },
             ),

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:rentify/Admin/Admin_DashBoard.dart';
 import 'package:rentify/Forget_Password.dart';
+import 'package:rentify/User/Complete_Profile.dart';
 import 'package:rentify/User/User_DashBoard.dart';
 import 'Register_Screen.dart';
 import 'package:lottie/lottie.dart';
@@ -225,10 +226,19 @@ Future<void> _submit() async {
         setpreference.setString('uname', data['User_Name'].toString());
         setpreference.setString('email', data['Email'].toString());
         setpreference.setString('Role', data['Role'].toString());
+        setpreference.setString('Status', data['Status'].toString());
         setpreference.setString('vid', data['Vehicle_Id'].toString());
         if(data["Role"]=="1")
           {
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const UserDasboard()), (Route<dynamic> route) => false);
+           if(data["Status"] == "1")
+             {
+               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const UserDasboard()), (Route<dynamic> route) => false);
+             }
+           else
+             {
+               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => complete_Profile()), (Route<dynamic> route) => false);
+             }
+
           }
         else
           {
