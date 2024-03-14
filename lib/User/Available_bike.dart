@@ -65,7 +65,7 @@ class _BikeState extends State<Bike> {
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail(val1:index, bikeid:getUser2[index]["Vehicle_Id"])));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail(val1:index, bikeid:getUser2[index]["Vehicle_Id"],bikename:getUser2[index]["Vehicle_Name"],type:getUser2[index]["Vehicle_Type"],descripation:getUser2[index]["Vehicle_Description"],price:getUser2[index]["Rent_Price"],image:getUser2[index]["Vehicle_Image"])));
                 },
                 child: Container(
 

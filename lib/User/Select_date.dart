@@ -54,6 +54,7 @@ class _Select_dateState extends State<Select_date> {
     final response = await http
         .post(loginUrl, body: {
       "Vehicle_Type": widget.v_type,
+      "Vehicle_Id":widget.v_id,
     });
 
     if(response.statusCode==200) {
@@ -267,7 +268,7 @@ class _Select_dateState extends State<Select_date> {
                   Container(
 
                     child:
-                    Image.network(getUser[widget.num]["Vehicle_Image"],fit: BoxFit.contain,
+                    Image.network(getUser[0]["Vehicle_Image"],fit: BoxFit.contain,
                       height: mheight*0.15,width: mwidth*0.4,
 
                     )
@@ -289,7 +290,7 @@ class _Select_dateState extends State<Select_date> {
                                   color: Colors.pink.shade50,
                                   borderRadius: BorderRadius.circular(6)
                               ),
-                              child: Text(getUser[widget.num]["Category_Name"])),
+                              child: Text(getUser[0]["Category_Name"])),
                           isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
                           : Row(
                             children: [
@@ -305,12 +306,12 @@ class _Select_dateState extends State<Select_date> {
                       SizedBox(height: mheight*0.01,),
 
                       //Car Name
-                      Text(getUser[widget.num]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                      Text(getUser[0]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                       SizedBox(height: mheight*0.03,),
                       Row(
                         children: [
                           Text(
-                            "₹"+getUser[widget.num]["Rent_Price"],
+                            "₹"+getUser[0]["Rent_Price"],
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),

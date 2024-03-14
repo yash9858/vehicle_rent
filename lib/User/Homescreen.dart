@@ -23,15 +23,18 @@ class _HomescreenState extends State<Homescreen> {
 
   String? data;
   String? data2;
+  String? data3;
   var getUser;
   var getUser2;
   var x;
   var getUser3;
+  var getUser4;
   bool isLoading=true;
 
   void initState(){
     super.initState();
     getdata();
+    getdata4();
   }
 
   Future getdata() async{
@@ -45,12 +48,14 @@ class _HomescreenState extends State<Homescreen> {
     }
   }
 
+
   Future getdata2() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Car_Fetch.php"));
     if(response.statusCode==200) {
       data2 = response.body;
       setState(() {
         getdata3();
+       // getdata4();
         getUser2=jsonDecode(data2!)["users"];
       });
     }
@@ -68,6 +73,20 @@ class _HomescreenState extends State<Homescreen> {
       });
     }
   }
+
+
+  Future getdata4() async{
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Arrive.php"));
+    if(response.statusCode==200) {
+      data3 = response.body;
+      setState(() {
+        // getdata2();
+        getUser4=jsonDecode(data3!)["users"];
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -223,35 +242,27 @@ class _HomescreenState extends State<Homescreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Most popular",
+                    "New Arrive",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  // TextButton(
-                  //     onPressed: () {
-                  //       Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
-                  //     },
-                  //     child: Text(
-                  //       "View More",
-                  //       style: TextStyle(color: Colors.grey),
-                  //     ))
+
                 ],
               ),
             ),
 
-              //  height: mheight * 0.49,
-              // padding: EdgeInsets.only(top: 3, left: 10, right: 10),
+
             SizedBox(height: mheight*0.01,),
             //card
 
             Container(
               height: mheight * 0.32,
               child: PageView.builder(
-                itemCount: 4,
+                itemCount: getUser4.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap:() =>
                     {
-                    //  Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail())),
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser4[index]["Vehicle_Id"],carname:getUser4[index]["Vehicle_Name"],type:getUser4[index]["Vehicle_Type"],descripation:getUser4[index]["Vehicle_Description"],price:getUser4[index]["Rent_Price"],image:getUser4[index]["Vehicle_Image"]))),
                       },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -270,7 +281,7 @@ class _HomescreenState extends State<Homescreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Tesla",
+                                      getUser4[index]["Vehicle_Name"],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -297,13 +308,13 @@ class _HomescreenState extends State<Homescreen> {
                                 color: Colors.deepPurple.shade50,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Text("Compact", style: TextStyle()),
+                              child: Text( getUser4[index]["Category_Name"], style: TextStyle()),
                             ),
-                            Image.asset(
-                              'assets/img/tesla.jpg',
+                            Image.network(
+                              getUser4[index]["Vehicle_Image"],
                               fit: BoxFit.cover,
                               height: mheight * 0.17,
-                              width: mwidth,
+                              width: mwidth*0.78,
                            //   filterQuality: FilterQuality.high,
 
 
@@ -314,7 +325,7 @@ class _HomescreenState extends State<Homescreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      "₹750",
+                            getUser4[index]["Rent_Price"],
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -385,7 +396,7 @@ class _HomescreenState extends State<Homescreen> {
                   itemBuilder: (context, int index) {
                       return GestureDetector(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser2[index]["Vehicle_Id"],carname:getUser2[index]["Vehicle_Name"],type:getUser2[index]["Vehicle_Type"],descripation:getUser2[index]["Vehicle_Description"],price:getUser2[index]["Rent_Price"],image:getUser2[index]["Vehicle_Image"])));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser2[index]["Vehicle_Id"],carname:getUser2[index]["Vehicle_Name"],type:getUser2[index]["Vehicle_Type"],descripation:getUser2[index]["Vehicle_Description"],price:getUser2[index]["Rent_Price"],image:getUser2[index]["Vehicle_Image"])));
                       },
                         child: Card(
 
@@ -496,7 +507,7 @@ class _HomescreenState extends State<Homescreen> {
                   itemBuilder: (context, int index) {
                       return  GestureDetector(
                           onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> bike_detail(val1:index, bikeid:getUser3[index]["Vehicle_Id"])));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail(val1:index, bikeid:getUser3[index]["Vehicle_Id"],bikename:getUser3[index]["Vehicle_Name"],type:getUser3[index]["Vehicle_Type"],descripation:getUser3[index]["Vehicle_Description"],price:getUser3[index]["Rent_Price"],image:getUser3[index]["Vehicle_Image"])));
                       },
                         child: Card(
                           elevation: 6,

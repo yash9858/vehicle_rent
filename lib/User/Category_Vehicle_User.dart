@@ -68,7 +68,7 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
-              //   Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser[index]["Vehicle_Id"])));
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=> car_detail(val:index, carid:getUser[index]["Vehicle_Id"],carname:getUser[index]["Vehicle_Name"],type:getUser[index]["Vehicle_Type"],descripation:getUser[index]["Vehicle_Description"],price:getUser[index]["Rent_Price"],image:getUser[index]["Vehicle_Image"])));
                 },
                 child: Container(
 

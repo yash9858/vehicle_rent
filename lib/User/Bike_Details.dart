@@ -14,7 +14,13 @@ import 'Select_date.dart';
 class bike_detail extends StatefulWidget {
   final int val1;
   final String bikeid;
-  const bike_detail({required this.val1,required this.bikeid,});
+  String bikename;
+  String type;
+  String descripation;
+  String price;
+  String image;
+
+   bike_detail({required this.val1,required this.bikeid,required this.bikename,required this.type,required this.descripation,required this.price,required this.image});
 
   @override
   State<bike_detail> createState() => _bike_detailState();
@@ -38,24 +44,25 @@ class _bike_detailState extends State<bike_detail> {
 
   void initState(){
     super.initState();
-    bike_det();
+    // bike_det();
+    star_count();
     star_avg();
   }
 
-  Future bike_det() async{
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
-    if(response.statusCode==200) {
-      data = response.body;
-      setState(() {
-        isLoading=false;
-        getUser2=jsonDecode(data!)["users"];
-      });
-      if (getUser2['error'] == false) {
-        SharedPreferences setpreference = await SharedPreferences.getInstance();
-        setpreference.setString('type', data['Vehicle_Type']);
-      }
-    }
-  }
+  // Future bike_det() async{
+  //   http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+  //   if(response.statusCode==200) {
+  //     data = response.body;
+  //     setState(() {
+  //       isLoading=false;
+  //       getUser2=jsonDecode(data!)["users"];
+  //     });
+  //     if (getUser2['error'] == false) {
+  //       SharedPreferences setpreference = await SharedPreferences.getInstance();
+  //       setpreference.setString('type', data['Vehicle_Type']);
+  //     }
+  //   }
+  // }
 
   Future star_avg() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
@@ -145,7 +152,7 @@ class _bike_detailState extends State<bike_detail> {
                         ],
                       ),
                     ),
-                    Image.network(getUser2[widget.val1]["Vehicle_Image"],height: mheight*0.33,),
+                    Image.network(widget.image,height: mheight*0.33,),
                   ],
                 ),
               ),
@@ -168,14 +175,14 @@ class _bike_detailState extends State<bike_detail> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(getUser2[widget.val1]["Vehicle_Name"],style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                            Text(widget.bikename,style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
                           ],
                         ),
 
                         //overview
                         SizedBox(height: mheight*0.022,),
 
-                        Text(getUser2[widget.val1]["Vehicle_Description"],style: TextStyle(color: Colors.grey),),
+                        Text(widget.descripation,style: TextStyle(color: Colors.grey),),
                         SizedBox(height: mheight*0.01,),
 
 
@@ -198,7 +205,7 @@ class _bike_detailState extends State<bike_detail> {
                                                 BorderRadius.circular(mheight * 0.02),
                                               )),
                                           onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val1, v_id: widget.bikeid,v_type: "bike")));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val1, v_id: widget.bikeid,v_type: widget.type)));
                                           }, child: Text('View All Review', style: TextStyle(color: Colors.black),),),
                                       ],
                                     ),
@@ -333,7 +340,7 @@ class _bike_detailState extends State<bike_detail> {
         child:  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("₹"+ getUser2[widget.val1]["Rent_Price"].toString()+ "/Day",style: TextStyle(fontSize: mheight*0.03,color: Colors.white),),
+            Text("₹"+ widget.price.toString()+ "/Day",style: TextStyle(fontSize: mheight*0.03,color: Colors.white),),
             Container(
 
               height: mheight*0.07,
