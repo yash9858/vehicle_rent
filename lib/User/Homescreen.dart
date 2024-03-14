@@ -13,6 +13,8 @@ import 'package:rentify/User/Category.dart';
 import 'package:rentify/User/Category_Vehicle_User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Search_page.dart';
+
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
 
@@ -146,6 +148,9 @@ class _HomescreenState extends State<Homescreen> {
             SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
             Container(
               child: SearchBar(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Search_page()));
+                },
                 // elevation: MaterialStateProperty.all(5),
                 shape: MaterialStateProperty.all(const ContinuousRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -155,7 +160,7 @@ class _HomescreenState extends State<Homescreen> {
               IconButton(
               icon: const Icon(Icons.keyboard_voice_rounded),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
+               // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
                 print('Use voice command');
               },
             ),
