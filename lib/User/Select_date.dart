@@ -33,6 +33,7 @@ class _Select_dateState extends State<Select_date> {
   var data2;
   var data3;
   var data4;
+  var data5;
   List list= [];
   var getUser;
   var getUser2;
@@ -50,7 +51,6 @@ class _Select_dateState extends State<Select_date> {
   Future v_det() async{
     final loginUrl = Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Select_Fetch_Vehicle.php");
-
     final response = await http
         .post(loginUrl, body: {
       "Vehicle_Type": widget.v_type,
@@ -73,11 +73,11 @@ class _Select_dateState extends State<Select_date> {
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Address_Booking.php"),
         body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
-      data = response.body;
+      data2 = response.body;
 
       setState(() {
         isLoading=false;
-        getUser2=jsonDecode(data!)["users"];
+        getUser2=jsonDecode(data2!)["users"];
         address.text = getUser2[0]["Address"];
       });
     }
@@ -95,21 +95,21 @@ class _Select_dateState extends State<Select_date> {
         "Address": address.text,
       });
       if (response.statusCode == 200) {
-        data2 = jsonDecode(response.body);
-        getUser4 = jsonDecode(response.body)["users"];
+        data3 = jsonDecode(response.body);
+        getUser3 = jsonDecode(response.body)["users"];
         setState(() {
           isLoading = false;
         });
-        if (data2['error'] == false) {
+        if (data3['error'] == false) {
           Fluttertoast.showToast(
-              msg: data2['message'].toString(),
+              msg: data3['message'].toString(),
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2
           );
         }else{
           Fluttertoast.showToast(
-              msg: data2['message'].toString(),
+              msg: data3['message'].toString(),
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 2
@@ -125,12 +125,12 @@ class _Select_dateState extends State<Select_date> {
     ),body: {'Vehicle_Id' : widget.v_id});
 
     if(response.statusCode==200) {
-      data3 = response.body;
+      data4 = response.body;
 
       setState(() {
         isLoading=false;
-        getUser3=jsonDecode(data3!)["users"];
-        for(var data in getUser3){
+        getUser4=jsonDecode(data4!)["users"];
+        for(var data in getUser4){
           list.add(double.parse(data["Ratings"]));
         }
       }
@@ -163,12 +163,11 @@ class _Select_dateState extends State<Select_date> {
         "Return_Date": (_ReturnDate.year).toString()+"-"+(_ReturnDate.month).toString()+"-"+(_ReturnDate.day).toString(),
         "Return_Time": (_ReturnTime.hour).toString()+":"+(_ReturnTime.minute).toString(),
         "Vehicle_Id": widget.v_id,
-        "Vehicle_Type": widget.v_type,
         "Login_Id":s.getString('id'),
       });
       if (response.statusCode == 200) {
         logindata = jsonDecode(response.body);
-        data = jsonDecode(response.body)['user'];
+        data5 = jsonDecode(response.body)['user'];
         setState(() {
           isLoading = false;
         });

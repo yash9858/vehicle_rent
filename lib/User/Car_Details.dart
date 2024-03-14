@@ -264,6 +264,7 @@ class _car_detailState extends State<car_detail> {
                                           trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
                                           title:  Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                                           subtitle: RatingBar.builder(
+                                            ignoreGestures: true,
                                             unratedColor: Colors.white,
                                             initialRating: double.parse(getUser3[index]["Ratings"]),
                                             minRating: 0,

@@ -81,8 +81,6 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
                     SizedBox(height: mdheight * 0.01,),
                      Text('Complain Description: '+getUser[index]["Complain"]),
                     SizedBox(height: mdheight * 0.01,),
-                     Text('Complain Status :'+getUser[index]["Complain_Status"]),
-                    SizedBox(height: mdheight * 0.01,),
                   ],
                 ),
               ),

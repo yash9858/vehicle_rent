@@ -6,14 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 // ignore: camel_case_types
 class Admin_Add_Vehicle extends StatefulWidget {
   final String id;
   final String name;
- // Admin_Add_Vehicle({required this.id});
   const Admin_Add_Vehicle({super.key,required this.id ,required this.name});
 
   @override

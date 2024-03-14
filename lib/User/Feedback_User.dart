@@ -87,6 +87,7 @@ class _FeedBack_UserState extends State<FeedBack_User> {
                                             trailing: Text(allrat[index]["Feedback_Time"].toString(), style: TextStyle(color: Colors.black),),
                                             title: Text(allrat[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
                                             subtitle: RatingBar.builder(
+                                              ignoreGestures: true,
                                               initialRating: double.parse(allrat[index]["Ratings"]),
                                               minRating: 0,
                                               direction: Axis.horizontal,

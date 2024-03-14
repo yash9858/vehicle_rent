@@ -76,17 +76,17 @@ class _Forget_passwordState extends State<Forget_password> {
               TextFormField(
                 obscureText: true,
                  controller: passwordController,
-                validator: (val) {
-                  if (val!.isEmpty
-                  ) {
-                    return "Use Proper Password ";
-                  }
-                  return null;
-                },
+                validator: (val) => _validatePassword(val),
+                // validator: (val) {
+                //   if (val!.isEmpty
+                //   ) {
+                //     return "Use Proper Password ";
+                //   }
+                //   return null;
+                // },
                 decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
                   filled: true,
                   hintText: "New Password ",
-
                   prefixIcon: const Icon(Icons.key),
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
@@ -103,7 +103,6 @@ class _Forget_passwordState extends State<Forget_password> {
                 decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
                   filled: true,
                   hintText: "Confirm Password ",
-
                   prefixIcon: const Icon(Icons.key),
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
@@ -161,8 +160,14 @@ Future<void> _submit() async {
       }
     }
   }
-
+}
 }
 
+String? _validatePassword(String? val) {
+  if (val == null || val.isEmpty) {
+    return "Please enter a password";
+  }
+  // Add more validation logic if needed
+  return null;
 }
 

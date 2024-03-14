@@ -23,7 +23,7 @@ var logindata;
   var getUser;
   String? data2;
   var getUser2;
-  bool isLoading=false;
+  bool isLoading=true;
   var feed;
 
   void initState(){
@@ -32,9 +32,6 @@ var logindata;
     getdata2();
   }
   Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Cancel_Admin.php"));
     if(response.statusCode==200){
       data=response.body;
@@ -47,9 +44,6 @@ var logindata;
   }
 
   Future getdata2() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Refund_Pending.php"));
     if(response.statusCode==200){
       data2=response.body;
@@ -57,7 +51,6 @@ var logindata;
         isLoading=false;
         getUser2=jsonDecode(data2!)["users"];
         feed=jsonDecode(data2!)["Cancle_Id"];
-
       });
     }
 
@@ -76,9 +69,9 @@ var logindata;
             centerTitle: true,
             backgroundColor: Colors.deepPurple.shade800,
             bottom: const TabBar(
-                indicatorColor: Colors.deepPurple,
-                indicatorWeight: 2,
-                labelColor: Colors.black,
+                indicatorColor: Colors.white,
+                indicatorWeight: 3,
+                labelColor: Colors.white,
                 tabs: [
                   Tab(
                     text: 'Cancel List',

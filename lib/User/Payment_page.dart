@@ -18,7 +18,8 @@ class Payment_page extends StatefulWidget {
     required this.startd,
     required this.startt,
     required this.returnd,
-    required this.returnt});
+    required this.returnt
+    });
 
   @override
   State<Payment_page> createState() => _Payment_pageState();
@@ -26,13 +27,12 @@ class Payment_page extends StatefulWidget {
 
 class _Payment_pageState extends State<Payment_page> {
 
-  bool isLoading=false;
+  bool isLoading=true;
   var data;
   var data2;
   var data3;
-  var data4;
+  var getUser;
   var getUser2;
-  var getUser3;
   var bid;
   var bstat;
 
@@ -41,28 +41,9 @@ class _Payment_pageState extends State<Payment_page> {
     super.initState();
     booking();
     payment();
-    Bstatus();
-    // paymentdata();
   }
-// var cv;
-//   var d1;
-//   Future paymentdata() async{
-//     print(bid);
-//     http.Response response= await http.post(Uri.parse(
-//         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Payment_Booking_data.php"),
-//         body: {'Booking_Id': bid});
-//     if(response.statusCode==200) {
-//       d1 = jsonDecode(response.body);
-//
-//       setState(() {
-//         isLoading=false;
-//         cv=jsonDecode(data!)["users"];
-//         print(cv);
-//       });
-//     }
-//   }
 
-var x;
+var date;
   double calculateTotalPrice(DateTime startDate, double startHour, DateTime endDate, double endHour) {
     double pricePerDate = double.parse(widget.price);
     // Remove time component from start and end dates
@@ -79,26 +60,21 @@ var x;
     if (endHour > startHour) {
       totalPrice += (endHour - startHour) * (pricePerDate / 24).toInt();
       setState(() {
-        x=totalPrice;
+        date=totalPrice;
       });
     }
     return totalPrice;
   }
   Future booking() async{
-    print(widget.startt);
     SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Payment_Booking_Fetch.php"),
         body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
-        getUser2=jsonDecode(data!)["users"];
+        getUser=jsonDecode(data!)["users"];
         bid = jsonDecode(data!)["users"][0]["Booking_Id"];
       });
     }
@@ -106,9 +82,6 @@ var x;
 
   Future payment() async{
     SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse(
         "https://road-runner24.000webhostapp.com/API/Insert_API/Payment_Insert.php"),
         body: {
@@ -118,10 +91,9 @@ var x;
           'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data2 = response.body;
-      print(data2);
       setState(() {
         isLoading=false;
-        getUser3=jsonDecode(data2!)["users"];
+        getUser2=jsonDecode(data2!)["users"];
       });
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
     }
@@ -130,20 +102,16 @@ var x;
 
 
   Future Bstatus() async{
-    SharedPreferences share=await SharedPreferences.getInstance();
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.post(Uri.parse(
         "https://road-runner24.000webhostapp.com/API/Update_API/Booking_Status_Update_Payment.php"),
         body: {
           'Booking_Id': bid,});
     if(response.statusCode==200) {
-      data4 = response.body;
-      print(data4);
+      data3 = response.body;
+      print(data3);
       setState(() {
         isLoading=false;
-        bstat=jsonDecode(data4!)["users"];
+        bstat=jsonDecode(data3!)["users"];
       });
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
     }
@@ -289,9 +257,8 @@ var total;
         child: ElevatedButton(
           onPressed: (){
             // payment();
-            // available();
             // Bstatus();
-            total=calculateTotalPrice(DateTime.parse(widget.startd), double.parse(widget.startt),  DateTime.parse(widget.returnd), double.parse(widget.returnt));
+          calculateTotalPrice(DateTime.parse(widget.startd), double.parse(widget.startt),  DateTime.parse(widget.returnd.toString()), double.parse(widget.returnt));
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

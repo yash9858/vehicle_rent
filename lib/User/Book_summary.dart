@@ -13,8 +13,8 @@ import 'package:http/http.dart' as http;
 
 class Book_summary extends StatefulWidget {
   final int val3;
-  final String? Booking_Id;
-  const Book_summary({required this.val3, required this.Booking_Id});
+  final String Bid;
+  const Book_summary({required this.val3, required this.Bid});
 
 
   @override
@@ -24,28 +24,22 @@ class Book_summary extends StatefulWidget {
 
 class _Book_summaryState extends State<Book_summary> {
   var data;
-
   var getUser2;
-  bool isLoading=false;
+  bool isLoading=true;
+
   void initState(){
     super.initState();
     getdata();
   }
 
   Future getdata() async {
-    SharedPreferences share = await SharedPreferences.getInstance();
-
-    setState(() {
-      isLoading = true;
-    });
     Map senddata ={
-      'Booking_Id': widget.Booking_Id
+      'Booking_Id': widget.Bid
     };
     http.Response response = await http.post(Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_Summery_User.php" ),body:senddata);
     if (response.statusCode == 200) {
       data = response.body;
-
       setState(() {
         isLoading = false;
         getUser2 = jsonDecode(data!)["users"];
@@ -257,10 +251,6 @@ void _showtimepicker(){
                 ),
               ),
               SizedBox(height: mheight*0.08,),
-
-
-
-
             ],
           ),
         ),
@@ -270,17 +260,18 @@ void _showtimepicker(){
         padding: EdgeInsets.only(bottom: 5,left: 10,right: 10),
       //  width: double.infinity,
       //  height: mheight*0.08,
-        child:   Row(
+        child:  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple,),)
+        :Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-       if(getUser2[0]["Booking_Status"]=="1") ...[
+         if(getUser2[0]["Booking_Status"] == "1") ...[
          Expanded(
            child: Container(
                height: mheight*0.065,
                child: ElevatedButton(
                  style: ElevatedButton.styleFrom(
 
-                   backgroundColor:    Colors.deepPurple.shade800,),
+                   backgroundColor: Colors.deepPurple.shade800,),
                  onPressed: () {
                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[0]["Payment_Id"],b_id:getUser2[0]["Booking_Id"],amount:getUser2[0]['Total_Price'])));
                  },
