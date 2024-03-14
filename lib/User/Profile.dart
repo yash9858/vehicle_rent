@@ -182,10 +182,13 @@ class _ProfileState extends State<Profile> {
                       },
                       icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                     ))),
-                const Divider(),
-                InkWell(
-                  onTap: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+                  const Divider(),
+                  InkWell(
+                  onTap: () async{
+                    final pref = await SharedPreferences.getInstance();
+                    await pref.clear();
+                    await pref.setBool('seen', true);
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
                   },
                 child: const ListTile(
                   leading: Icon(Icons.logout,color: Colors.deepPurple,),

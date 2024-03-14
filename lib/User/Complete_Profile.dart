@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:rentify/User/User_DashBoard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -25,15 +25,12 @@ class complete_ProfileState extends State<complete_Profile> {
   TextEditingController user = TextEditingController();
   TextEditingController dob = TextEditingController();
   TextEditingController li = TextEditingController();
+  TextEditingController phone = TextEditingController();
   TextEditingController address = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-
   bool isLoading=false;
-
-
-
   final ImagePicker _picker = ImagePicker();
   File? _image;
   Future _getImage() async {
@@ -56,21 +53,15 @@ class complete_ProfileState extends State<complete_Profile> {
     imageUploadRequest.fields['Lincence_Number'] = li.text;
     imageUploadRequest.fields['DOB'] = dob.text;
     imageUploadRequest.fields['Address'] = address.text;
+    imageUploadRequest.fields['Phone_No'] = phone.text;
     imageUploadRequest.fields['Gender'] = _value;
 
-
-
     imageUploadRequest.fields['Login_Id'] = prefs.getString('id')!;
-    print(prefs.getString('heelo'));
     imageUploadRequest.files.add(file);
     try {
-      //_isLoading = true;
       final streamedResponse = await imageUploadRequest.send();
       streamedResponse.stream.transform(utf8.decoder).listen((value) {
         if(streamedResponse.statusCode==200){
-          setState(() {
-            //_isLoading=false;
-          });
           var logindata;
           logindata = jsonDecode(value);
           print(logindata);
@@ -124,7 +115,7 @@ class complete_ProfileState extends State<complete_Profile> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Edit Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
+          title: const Text("Complete Profile",style: TextStyle(color: Colors.black,fontSize: 20),),
 
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -242,6 +233,24 @@ class complete_ProfileState extends State<complete_Profile> {
                                 ),
                               ),
                               SizedBox(height: mdheight * 0.025,),
+                              TextFormField(
+                                controller: phone,
+                                validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return "Please Enter Phone No";
+                                  }
+                                },
+                                textInputAction: TextInputAction.next,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.grey.shade100,
+                                  filled: true,
+                                  hintText: 'Enter Your Phone No',
+                                  labelText: "Phone No",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(mdheight * 0.02)),
+                                ),
+                              ),
+                              SizedBox(height: mdheight * 0.025,),
                             ],
                           )),
                       Row(
@@ -290,6 +299,10 @@ class complete_ProfileState extends State<complete_Profile> {
                         child: MaterialButton(
                           onPressed: (){
                             uploadImageMedia(_image!);
+                            print(_value);
+                            //Navigator.of(context).pushAndRemoveUntil(
+                            //    MaterialPageRoute(builder: (context) => UserDasboard()),
+                              //      (route) => false);
                           },
                           child: Text('Save Details',
                               style: TextStyle(
