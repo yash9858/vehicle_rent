@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
 import 'package:rentify/User/Payment_Receipt.dart';
+import 'package:rentify/User/Privacy_policy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -162,7 +163,9 @@ class _ProfileState extends State<Profile> {
                     style: TextStyle(fontSize: 20),
                   ),
                   trailing: IconButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>  PrivacyPolicyPage()));
+                  },
                   icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),
                 const Divider(),

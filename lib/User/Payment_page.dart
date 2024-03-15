@@ -43,45 +43,23 @@ class _Payment_pageState extends State<Payment_page> {
   var getUser2;
   var bid;
   var bstat;
+  var total_price;
 
 
   void initState(){
     super.initState();
     booking();
-    payment();
+    total_price = calculateTotalPrice(DateTime(int.parse(widget.starty),int.parse(widget.startm), int.parse(widget.startd)), double.parse(widget.startt),  DateTime(int.parse(widget.returny),int.parse(widget.returnm),int.parse(widget.returnd)), double.parse(widget.returnt));
   }
 
-var date;
-  // double calculateTotalPrice(DateTime startDate, double startHour, DateTime endDate, double endHour) {
-  //   double pricePerDate = double.parse(widget.price);
-  //   // Remove time component from start and end dates
-  //   DateTime startDateWithoutTime = DateTime(startDate.year, startDate.month, startDate.day);
-  //   DateTime endDateWithoutTime = DateTime(endDate.year, endDate.month, endDate.day);
-  //
-  //   int totalDays = endDateWithoutTime.difference(startDateWithoutTime).inDays;
-  //   if (totalDays == 0 && endHour > startHour) {
-  //     totalDays = 1;
-  //   }
-  //   // Calculate total price
-  //   double totalPrice = totalDays * pricePerDate;
-  //   // the start and end hours are different, add extra charge
-  //   if (endHour > startHour) {
-  //     totalPrice += (endHour - startHour) * (pricePerDate / 24).toInt();
-  //     setState(() {
-  //       date=totalPrice;
-  //     });
-  //   }
-  //   return totalPrice;
-  // }
-
-  double calculateTotalPrice(DateTime startDate, int startHour, DateTime endDate, int endHour) {
+  double calculateTotalPrice(DateTime startDate, double startHour, DateTime endDate, double endHour) {
     // Define price per date
-    const double pricePerDate = 50.0;
+    double pricePerDate = double.parse(widget.price);
     // Calculate total number of days
     int totalDays = endDate.difference(startDate).inDays;
     // If the same day, but different hours, consider it as one day
     if (totalDays == 0 && endHour > startHour) {
-      totalDays = 1;
+      totalDays = 0;
     }
     // Calculate total price
     double totalPrice = totalDays * pricePerDate;
@@ -104,6 +82,7 @@ var date;
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
         bid = jsonDecode(data!)["users"][0]["Booking_Id"];
+        payment();
       });
     }
   }
@@ -115,7 +94,7 @@ var date;
         body: {
           'Payment_Mode': selectedOption,
           'Booking_Id': bid,
-          'Total_Price': "3000",
+          'Total_Price': total_price.toString(),
           'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data2 = response.body;
@@ -140,6 +119,7 @@ var date;
       setState(() {
         isLoading=false;
         bstat=jsonDecode(data3!)["users"];
+
       });
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
     }
@@ -172,6 +152,11 @@ var x;
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ListTile(
+                  title: const Text('Total Price',style: TextStyle(fontSize: 17)),
+                  trailing: Text("₹"+total_price.toString(),style: TextStyle(fontSize: 17)),
+                ),
+                SizedBox(height: mheight*0.02,),
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text("Cash",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
@@ -285,12 +270,8 @@ var x;
         height: mheight*0.08,
         child: ElevatedButton(
           onPressed: (){
-            // payment();
+             payment();
             // Bstatus();
-          //calculateTotalPrice(DateTime(int.parse(widget.starty),int.parse(widget.startm),int.parse(widget.startd)), int.parse(widget.startt),  DateTime(int.parse(widget.returny),int.parse(widget.returnm),int.parse(widget.returnd)), int.parse(widget.returnt));
-          print( calculateTotalPrice(DateTime(int.parse(widget.starty),int.parse(widget.startm),int.parse(widget.startd)), int.parse(widget.startt),  DateTime(int.parse(widget.returny),int.parse(widget.returnm),int.parse(widget.returnd)), int.parse(widget.returnt))
-          );
-            //print(widget.returnd);
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

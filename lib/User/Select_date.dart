@@ -177,13 +177,14 @@ class _Select_dateState extends State<Select_date> {
           );
           Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page(v2_id: widget.v_id,price:getUser[0]["Rent_Price"],
             starty: (_PickupDate.year).toString(),
-            startm: (_PickupDate.year).toString(),
-            startd: (_PickupDate.year).toString(),
+            startm: (_PickupDate.month).toString(),
+            startd: (_PickupDate.day).toString(),
             startt:(_PickupTime.hour).toString(),
-            returnm:(_ReturnDate.year).toString(),
-            returny:(_ReturnDate.month).toString(),
-            returnd:(_ReturnDate.day).toString(),
+            returny: (_ReturnDate.year).toString(),
+            returnm: (_ReturnDate.month).toString(),
+            returnd: (_ReturnDate.day).toString(),
             returnt:(_ReturnTime.hour).toString(),
+
           )));
         }else{
           Fluttertoast.showToast(

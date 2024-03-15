@@ -92,7 +92,7 @@ class _Category_addState extends State<Category_add> {
             color: Colors.white,
             fontSize: mdheight * 0.025,
           ),
-          title: const Text('Add New Category'),
+          title: const Text('Add Category'),
           backgroundColor: Colors.deepPurple.shade800,
           iconTheme: const IconThemeData(
             color: Colors.white,
