@@ -149,7 +149,7 @@ class _HomescreenState extends State<Homescreen> {
             Container(
               child: SearchBar(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Search_page()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchPage()));
                 },
                 // elevation: MaterialStateProperty.all(5),
                 shape: MaterialStateProperty.all(const ContinuousRectangleBorder(

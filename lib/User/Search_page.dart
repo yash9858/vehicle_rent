@@ -1,33 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'package:rentify/User/Search_fetch_vehicle.dart';
 
-class Search_page extends StatefulWidget {
-  const Search_page({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
-  State<Search_page> createState() => _Search_pageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _Search_pageState extends State<Search_page> {
+class _SearchPageState extends State<SearchPage> {
   TextEditingController _controller = TextEditingController();
   String _searchText = '';
+  bool isLoading = true;
+  var data;
+  var getUser;
+
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  Future getData() async {
+    http.Response response = await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Vehicle_name.php"));
+    if (response.statusCode == 200) {
+      data = response.body;
+      setState(() {
+        isLoading = false;
+        getUser = jsonDecode(data!)["users"];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: SafeArea(
-
+      body: isLoading
+          ? Center(child: CircularProgressIndicator(color: Colors.deepPurple))
+          : SafeArea(
         child: Padding(
-
-          padding: const EdgeInsets.only(top: 15,left: 8,right: 8),
+          padding: const EdgeInsets.only(top: 15, left: 8, right: 8),
           child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextField(
-
                   controller: _controller,
-
                   decoration: InputDecoration(
                     hintText: 'Search...',
                     suffixIcon: IconButton(
@@ -36,9 +56,9 @@ class _Search_pageState extends State<Search_page> {
                         setState(() {
                           _searchText = _controller.text;
                           print(_searchText);
-
                         });
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Search_fetch(vname: _controller.text)));
+                        // Navigate to search fetch page with search text
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Search_fetch(vname: _controller.text)));
                       },
                     ),
                   ),
@@ -46,10 +66,19 @@ class _Search_pageState extends State<Search_page> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 20, // Just for demonstration
+                  itemCount: getUser.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text('Item $index'),
+                      onTap: (){
+                        setState(() {
+                          // Set the search text to the selected vehicle name
+                          _controller.text = getUser[index]["Vehicle_Name"];
+                          // Move the cursor to the end of the text
+                          _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
+                        });
+                      },
+                      title: Text(getUser[index]["Vehicle_Name"]),
+
                     );
                   },
                 ),
@@ -58,7 +87,6 @@ class _Search_pageState extends State<Search_page> {
           ),
         ),
       ),
-
     );
   }
 }

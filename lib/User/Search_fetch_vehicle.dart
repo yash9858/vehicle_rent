@@ -28,7 +28,7 @@ class _Search_fetchState extends State<Search_fetch> {
     print(widget.vname);
   }
   Future getdata() async{
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Select_Fetch_Vehicle.php"), body: {'Vehicle_Name':widget.vname});
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Search_fetch_vehicle.php"), body: {'Vehicle_Name':widget.vname});
     if(response.statusCode==200) {
       data = response.body;
 
