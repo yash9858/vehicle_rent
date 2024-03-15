@@ -102,7 +102,6 @@ class _Payment_pageState extends State<Payment_page> {
         isLoading=false;
         getUser2=jsonDecode(data2!)["users"];
       });
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
     }
   }
 
@@ -271,7 +270,7 @@ var x;
         child: ElevatedButton(
           onPressed: (){
              payment();
-            // Bstatus();
+             Bstatus();
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

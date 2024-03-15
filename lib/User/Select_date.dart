@@ -44,7 +44,6 @@ class _Select_dateState extends State<Select_date> {
     super.initState();
     v_det();
     address_fetch();
-    ratings();
   }
 
   Future v_det() async{
@@ -62,6 +61,7 @@ class _Select_dateState extends State<Select_date> {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
       });
+      ratings();
     }
   }
 
@@ -216,13 +216,11 @@ class _Select_dateState extends State<Select_date> {
   void ReturnDate(){
     showDatePicker(
       context: context,
-      firstDate: DateTime(DateTime.now().year, DateTime.now().month , DateTime.now().day), lastDate: DateTime(2025), initialDate: _PickupDate,).then((value){
+      firstDate: DateTime(_PickupDate.year, _PickupDate.month , _PickupDate.day), lastDate: DateTime(2025), initialDate: _PickupDate,).then((value){
       setState(() {
         _ReturnDate=value!;
-
       });
     });
-
   }
   void PickupTime(){
     showTimePicker(
@@ -297,7 +295,7 @@ var sdate;
                               isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
                                   : Row(
                                 children: [
-                                  Text(avg().toString()),
+                                  Text(avg().toString().characters.first),
                                   Icon(
                                     Icons.star,
                                     color: Colors.orange,

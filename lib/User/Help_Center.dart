@@ -52,7 +52,7 @@ class _HelpCenterState extends State<HelpCenter> {
 
   var icon = [Icons.call, LineIcons.facebookMessenger, Icons.email_outlined];
   var title = ['Phone No', 'Message', 'Email'];
-  var val = ['9558879082', '9646788902', 'mistryyash123@gmail.com'];
+  var val = ['7834569202', '9646788902', 'Project123@gmail.com'];
   var QA = [
     'How Do I Rent A Car Or Bike Using The Rentify App?',
     'What Types Of Vehicles Are Available For Rent On The Rentify App?',

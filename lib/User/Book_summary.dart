@@ -228,23 +228,15 @@ void _showtimepicker(){
                         Text("₹"+getUser2[0]["Rent_Price"]+"/day",),
                       ],
                     ),
-                    SizedBox(height: mheight*0.02,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Total Days",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
-                        Text("5"),
-                      ],
-                    ),
                     Divider(
-                      height: mheight*0.05,
+                      height: mheight*0.03,
                     ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Total",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
-                        Text("₹"+getUser2[0]["Total_Price"] +"/day"),
+                        Text("₹"+getUser2[0]["Total_Price"]),
                       ],
                     )
                   ],
