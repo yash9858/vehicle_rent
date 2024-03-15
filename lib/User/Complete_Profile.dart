@@ -40,6 +40,7 @@ class complete_ProfileState extends State<complete_Profile> {
       _image = File(pickedFile!.path);
     });
     print(_image);
+
   }
   uploadImageMedia(File fileImage) async {
     print(fileImage);
@@ -299,7 +300,6 @@ class complete_ProfileState extends State<complete_Profile> {
                         child: MaterialButton(
                           onPressed: (){
                             uploadImageMedia(_image!);
-                            print(_value);
                             //Navigator.of(context).pushAndRemoveUntil(
                             //    MaterialPageRoute(builder: (context) => UserDasboard()),
                               //      (route) => false);

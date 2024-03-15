@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:line_icons/line_icons.dart';
-
 import 'package:rentify/User/Bike_Details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,10 +18,11 @@ class _BikeState extends State<Bike> {
   bool isLoading=true;
   var data;
   var getUser2;
-
+  var bik_id;
   void initState(){
     super.initState();
     bikedata();
+//    fav2();
   }
 
   Future bikedata() async{
@@ -33,9 +32,72 @@ class _BikeState extends State<Bike> {
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
+        //bik_id=jsonDecode(data!)["users"]["Vehicle_Id"];
+        //fav();
       });
     }
   }
+  var nam;
+  var d;
+  var c;
+  void fav() async {
+    SharedPreferences s=await SharedPreferences.getInstance();
+    final loginUrl = Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Update_API/Favorites2.php");
+    final response = await http
+        .post(loginUrl, body: {
+        'Login_Id':s.getString('id'),
+        'Vehicle_Id': nam,
+      },
+    );
+    if (response.statusCode == 200) {
+      d = response.body;
+      print(d);
+      setState(() {
+        c = jsonDecode(d!)['users'];
+      });
+    }
+    else {
+      setState(() {
+        isLoading=false;
+      });
+
+      print("Failed to fetch data. Status code: ${response.statusCode}");
+    }
+  }
+
+  var d1;
+  var c1;
+  void fav2() async {
+    SharedPreferences s=await SharedPreferences.getInstance();
+    final loginUrl = Uri.parse(
+        "https://road-runner24.000webhostapp.com/API/Update_API/Favorites.php");
+    final response = await http
+        .post(loginUrl, body: {
+      'Login_Id':s.getString('id'),
+      'Vehicle_Id': bik_id,
+    },
+    );
+    if (response.statusCode == 200) {
+      d1 = response.body;
+      print(d);
+      setState(() {
+        c1 = jsonDecode(d1!)['users'];
+        isLoading=false;
+        //val=cat1["DETAILS"];
+      });
+    }
+    else {
+      setState(() {
+        isLoading=false;
+      });
+
+      print("Failed to fetch data. Status code: ${response.statusCode}");
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     var mheight=MediaQuery.sizeOf(context).height;
@@ -62,7 +124,7 @@ class _BikeState extends State<Bike> {
                 mainAxisSpacing: 5
             ),
             itemCount: getUser2.length,
-            itemBuilder: (BuildContext context,int index){
+            itemBuilder: (context,int index){
               return GestureDetector(
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>bike_detail(val1:index, bikeid:getUser2[index]["Vehicle_Id"],bikename:getUser2[index]["Vehicle_Name"],type:getUser2[index]["Vehicle_Type"],descripation:getUser2[index]["Vehicle_Description"],price:getUser2[index]["Rent_Price"],image:getUser2[index]["Vehicle_Image"])));
@@ -86,7 +148,19 @@ class _BikeState extends State<Bike> {
                                 children: [
 
                                   Text(getUser2[index]["Category_Name"],style: TextStyle(color: Colors.grey),),
-                                  Icon(LineIcons.heart,color: Colors.red,)
+                                 // IconButton(
+                                 //   onPressed: (){
+                                 //     nam =getUser2[index]["Vehicle_Id"];
+                                 //     fav();
+                                 //     setState(() {
+                                 //       isLoading = true;
+                                 //     });
+                                 //   },
+                                 //   icon:Icon(c1.length == 0 ? Icons.favorite_outline:
+                                 //   c1[0]["Favorites_Status"] == '0'
+                                 //   ? Icons.favorite_outline : Icons.favorite,)
+                                 // )
+                                 //Icon(LineIcons.heart,color: Colors.red,)
                                 ],
                               ),
                             ),

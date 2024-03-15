@@ -17,16 +17,13 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
 
   String? data;
   var getUser;
-  bool isLoading=false;
+  bool isLoading=true;
 
   void initState(){
     super.initState();
     getdata();
   }
   Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Booking_Admin.php"));
     if(response.statusCode==200){
       data=response.body;
@@ -80,7 +77,7 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                          Row(
                            children: [
                              Text("Vehicle Name: "),
-                             Text( getUser[index]["Vehicle_Name"]),
+                             Text(getUser[index]["Vehicle_Name"]),
                            ],
                          ),
                         SizedBox(height: mdheight * 0.01,),
@@ -104,45 +101,45 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                         SizedBox(height: mdheight * 0.01,),
                          //Text('Booking Status: '+getUser[index]["Booking_Status"]),
                         //SizedBox(height: mdheight * 0.01,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            MaterialButton(onPressed: (){
-                              CoolAlert.show(
-                                context: context,
-                                type: CoolAlertType.success,
-                                text: 'Booking Accepted',
-                                confirmBtnColor: Colors.deepPurple.shade800,
-                                backgroundColor: Colors.deepPurple.shade800,
-                              );
-                            },
-                                color: Colors.deepPurple.shade800,
-                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
-                                ),
-                                child: const Text('Accept Booking', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                                )),
-                            MaterialButton(onPressed: (){
-                              CoolAlert.show(context: context,
-                                  type: CoolAlertType.confirm,
-                                  text: 'Do you Cancel Booking',
-                                  confirmBtnColor: Colors.red,
-                                  animType: CoolAlertAnimType.slideInDown,
-                                  backgroundColor: Colors.red,
-                                  cancelBtnTextStyle: const TextStyle(
-                                    color: Colors.black,
-                                  ));
-                            },
-                                color: Colors.red,
-                                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
-                                ),
-                                child: const Text('Cancel Booking', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                                )),
-                          ],
-                        )
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: [
+                        //     MaterialButton(onPressed: (){
+                        //       CoolAlert.show(
+                        //         context: context,
+                        //         type: CoolAlertType.success,
+                        //         text: 'Booking Accepted',
+                        //         confirmBtnColor: Colors.deepPurple.shade800,
+                        //         backgroundColor: Colors.deepPurple.shade800,
+                        //       );
+                        //     },
+                        //         color: Colors.deepPurple.shade800,
+                        //         padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
+                        //         shape: RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
+                        //         ),
+                        //         child: const Text('Accept Booking', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                        //         )),
+                        //     MaterialButton(onPressed: (){
+                        //       CoolAlert.show(context: context,
+                        //           type: CoolAlertType.confirm,
+                        //           text: 'Do you Cancel Booking',
+                        //           confirmBtnColor: Colors.red,
+                        //           animType: CoolAlertAnimType.slideInDown,
+                        //           backgroundColor: Colors.red,
+                        //           cancelBtnTextStyle: const TextStyle(
+                        //             color: Colors.black,
+                        //           ));
+                        //     },
+                        //         color: Colors.red,
+                        //         padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
+                        //         shape: RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
+                        //         ),
+                        //         child: const Text('Cancel Booking', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                        //         )),
+                        //   ],
+                        // )
                       ],
                     ),
                   ),

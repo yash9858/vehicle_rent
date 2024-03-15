@@ -20,7 +20,7 @@ class bike_detail extends StatefulWidget {
   String price;
   String image;
 
-   bike_detail({required this.val1,required this.bikeid,required this.bikename,required this.type,required this.descripation,required this.price,required this.image});
+  bike_detail({required this.val1,required this.bikeid,required this.bikename,required this.type,required this.descripation,required this.price,required this.image});
 
   @override
   State<bike_detail> createState() => _bike_detailState();
@@ -44,25 +44,25 @@ class _bike_detailState extends State<bike_detail> {
 
   void initState(){
     super.initState();
-    // bike_det();
+    bike_det();
     star_count();
     star_avg();
   }
 
-  // Future bike_det() async{
-  //   http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
-  //   if(response.statusCode==200) {
-  //     data = response.body;
-  //     setState(() {
-  //       isLoading=false;
-  //       getUser2=jsonDecode(data!)["users"];
-  //     });
-  //     if (getUser2['error'] == false) {
-  //       SharedPreferences setpreference = await SharedPreferences.getInstance();
-  //       setpreference.setString('type', data['Vehicle_Type']);
-  //     }
-  //   }
-  // }
+  Future bike_det() async{
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+    if(response.statusCode==200) {
+      data = response.body;
+      setState(() {
+        isLoading=false;
+        getUser2=jsonDecode(data!)["users"];
+      });
+      if (getUser2['error'] == false) {
+        SharedPreferences setpreference = await SharedPreferences.getInstance();
+        setpreference.setString('type', data['Vehicle_Type']);
+      }
+    }
+  }
 
   Future star_avg() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
@@ -75,7 +75,7 @@ class _bike_detailState extends State<bike_detail> {
           list.add(double.parse(data["Ratings"]));
         }
         star_count();
-        }
+      }
       );
     }
   }
@@ -106,9 +106,9 @@ class _bike_detailState extends State<bike_detail> {
       return 0.0;
     double sum = 0.0;
     for(var rating in list)
-      {
-        sum += rating;
-      }
+    {
+      sum += rating;
+    }
     return sum /list.length;
   }
   @override
@@ -117,46 +117,46 @@ class _bike_detailState extends State<bike_detail> {
     var mwidth = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      backgroundColor: Colors.white,
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
           : SafeArea(
-          child:Stack(
-            children: [
-              Container(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Row(
+        child:Stack(
+          children: [
+            Container(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
 
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left:8),
-                            child: IconButton(
-                                onPressed: (){
-                                  Navigator.pop(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
-                                },
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left:8),
+                          child: IconButton(
+                              onPressed: (){
+                                Navigator.pop(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
+                              },
 
-                                icon: Icon(Icons.arrow_back,)),
-                          ),
-                          Text("Bike Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mheight*0.028),),
-                          Padding(
+                              icon: Icon(Icons.arrow_back,)),
+                        ),
+                        Text("Bike Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mheight*0.028),),
+                        Padding(
                             padding: const EdgeInsets.only(right: 8),
                             child: IconButton(
-                                onPressed: (){},
-                                icon: (
-                                    Icon(Icons.favorite)),
+                              onPressed: (){},
+                              icon: (
+                                  Icon(Icons.favorite)),
                               color: Colors.red,
-                          )),
-                        ],
-                      ),
+                            )),
+                      ],
                     ),
-                    Image.network(widget.image,height: mheight*0.33,),
-                  ],
-                ),
+                  ),
+                  Image.network(widget.image,height: mheight*0.33,),
+                ],
               ),
-              SingleChildScrollView(
+            ),
+            SingleChildScrollView(
                 child: Padding(
                   padding:  EdgeInsets.only(top: mheight * 0.37),
                   child: Container(
@@ -168,173 +168,173 @@ class _bike_detailState extends State<bike_detail> {
                     padding:  EdgeInsets.symmetric(horizontal: mwidth * 0.035),
                     child: Column(
                       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      //car name and reting
-                      children: [
-                        SizedBox(height: mheight*0.02,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(widget.bikename,style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
-                          ],
-                        ),
-
-                        //overview
-                        SizedBox(height: mheight*0.022,),
-
-                        Text(widget.descripation,style: TextStyle(color: Colors.grey),),
-                        SizedBox(height: mheight*0.01,),
-
-
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        //car name and reting
+                        children: [
+                          SizedBox(height: mheight*0.02,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: mheight * 0.02),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text("Ratings & Reviews",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.white.withOpacity(0.90),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(mheight * 0.02),
-                                              )),
-                                          onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val1, v_id: widget.bikeid,v_type: widget.type)));
-                                          }, child: Text('View All Review', style: TextStyle(color: Colors.black),),),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    f1==null && f2==null && f3==null && f4==null && f5==null?
-                                    RatingSummary(
-                                      counter: 1,
-                                      average: 0,
-                                      averageStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                      ),
-                                      counterFiveStars: 0,
-                                      labelCounterFiveStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterFourStars: 0,
-                                      labelCounterFourStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterThreeStars: 0,
-                                      labelCounterThreeStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterTwoStars: 0,
-                                      labelCounterTwoStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterOneStars: 0,
-                                      labelCounterOneStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                     : RatingSummary(
-                                      counter: f1.length + f2.length + f3.length + f4.length + f5.length,
-                                      average: avg(),
-                                      averageStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                      ),
-                                      counterFiveStars: f5.length,
-                                      labelCounterFiveStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterFourStars: f4.length,
-                                      labelCounterFourStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterThreeStars: f3.length,
-                                      labelCounterThreeStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterTwoStars: f2.length,
-                                      labelCounterTwoStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      counterOneStars: f1.length,
-                                      labelCounterOneStarsStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: mheight * 0.02),
-                              getUser3==null?Column(children:[
-                                SizedBox(height: 42,),
-                                Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
-                                SizedBox(height: 42,),
-                              ])
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: getUser3.length,
-                                  itemBuilder: (BuildContext context,int index){
-                                    return Column(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            ListTile(
-                                              trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
-                                              title: Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
-                                              subtitle: RatingBar.builder(
+                              Text(widget.bikename,style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                            ],
+                          ),
 
-                                                ignoreGestures: true,
-                                                unratedColor: Colors.white,
-                                                initialRating: double.parse(getUser3[index]["Ratings"]),
-                                                minRating: 0,
-                                                direction: Axis.horizontal,
-                                                itemSize: 23,
-                                                itemCount: 5,
-                                                allowHalfRating: true,
-                                                itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber, size: 2),
-                                                onRatingUpdate: (value) {
-                                                  setState(() {
-                                                    rating = value;
-                                                  });
-                                                },
+                          //overview
+                          SizedBox(height: mheight*0.022,),
+
+                          Text(widget.descripation,style: TextStyle(color: Colors.grey),),
+                          SizedBox(height: mheight*0.01,),
+
+
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: mheight * 0.02),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text("Ratings & Reviews",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white.withOpacity(0.90),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(mheight * 0.02),
+                                                )),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val1, v_id: widget.bikeid,v_type: widget.type)));
+                                            }, child: Text('View All Review', style: TextStyle(color: Colors.black),),),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      f1==null && f2==null && f3==null && f4==null && f5==null?
+                                      RatingSummary(
+                                        counter: 1,
+                                        average: 0,
+                                        averageStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                        ),
+                                        counterFiveStars: 0,
+                                        labelCounterFiveStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterFourStars: 0,
+                                        labelCounterFourStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterThreeStars: 0,
+                                        labelCounterThreeStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterTwoStars: 0,
+                                        labelCounterTwoStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterOneStars: 0,
+                                        labelCounterOneStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                          : RatingSummary(
+                                        counter: f1.length + f2.length + f3.length + f4.length + f5.length,
+                                        average: avg(),
+                                        averageStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                        ),
+                                        counterFiveStars: f5.length,
+                                        labelCounterFiveStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterFourStars: f4.length,
+                                        labelCounterFourStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterThreeStars: f3.length,
+                                        labelCounterThreeStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterTwoStars: f2.length,
+                                        labelCounterTwoStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        counterOneStars: f1.length,
+                                        labelCounterOneStarsStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: mheight * 0.02),
+                                getUser3==null?Column(children:[
+                                  SizedBox(height: 42,),
+                                  Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
+                                  SizedBox(height: 42,),
+                                ])
+                                    : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: getUser3.length,
+                                    itemBuilder: (BuildContext context,int index){
+                                      return Column(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              ListTile(
+                                                trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
+                                                title: Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                                subtitle: RatingBar.builder(
+
+                                                  ignoreGestures: true,
+                                                  unratedColor: Colors.white,
+                                                  initialRating: double.parse(getUser3[index]["Ratings"]),
+                                                  minRating: 0,
+                                                  direction: Axis.horizontal,
+                                                  itemSize: 23,
+                                                  itemCount: 5,
+                                                  allowHalfRating: true,
+                                                  itemBuilder: (context,_) => Icon(Icons.star,color: Colors.amber, size: 2),
+                                                  onRatingUpdate: (value) {
+                                                    setState(() {
+                                                      rating = value;
+                                                    });
+                                                  },
+                                                ),
+                                                leading: Image.network(getUser3[index]["Profile_Image"],height: mheight * 0.5,width: mwidth * 0.1,),
                                               ),
-                                              leading: Image.network(getUser3[index]["Profile_Image"],height: mheight * 0.5,width: mwidth * 0.1,),
-                                            ),
-                                             Padding(
-                                                padding:EdgeInsets.all(10),
-                                                child: Text(getUser3[index]["Comment"], style: TextStyle(
-                                                  color: Colors.white,),))
-                                          ],
-                                        ),
-                                        const Divider(
-                                          thickness: 1,
-                                        ),
-                                      ],
-                                    );
-                                  }),
-                              SizedBox(height: mheight * 0.012,)
-                            ])
-                        // Price and button
-                      ]
+                                              Padding(
+                                                  padding:EdgeInsets.all(10),
+                                                  child: Text(getUser3[index]["Comment"], style: TextStyle(
+                                                    color: Colors.white,),))
+                                            ],
+                                          ),
+                                          const Divider(
+                                            thickness: 1,
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                                SizedBox(height: mheight * 0.012,)
+                              ])
+                          // Price and button
+                        ]
                     ),
                   ),
                 )
-              )],
-          ),
+            )],
         ),
+      ),
 
       bottomNavigationBar: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-      :Container(
+          :Container(
         color: Colors.deepPurple.shade800,
         padding: EdgeInsets.only(top: 10,left: 20,right: 15,bottom: 10),
         child:  Row(

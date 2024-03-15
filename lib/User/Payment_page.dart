@@ -13,11 +13,19 @@ class Payment_page extends StatefulWidget {
   final String startt;
   final String returnd;
   final String returnt;
+  final String starty;
+  final String startm;
+  final String returnm;
+  final String returny;
 
   const Payment_page({super.key ,required this.v2_id,required this.price,
+    required this.starty,
+    required this.startm,
     required this.startd,
     required this.startt,
     required this.returnd,
+    required this.returny,
+    required this.returnm,
     required this.returnt
     });
 
@@ -44,27 +52,47 @@ class _Payment_pageState extends State<Payment_page> {
   }
 
 var date;
-  double calculateTotalPrice(DateTime startDate, double startHour, DateTime endDate, double endHour) {
-    double pricePerDate = double.parse(widget.price);
-    // Remove time component from start and end dates
-    DateTime startDateWithoutTime = DateTime(startDate.year, startDate.month, startDate.day);
-    DateTime endDateWithoutTime = DateTime(endDate.year, endDate.month, endDate.day);
+  // double calculateTotalPrice(DateTime startDate, double startHour, DateTime endDate, double endHour) {
+  //   double pricePerDate = double.parse(widget.price);
+  //   // Remove time component from start and end dates
+  //   DateTime startDateWithoutTime = DateTime(startDate.year, startDate.month, startDate.day);
+  //   DateTime endDateWithoutTime = DateTime(endDate.year, endDate.month, endDate.day);
+  //
+  //   int totalDays = endDateWithoutTime.difference(startDateWithoutTime).inDays;
+  //   if (totalDays == 0 && endHour > startHour) {
+  //     totalDays = 1;
+  //   }
+  //   // Calculate total price
+  //   double totalPrice = totalDays * pricePerDate;
+  //   // the start and end hours are different, add extra charge
+  //   if (endHour > startHour) {
+  //     totalPrice += (endHour - startHour) * (pricePerDate / 24).toInt();
+  //     setState(() {
+  //       date=totalPrice;
+  //     });
+  //   }
+  //   return totalPrice;
+  // }
 
-    int totalDays = endDateWithoutTime.difference(startDateWithoutTime).inDays;
+  double calculateTotalPrice(DateTime startDate, int startHour, DateTime endDate, int endHour) {
+    // Define price per date
+    const double pricePerDate = 50.0;
+    // Calculate total number of days
+    int totalDays = endDate.difference(startDate).inDays;
+    // If the same day, but different hours, consider it as one day
     if (totalDays == 0 && endHour > startHour) {
       totalDays = 1;
     }
     // Calculate total price
     double totalPrice = totalDays * pricePerDate;
-    // the start and end hours are different, add extra charge
+    // If the start and end hours are different, add extra charge
     if (endHour > startHour) {
-      totalPrice += (endHour - startHour) * (pricePerDate / 24).toInt();
-      setState(() {
-        date=totalPrice;
-      });
+      totalPrice += (endHour - startHour) * (pricePerDate / 24);
     }
     return totalPrice;
   }
+
+
   Future booking() async{
     SharedPreferences share=await SharedPreferences.getInstance();
     http.Response response= await http.post(Uri.parse(
@@ -120,6 +148,7 @@ var date;
 
   var selectedOption;
 var total;
+var x;
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -258,12 +287,14 @@ var total;
           onPressed: (){
             // payment();
             // Bstatus();
-          calculateTotalPrice(DateTime.parse(widget.startd), double.parse(widget.startt),  DateTime.parse(widget.returnd.toString()), double.parse(widget.returnt));
+          //calculateTotalPrice(DateTime(int.parse(widget.starty),int.parse(widget.startm),int.parse(widget.startd)), int.parse(widget.startt),  DateTime(int.parse(widget.returny),int.parse(widget.returnm),int.parse(widget.returnd)), int.parse(widget.returnt));
+          print( calculateTotalPrice(DateTime(int.parse(widget.starty),int.parse(widget.startm),int.parse(widget.startd)), int.parse(widget.startt),  DateTime(int.parse(widget.returny),int.parse(widget.returnm),int.parse(widget.returnd)), int.parse(widget.returnt))
+          );
+            //print(widget.returnd);
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),
       ),
     );
-
   }
 }

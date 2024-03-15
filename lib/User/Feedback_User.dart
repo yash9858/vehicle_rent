@@ -248,7 +248,6 @@ class _reviewState extends State<review> {
               minRating: 0,
               direction: Axis.horizontal,
               itemCount: 5,
-              allowHalfRating: true,
               itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
               onRatingUpdate: (value) {
                 setState(() {
@@ -305,9 +304,7 @@ class _reviewState extends State<review> {
                       )),
                   onPressed: (){
                     // Navigator.pop(context);
-                    _submit();
-
-
+                    _submit().whenComplete(() => FeedBack_User);
                   },
                   child:const Text("Submit")),
             ],

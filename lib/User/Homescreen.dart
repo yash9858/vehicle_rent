@@ -245,7 +245,7 @@ class _HomescreenState extends State<Homescreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "New Arrive",
+                    "New Arrives",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
 
@@ -328,7 +328,7 @@ class _HomescreenState extends State<Homescreen> {
                                 Row(
                                   children: [
                                     Text(
-                            getUser4[index]["Rent_Price"],
+                                  "₹"+getUser4[index]["Rent_Price"],
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,

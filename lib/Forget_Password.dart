@@ -20,6 +20,7 @@ class _Forget_passwordState extends State<Forget_password> {
   var logindata;
   var data;
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -147,8 +148,6 @@ Future<void> _submit() async {
         isLoading = false;
       });
       if (logindata['error'] == false) {
-
-
        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => Home()), (Route<dynamic> route) => false);
       }else{
         Fluttertoast.showToast(

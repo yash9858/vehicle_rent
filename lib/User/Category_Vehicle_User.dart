@@ -88,7 +88,7 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(getUser[index]["Vehicle_Name"],style: TextStyle(color: Colors.grey),),
+                                  Text(widget.name,style: TextStyle(color: Colors.grey),),
                                   Icon(Icons.favorite_border,color: Colors.red,)
                                 ],
                               ),
@@ -115,9 +115,7 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
                                     MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        widget.name,
-
-
+                                        getUser[index]["Vehicle_Name"],
                                         style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
@@ -127,7 +125,7 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
                                         MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            getUser[index]["Rent_Price"] +
+                                            "₹"+getUser[index]["Rent_Price"] +
                                                 "/ Day",
                                             style: TextStyle(
                                                 fontSize: 15,

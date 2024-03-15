@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                SizedBox(height: size.height * 0.025),
                TextFormField(
                  controller:passwordController,
-                 obscureText: true,
+                 obscureText: false,
                  keyboardType: TextInputType.text,
                  validator: (val) {
                    if (val!.isEmpty
@@ -125,6 +125,9 @@ class _LoginPageState extends State<LoginPage> {
                      fontSize: 14,
                    ),
                    prefixIcon: const Icon(Icons.key),
+                   suffixIcon: IconButton(onPressed: (){
+
+                   },icon:Icon(Icons.remove_red_eye)),
                    fillColor: Colors.white,
                    border: OutlineInputBorder(
                      borderSide: BorderSide.none,

@@ -20,7 +20,7 @@ class car_detail extends StatefulWidget {
   String image;
 
 
-   car_detail({super.key , required this.val,required this.carid,required this.carname,required this.type,required this.descripation,required this.price,required this.image});
+  car_detail({super.key , required this.val,required this.carid,required this.carname,required this.type,required this.descripation,required this.price,required this.image});
   @override
   State<car_detail> createState() => _car_detailState();
 }
@@ -42,7 +42,7 @@ class _car_detailState extends State<car_detail> {
 
   void initState(){
     super.initState();
-   // cardet();
+    // cardet();
     getdata3();
     getdata2();
 
@@ -57,11 +57,11 @@ class _car_detailState extends State<car_detail> {
 
       setState(() {
         isLoading=false;
-         getUser3=jsonDecode(data2!)["users"];
+        getUser3=jsonDecode(data2!)["users"];
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
         }
-       // getdata3();
+        // getdata3();
       }
       );
     }
@@ -98,7 +98,7 @@ class _car_detailState extends State<car_detail> {
     return sum /list.length;
   }
 
-    @override
+  @override
   Widget build(context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
@@ -107,7 +107,7 @@ class _car_detailState extends State<car_detail> {
       body:isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple,),): SafeArea(
         child:Stack(
           children: [
-             Column(
+            Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
@@ -136,170 +136,170 @@ class _car_detailState extends State<car_detail> {
               ],
             ),
             SingleChildScrollView(
-              child: Padding(
-              padding:  EdgeInsets.only(top: mdheight * 0.37),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.deepPurple.shade800,
-                    borderRadius: const BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
-                ),
-                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.035),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  //car name and rating
-                  children: [
-                    SizedBox(height: mdheight*0.02,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(widget.carname,style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
-                      ],
+                child: Padding(
+                  padding:  EdgeInsets.only(top: mdheight * 0.37),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.deepPurple.shade800,
+                        borderRadius: const BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
                     ),
-                    //overview
-                    SizedBox(height: mdheight*0.022,),
-                     Text(widget.descripation,style: TextStyle(color: Colors.grey),),
-                    SizedBox(height: mdheight*0.01,),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: mdheight * 0.02),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.035),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //car name and rating
+                      children: [
+                        SizedBox(height: mdheight*0.02,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(widget.carname,style:TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                          ],
+                        ),
+                        //overview
+                        SizedBox(height: mdheight*0.022,),
+                        Text(widget.descripation,style: TextStyle(color: Colors.grey),),
+                        SizedBox(height: mdheight*0.01,),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: mdheight * 0.02),
+                                child: Column(
                                   children: [
-                                    const Text("Ratings & Reviews",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white.withOpacity(0.90),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(mdheight * 0.02),
-                                          )),
-                                      onPressed: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val, v_id :widget.carid,v_type: "car")));
-                                      }, child: const Text('View All Review', style: TextStyle(color: Colors.black),),),
-                                  ],
-                                ),
-                                 SizedBox(
-                                  height: 15,
-                                ),
-                                feed1==null && feed2==null && feed3==null && feed4==null && feed5==null?
-                                RatingSummary(
-                                  counter: 1,
-                                  average: 0,
-                                  averageStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                  ),
-                                  counterFiveStars: 0,
-                                  labelCounterFiveStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterFourStars: 0,
-                                  labelCounterFourStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterThreeStars: 0,
-                                  labelCounterThreeStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterTwoStars: 0,
-                                  labelCounterTwoStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterOneStars: 0,
-                                  labelCounterOneStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                )
-                                    :RatingSummary(
-                                  counter: feed1.length + feed2.length + feed3.length + feed4.length + feed5.length,
-                                  average: avg(),
-                                  averageStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                  ),
-                                  counterFiveStars: feed5.length,
-                                  labelCounterFiveStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterFourStars: feed4.length,
-                                  labelCounterFourStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterThreeStars: feed3.length,
-                                  labelCounterThreeStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterTwoStars: feed2.length,
-                                  labelCounterTwoStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  counterOneStars: feed1.length,
-                                  labelCounterOneStarsStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: mdheight * 0.02),
-                          getUser3==null?Column(children:[
-                            SizedBox(height: 42,),
-                            Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
-                            SizedBox(height: 42,),
-                          ])
-                              :ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: getUser3.length,
-                              itemBuilder: (BuildContext context,int index){
-                                return Column(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        ListTile(
-                                          trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
-                                          title:  Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
-                                          subtitle: RatingBar.builder(
-                                            ignoreGestures: true,
-                                            unratedColor: Colors.white,
-                                            initialRating: double.parse(getUser3[index]["Ratings"]),
-                                            minRating: 0,
-                                            direction: Axis.horizontal,
-                                            itemSize: 23,
-                                            itemCount: 5,
-                                            allowHalfRating: true,
-                                            itemBuilder: (context,_) =>  Icon(Icons.star,color: Colors.amber,),
-                                            onRatingUpdate: (value) {
-                                              setState(() {
-                                                rating = value;
-                                              });
-                                            },
-                                          ),
-                                          leading: Image.network(getUser3[index]["Profile_Image"],height: mdheight * 0.5,width: mdwidth * 0.1,),
-                                        ),
-                                        Padding(
-                                            padding:EdgeInsets.all(10),
-                                            child: Text(getUser3[index]["Comment"],style: TextStyle(
-                                              color: Colors.white,),))
+                                        const Text("Ratings & Reviews",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.white.withOpacity(0.90),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(mdheight * 0.02),
+                                              )),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val, v_id :widget.carid,v_type: "car")));
+                                          }, child: const Text('View All Review', style: TextStyle(color: Colors.black),),),
                                       ],
                                     ),
-                                    const Divider(
-                                      thickness: 1,
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    feed1==null && feed2==null && feed3==null && feed4==null && feed5==null?
+                                    RatingSummary(
+                                      counter: 1,
+                                      average: 0,
+                                      averageStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                      ),
+                                      counterFiveStars: 0,
+                                      labelCounterFiveStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterFourStars: 0,
+                                      labelCounterFourStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterThreeStars: 0,
+                                      labelCounterThreeStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterTwoStars: 0,
+                                      labelCounterTwoStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterOneStars: 0,
+                                      labelCounterOneStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                        :RatingSummary(
+                                      counter: feed1.length + feed2.length + feed3.length + feed4.length + feed5.length,
+                                      average: avg(),
+                                      averageStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                      ),
+                                      counterFiveStars: feed5.length,
+                                      labelCounterFiveStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterFourStars: feed4.length,
+                                      labelCounterFourStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterThreeStars: feed3.length,
+                                      labelCounterThreeStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterTwoStars: feed2.length,
+                                      labelCounterTwoStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      counterOneStars: feed1.length,
+                                      labelCounterOneStarsStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ],
-                                );
-                              }),
-                          SizedBox(height: mdheight * 0.012,)
-                        ]),
-                    // Price and button
-                  ],
-                ),
-              ),
-            ))
+                                ),
+                              ),
+                              SizedBox(height: mdheight * 0.02),
+                              getUser3==null?Column(children:[
+                                SizedBox(height: 42,),
+                                Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
+                                SizedBox(height: 42,),
+                              ])
+                                  :ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: getUser3.length,
+                                  itemBuilder: (BuildContext context,int index){
+                                    return Column(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            ListTile(
+                                              trailing: Text(getUser3[index]["Feedback_Time"], style: TextStyle(color: Colors.white),),
+                                              title:  Text(getUser3[index]["Name"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                              subtitle: RatingBar.builder(
+                                                ignoreGestures: true,
+                                                unratedColor: Colors.white,
+                                                initialRating: double.parse(getUser3[index]["Ratings"]),
+                                                minRating: 0,
+                                                direction: Axis.horizontal,
+                                                itemSize: 23,
+                                                itemCount: 5,
+                                                allowHalfRating: true,
+                                                itemBuilder: (context,_) =>  Icon(Icons.star,color: Colors.amber,),
+                                                onRatingUpdate: (value) {
+                                                  setState(() {
+                                                    rating = value;
+                                                  });
+                                                },
+                                              ),
+                                              leading: Image.network(getUser3[index]["Profile_Image"],height: mdheight * 0.5,width: mdwidth * 0.1,),
+                                            ),
+                                            Padding(
+                                                padding:EdgeInsets.all(10),
+                                                child: Text(getUser3[index]["Comment"],style: TextStyle(
+                                                  color: Colors.white,),))
+                                          ],
+                                        ),
+                                        const Divider(
+                                          thickness: 1,
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                              SizedBox(height: mdheight * 0.012,)
+                            ]),
+                        // Price and button
+                      ],
+                    ),
+                  ),
+                ))
           ],
         ),
       ),
@@ -318,7 +318,7 @@ class _car_detailState extends State<car_detail> {
                   backgroundColor: Colors.white.withOpacity(0.9), // Background color
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val, v_id :widget.carid,v_type: widget.type,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Select_date(num : widget.val, v_id :widget.carid,v_type: widget.type)));
                 },child: const Text("Book",
                 style: TextStyle(
                     fontSize: 17,

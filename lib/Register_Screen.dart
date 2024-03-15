@@ -81,6 +81,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                     filled: true,
+                    errorStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                     hintText: "UserName",
                     prefixIcon: const Icon(Icons.person),
                     fillColor: Colors.white,
@@ -112,6 +116,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                     filled: true,
+                    errorStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                     hintText: "Email",
                     prefixIcon: const Icon(Icons.email),
                     fillColor: Colors.white,
@@ -135,6 +143,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                     filled: true,
+                    errorStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                     hintText: "Password",
                     prefixIcon: const Icon(Icons.lock),
                     fillColor: Colors.white,
@@ -158,6 +170,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
                     filled: true,
+                    errorStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                     hintText: "Confirm Password",
                     prefixIcon: const Icon(Icons.key),
                     suffixIcon: const Icon(Icons.remove_red_eye),

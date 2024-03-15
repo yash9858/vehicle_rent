@@ -45,7 +45,6 @@ class _Select_dateState extends State<Select_date> {
     v_det();
     address_fetch();
     ratings();
-    address_update();
   }
 
   Future v_det() async{
@@ -59,7 +58,6 @@ class _Select_dateState extends State<Select_date> {
 
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
@@ -74,7 +72,6 @@ class _Select_dateState extends State<Select_date> {
         body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data2 = response.body;
-
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data2!)["users"];
@@ -179,10 +176,14 @@ class _Select_dateState extends State<Select_date> {
               timeInSecForIosWeb: 2
           );
           Navigator.push(context , MaterialPageRoute(builder: (context) => Payment_page(v2_id: widget.v_id,price:getUser[0]["Rent_Price"],
-          startd:(_PickupDate.year).toString()+"-"+(_PickupDate.month).toString()+"-"+(_PickupDate.day).toString(),
-          startt:(_PickupTime.hour).toString()+":"+(_PickupTime.minute).toString(),
-            returnd:(_ReturnDate.year).toString()+"-"+(_ReturnDate.month).toString()+"-"+(_ReturnDate.day).toString(),
-            returnt:(_ReturnTime.hour).toString()+":"+(_ReturnTime.minute).toString(),
+            starty: (_PickupDate.year).toString(),
+            startm: (_PickupDate.year).toString(),
+            startd: (_PickupDate.year).toString(),
+            startt:(_PickupTime.hour).toString(),
+            returnm:(_ReturnDate.year).toString(),
+            returny:(_ReturnDate.month).toString(),
+            returnd:(_ReturnDate.day).toString(),
+            returnt:(_ReturnTime.hour).toString(),
           )));
         }else{
           Fluttertoast.showToast(
@@ -196,7 +197,6 @@ class _Select_dateState extends State<Select_date> {
     }
 
   }
-
   DateTime _PickupDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
   TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour,minute: 00);
   DateTime _ReturnDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
@@ -238,7 +238,10 @@ class _Select_dateState extends State<Select_date> {
       });
     });
   }
-
+var sdate;
+  var stime;
+  var edate;
+  var etime;
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -252,252 +255,252 @@ class _Select_dateState extends State<Select_date> {
       ),
 
       body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-      : SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.only(top:15,left: 15,right: 15,),
-          child: Form(
+          : SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.only(top:15,left: 15,right: 15,),
+            child: Form(
               key: _formKey2,
               child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //Image
-                  Container(
+                  Row(
 
-                    child:
-                    Image.network(getUser[0]["Vehicle_Image"],fit: BoxFit.contain,
-                      height: mheight*0.15,width: mwidth*0.4,
-
-                    )
-                    ,),
-                  SizedBox(width: mwidth*0.02,),
-                  Expanded(child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      //Image
+                      Container(
 
-                      //Category
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-                          : Container(
-                              padding: EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
-                              decoration: BoxDecoration(
-                                  color: Colors.pink.shade50,
-                                  borderRadius: BorderRadius.circular(6)
-                              ),
-                              child: Text(getUser[0]["Category_Name"])),
-                          isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-                          : Row(
-                            children: [
-                              Text(avg().toString()),
-                              Icon(
-                                Icons.star,
-                                color: Colors.orange,
-                                size: 18,
-                              )
-                            ],
+                          child:
+                          Image.network(getUser[0]["Vehicle_Image"],fit: BoxFit.contain,
+                            height: mheight*0.15,width: mwidth*0.4,
+
                           )
-                        ],),
-                      SizedBox(height: mheight*0.01,),
-
-                      //Car Name
-                      Text(getUser[0]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                      SizedBox(height: mheight*0.03,),
-                      Row(
-                        children: [
-                          Text(
-                            "₹"+getUser[0]["Rent_Price"],
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          Text("/day"),
-                        ],
                       ),
-                    ],
-                  ))
+                      SizedBox(width: mwidth*0.02,),
+                      Expanded(child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
 
+                          //Category
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                                  : Container(
+                                  padding: EdgeInsets.only(left: 5,right: 5,top: 2,bottom: 2),
+                                  decoration: BoxDecoration(
+                                      color: Colors.pink.shade50,
+                                      borderRadius: BorderRadius.circular(6)
+                                  ),
+                                  child: Text(getUser[0]["Category_Name"])),
+                              isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+                                  : Row(
+                                children: [
+                                  Text(avg().toString()),
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.orange,
+                                    size: 18,
+                                  )
+                                ],
+                              )
+                            ],),
+                          SizedBox(height: mheight*0.01,),
+
+                          //Car Name
+                          Text(getUser[0]["Vehicle_Name"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                          SizedBox(height: mheight*0.03,),
+                          Row(
+                            children: [
+                              Text(
+                                "₹"+getUser[0]["Rent_Price"],
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Text("/day"),
+                            ],
+                          ),
+                        ],
+                      ))
+
+                    ],
+                  ),
+
+                  Divider(
+                    height: mheight*0.07,
+
+                  ),
+
+
+                  //Pick up date and time
+                  Container(
+                    child: Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Pick Up Date and Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                        SizedBox(height:mheight*0.025),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //Time row
+                            Container(
+                                width:mwidth*0.4,
+                                padding:EdgeInsets.only(left: 10,right: 5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color:Colors.grey.shade100,
+                                    border: Border.all(
+                                        width: 1
+                                    )
+
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                  children: [
+                                    Text(_PickupTime.format(context).toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                    IconButton(onPressed: PickupTime, icon: Icon(Icons.timer_outlined,color: Colors.deepPurple.shade400,))
+                                  ],
+                                )),
+
+
+
+                            //Day Row
+                            Container(
+                              width:mwidth*0.4,
+                              padding:EdgeInsets.only(left: 5,),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color:Colors.grey.shade100,
+                                  border: Border.all(
+                                      width: 1
+                                  )
+
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                children: [
+                                  Text(DateFormat('d MMM yy').format(_PickupDate),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                  IconButton(onPressed: Pickupdate, icon: Icon(Icons.calendar_month_outlined,color: Colors.deepPurple.shade400,))
+                                ],
+                              ),
+
+                            ),
+                          ],
+                        )
+
+                      ],
+                    ),
+                  ),
+
+
+                  Divider(
+                    height: mheight*0.05,
+
+                  ),
+
+                  //Return Data and time
+                  Container(
+                    child: Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Return  Date and Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                        SizedBox(height:mheight*0.025),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //Time row
+                            Container(
+                              width:mwidth*0.4,
+                              padding:EdgeInsets.only(left: 10,right: 5),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color:Colors.grey.shade100,
+
+                                  border: Border.all(
+                                      width: 1
+                                  )
+
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                children: [
+                                  Text(_ReturnTime.format(context).toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                  IconButton(onPressed: ReturnTime, icon: Icon(Icons.timer_outlined,color: Colors.deepPurple.shade400,))
+                                ],
+                              ),
+
+                            ),
+
+
+                            //Day Row
+                            Container(
+                              width:mwidth*0.4,
+                              padding:EdgeInsets.only(left: 5,),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.grey.shade100,
+                                  border: Border.all(
+                                      width: 1
+                                  )
+
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                children: [
+                                  Text(DateFormat('d MMM yy').format(_ReturnDate),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                                  IconButton(onPressed: ReturnDate, icon: Icon(Icons.calendar_month_outlined,color: Colors.deepPurple.shade400,))
+                                ],
+                              ),
+
+                            ),
+                          ],
+                        )
+
+                      ],
+                    ),
+                  ),
+
+                  Divider(
+                    height: mheight*0.04,
+
+                  ),
+
+                  //Address
+                  Text("Address",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                  SizedBox(height: mheight*0.01,),
+                  Form(
+                    key : _formKey,
+                    child: TextFormField(
+                      controller: address,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 4,
+                      cursorColor: Colors.deepPurple.shade800,
+
+                      decoration: InputDecoration(
+
+                          fillColor: Colors.grey.shade100,
+                          filled: true,
+                          hintText: "Enter Your Delivary Address",
+                          focusedBorder:OutlineInputBorder(
+
+                              borderSide: BorderSide(color: Colors.deepPurple.shade800)
+                          ),
+                          border: const OutlineInputBorder(
+
+                          )
+                      ),
+                    ),
+                  ),
                 ],
               ),
-
-              Divider(
-                height: mheight*0.07,
-
-              ),
-
-
-              //Pick up date and time
-              Container(
-                child: Column(
-
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Pick Up Date and Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
-                    SizedBox(height:mheight*0.025),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //Time row
-                        Container(
-                          width:mwidth*0.4,
-                          padding:EdgeInsets.only(left: 10,right: 5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color:Colors.grey.shade100,
-                              border: Border.all(
-                                  width: 1
-                              )
-
-                          ),
-                            child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                            children: [
-                              Text(_PickupTime.format(context).toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                              IconButton(onPressed: PickupTime, icon: Icon(Icons.timer_outlined,color: Colors.deepPurple.shade400,))
-                            ],
-                          )),
-
-
-
-                        //Day Row
-                        Container(
-                          width:mwidth*0.4,
-                          padding:EdgeInsets.only(left: 5,),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color:Colors.grey.shade100,
-                              border: Border.all(
-                                  width: 1
-                              )
-
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                            children: [
-                              Text(DateFormat('d MMM yy').format(_PickupDate),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                              IconButton(onPressed: Pickupdate, icon: Icon(Icons.calendar_month_outlined,color: Colors.deepPurple.shade400,))
-                            ],
-                          ),
-
-                        ),
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-
-
-              Divider(
-                height: mheight*0.05,
-
-              ),
-
-              //Return Data and time
-              Container(
-                child: Column(
-
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Return  Date and Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
-                    SizedBox(height:mheight*0.025),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //Time row
-                        Container(
-                          width:mwidth*0.4,
-                          padding:EdgeInsets.only(left: 10,right: 5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color:Colors.grey.shade100,
-
-                              border: Border.all(
-                                  width: 1
-                              )
-
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                            children: [
-                              Text(_ReturnTime.format(context).toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                              IconButton(onPressed: ReturnTime, icon: Icon(Icons.timer_outlined,color: Colors.deepPurple.shade400,))
-                            ],
-                          ),
-
-                        ),
-
-
-                        //Day Row
-                        Container(
-                          width:mwidth*0.4,
-                          padding:EdgeInsets.only(left: 5,),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.grey.shade100,
-                              border: Border.all(
-                                  width: 1
-                              )
-
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                            children: [
-                              Text(DateFormat('d MMM yy').format(_ReturnDate),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                              IconButton(onPressed: ReturnDate, icon: Icon(Icons.calendar_month_outlined,color: Colors.deepPurple.shade400,))
-                            ],
-                          ),
-
-                        ),
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-
-              Divider(
-                height: mheight*0.04,
-
-              ),
-
-              //Address
-              Text("Address",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-              SizedBox(height: mheight*0.01,),
-              Form(
-                key : _formKey,
-                child: TextFormField(
-                  controller: address,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 4,
-                  cursorColor: Colors.deepPurple.shade800,
-
-                  decoration: InputDecoration(
-
-                      fillColor: Colors.grey.shade100,
-                      filled: true,
-                      hintText: "Enter Your Delivary Address",
-                      focusedBorder:OutlineInputBorder(
-
-                          borderSide: BorderSide(color: Colors.deepPurple.shade800)
-                      ),
-                      border: const OutlineInputBorder(
-
-                      )
-                  ),
-                ),
-                ),
-            ],
-          ),
-        ),
-      )),
+            ),
+          )),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(bottom: 5,left: 10,right: 10),
         width: double.infinity,
