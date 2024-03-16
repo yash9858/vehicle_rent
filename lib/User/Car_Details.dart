@@ -103,36 +103,22 @@ class _car_detailState extends State<car_detail> {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Car Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mdheight*0.028,color: Colors.black),),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.black),
+
+      ),
       backgroundColor: Colors.white,
       body:isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple,),): SafeArea(
         child:Stack(
           children: [
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left:8),
-                        child: IconButton(
-                            onPressed: () => {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homescreen())),
-                            },
-                            icon: const Icon(Icons.arrow_back,)),
-                      ),
-                      Text("Car Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mdheight*0.028),),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: IconButton(
-                            onPressed: (){},
-                            icon: const Icon(LineIcons.heart)),
-                      )
-                    ],
-                  ),
-                ),
-                Image.network(widget.image,height: 300,width: double.infinity,fit: BoxFit.fill)
+
+                Image.network(widget.image,height: mdheight*0.3,width: mdwidth*7,fit: BoxFit.cover)
               ],
             ),
             SingleChildScrollView(
@@ -318,7 +304,7 @@ class _car_detailState extends State<car_detail> {
                   backgroundColor: Colors.white.withOpacity(0.9), // Background color
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Select_date(num : widget.val, v_id :widget.carid,v_type: widget.type)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val, v_id :widget.carid,v_type: widget.type,)));
                 },child: const Text("Book",
                 style: TextStyle(
                     fontSize: 17,

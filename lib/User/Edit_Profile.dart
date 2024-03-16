@@ -46,15 +46,12 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
       setState(() {
         isLoading=false;
-
         getUser2=jsonDecode(data!)["users"];
         user.text = getUser2[0]["Name"];
         dob.text = getUser2[0]["Dob"];
         li.text = getUser2[0]["Lincence_Number"];
         address.text = getUser2[0]["Address"];
         _value=getUser2[0]["Gender"];
-
-
       });
     }
   }
@@ -291,6 +288,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
         child: MaterialButton(
           onPressed: (){
             uploadImageMedia(_image!);
+            //getdata();
           },
           child: Text('Save Details',
               style: TextStyle(

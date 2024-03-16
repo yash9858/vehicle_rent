@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
-import 'package:rentify/Admin/Category_add_admin.dart';
 import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/Available_bike.dart';
 import 'package:rentify/User/Available_car.dart';
@@ -58,7 +57,6 @@ class _HomescreenState extends State<Homescreen> {
       data2 = response.body;
       setState(() {
         getdata3();
-       // getdata4();
         getUser2=jsonDecode(data2!)["users"];
       });
     }
@@ -160,7 +158,7 @@ class _HomescreenState extends State<Homescreen> {
               IconButton(
               icon: const Icon(Icons.keyboard_voice_rounded),
               onPressed: () {
-               // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
                 print('Use voice command');
               },
             ),

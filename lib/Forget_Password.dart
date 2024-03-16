@@ -20,6 +20,8 @@ class _Forget_passwordState extends State<Forget_password> {
   var logindata;
   var data;
   bool isLoading = false;
+  bool visiblepass = true;
+  bool visibleconfirm = true;
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +77,27 @@ class _Forget_passwordState extends State<Forget_password> {
 
               SizedBox(height: mdheight*0.04),
               TextFormField(
-                obscureText: true,
+                obscureText: visiblepass,
                  controller: passwordController,
-                validator: (val) => _validatePassword(val),
-                // validator: (val) {
-                //   if (val!.isEmpty
-                //   ) {
-                //     return "Use Proper Password ";
-                //   }
-                //   return null;
-                // },
+                validator: (val) {
+                  if (val!.isEmpty
+                  ) {
+                    return "Use Proper Password ";
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
                   filled: true,
                   hintText: "New Password ",
                   prefixIcon: const Icon(Icons.key),
+                  suffixIcon: IconButton(icon:Icon(visiblepass ? Icons.visibility
+                      : Icons.visibility_off),
+                    onPressed: (){
+                      setState(() {
+                        visiblepass =! visiblepass;
+                      });
+                    },
+                  ),
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -98,13 +107,30 @@ class _Forget_passwordState extends State<Forget_password> {
 
               ),
               SizedBox(height: mdheight*0.04),
-              TextField(
-                obscureText: true,
+              TextFormField(
+                validator: (val) {
+                  if (val!.isEmpty
+                  ) {
+                    return "Enter Confirm Password ";
+                  }
+                  else if(val != passwordController){
+                    return "Password Are Not Match";
+                  }
+                },
+                obscureText: visibleconfirm,
                 // controller: emailController,
                 decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(vertical: mdheight * 0.025),
                   filled: true,
                   hintText: "Confirm Password ",
                   prefixIcon: const Icon(Icons.key),
+                  suffixIcon: IconButton(icon:Icon(visibleconfirm ? Icons.visibility
+                      : Icons.visibility_off),
+                    onPressed: (){
+                      setState(() {
+                        visibleconfirm =! visibleconfirm;
+                      });
+                    },
+                  ),
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -162,11 +188,4 @@ Future<void> _submit() async {
 }
 }
 
-String? _validatePassword(String? val) {
-  if (val == null || val.isEmpty) {
-    return "Please enter a password";
-  }
-  // Add more validation logic if needed
-  return null;
-}
 

@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   var logindata;
   var data;
   bool isLoading = false;
+  bool visible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                SizedBox(height: size.height * 0.025),
                TextFormField(
                  controller:passwordController,
-                 obscureText: false,
+                 obscureText: visible,
                  keyboardType: TextInputType.text,
                  validator: (val) {
                    if (val!.isEmpty
@@ -125,9 +126,14 @@ class _LoginPageState extends State<LoginPage> {
                      fontSize: 14,
                    ),
                    prefixIcon: const Icon(Icons.key),
-                   suffixIcon: IconButton(onPressed: (){
-
-                   },icon:Icon(Icons.remove_red_eye)),
+                   suffixIcon: IconButton(icon:Icon(visible ? Icons.visibility
+                   : Icons.visibility_off),
+                   onPressed: (){
+                     setState(() {
+                       visible =! visible;
+                     });
+                   },
+                   ),
                    fillColor: Colors.white,
                    border: OutlineInputBorder(
                      borderSide: BorderSide.none,

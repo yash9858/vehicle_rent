@@ -44,25 +44,25 @@ class _bike_detailState extends State<bike_detail> {
 
   void initState(){
     super.initState();
-    bike_det();
+    // bike_det();
     star_count();
     star_avg();
   }
 
-  Future bike_det() async{
-    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
-    if(response.statusCode==200) {
-      data = response.body;
-      setState(() {
-        isLoading=false;
-        getUser2=jsonDecode(data!)["users"];
-      });
-      if (getUser2['error'] == false) {
-        SharedPreferences setpreference = await SharedPreferences.getInstance();
-        setpreference.setString('type', data['Vehicle_Type']);
-      }
-    }
-  }
+  // Future bike_det() async{
+  //   http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+  //   if(response.statusCode==200) {
+  //     data = response.body;
+  //     setState(() {
+  //       isLoading=false;
+  //       getUser2=jsonDecode(data!)["users"];
+  //     });
+  //     if (getUser2['error'] == false) {
+  //       SharedPreferences setpreference = await SharedPreferences.getInstance();
+  //       setpreference.setString('type', data['Vehicle_Type']);
+  //     }
+  //   }
+  // }
 
   Future star_avg() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
@@ -118,6 +118,14 @@ class _bike_detailState extends State<bike_detail> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("Bikes Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mheight*0.028,color: Colors.black),),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.black),
+
+      ),
       body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
           : SafeArea(
         child:Stack(
@@ -125,34 +133,8 @@ class _bike_detailState extends State<bike_detail> {
             Container(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
 
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left:8),
-                          child: IconButton(
-                              onPressed: (){
-                                Navigator.pop(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
-                              },
-
-                              icon: Icon(Icons.arrow_back,)),
-                        ),
-                        Text("Bike Details",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mheight*0.028),),
-                        Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: IconButton(
-                              onPressed: (){},
-                              icon: (
-                                  Icon(Icons.favorite)),
-                              color: Colors.red,
-                            )),
-                      ],
-                    ),
-                  ),
-                  Image.network(widget.image,height: mheight*0.33,),
+                  Image.network(widget.image,height: mheight*0.33,width: mwidth*7,fit: BoxFit.cover),
                 ],
               ),
             ),
@@ -365,4 +347,3 @@ class _bike_detailState extends State<bike_detail> {
     );
   }
 }
-

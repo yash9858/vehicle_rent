@@ -27,6 +27,8 @@ class _RegisterPageState extends State<RegisterPage> {
   var logindata;
   var data;
   bool isLoading = false;
+  bool visiblepass = true;
+  bool visibleconfirm = true;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (val!.isEmpty) {
                       return "Please Enter name";
                     }
+                    else if (val.length == 20)
+                      {
+                        return "Out Of Range";
+                      }
                   },
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
@@ -106,7 +112,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}")
                           .hasMatch(val)) {
                         return null;
-                      } else {
+                      }
+                      else if (val.length == 20)
+                      {
+                        return "Out Of Range";
+                      }
+                      else {
                         return "Enter a valid Email";
                       }
                     }
@@ -135,10 +146,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (val) {
                     if (val!.isEmpty
                         ) {
-                      return "Use Proper Password ";
+                      return "Enter Password ";
+                    }
+                    else if (val.length  >= 20)
+                    {
+                    return "Out Of Range";
                     }
                   },
-                  obscureText: true,
+                  obscureText: visiblepass,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
@@ -149,6 +164,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     hintText: "Password",
                     prefixIcon: const Icon(Icons.lock),
+                    suffixIcon: IconButton(icon:Icon(visiblepass ? Icons.visibility
+                        : Icons.visibility_off),
+                      onPressed: (){
+                        setState(() {
+                          visiblepass =! visiblepass;
+                        });
+                      },
+                    ),
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
@@ -158,13 +181,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: size.height * 0.02),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: visibleconfirm,
                   keyboardType: TextInputType.text,
                   controller: ConfirmpasswordController,
                   validator: (val) {
                     if (val!.isEmpty
                       ) {
-                      return " Password not same ";
+                      return "Enter Confirm Password ";
+                    }
+                    else if(val != passwordController){
+                      return "Password Are Not Match";
                     }
                   },
                   decoration: InputDecoration(
@@ -176,7 +202,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     hintText: "Confirm Password",
                     prefixIcon: const Icon(Icons.key),
-                    suffixIcon: const Icon(Icons.remove_red_eye),
+                    suffixIcon: IconButton(icon:Icon(visibleconfirm ? Icons.visibility
+                        : Icons.visibility_off),
+                      onPressed: (){
+                        setState(() {
+                          visibleconfirm =! visibleconfirm;
+                        });
+                      },
+                    ),
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
