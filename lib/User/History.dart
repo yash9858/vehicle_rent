@@ -23,7 +23,6 @@ class _History_pageState extends State<History_page> {
   }
 
   Future getdata() async{
-
     SharedPreferences share=await SharedPreferences.getInstance();
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_History_User.php"),body: {'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
@@ -48,7 +47,12 @@ class _History_pageState extends State<History_page> {
           iconTheme: const IconThemeData(color: Colors.black),
         ),
       body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-      : Container(
+      : getUser2 == null?
+      Container(
+        child: Center(
+          child: Text('No Booking'),
+        ),
+      ): Container(
         padding: EdgeInsets.only(top: 5,left: 8,right: 8),
         child: ListView.builder(
           itemCount: getUser2.length,

@@ -5,6 +5,7 @@ import 'package:rentify/Login_Screen.dart';
 import 'package:rentify/User/About_us.dart';
 import 'package:rentify/User/Edit_Profile.dart';
 import 'package:http/http.dart' as http;
+import 'package:rentify/User/Favorite_Vehicle.dart';
 import 'package:rentify/User/Help_Center.dart';
 import 'package:rentify/User/History.dart';
 import 'package:rentify/User/Payment_Receipt.dart';
@@ -85,7 +86,7 @@ class _ProfileState extends State<Profile> {
               children: [
                 InkWell(
                   onTap: (){
-                   // Navigator.push(context , MaterialPageRoute(builder: (context)=>  Edit_Profile(lid:getUser2["Login_Id"])));
+                    Navigator.push(context , MaterialPageRoute(builder: (context)=>  Edit_Profile()));
                   },
                 child: ListTile(
                   leading: const Icon(
@@ -122,7 +123,7 @@ class _ProfileState extends State<Profile> {
                 const Divider(),
                 InkWell(
                   onTap: (){
-                  //  Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
+                  //Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
                   },
                   child:ListTile(
                   leading: const Icon(LineIcons.heart,color: Colors.deepPurple,),
@@ -156,6 +157,9 @@ class _ProfileState extends State<Profile> {
                 ))),
                 const Divider(),
                 InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>  PrivacyPolicyPage()));
+                  },
                   child:ListTile(
                   leading: const Icon(Icons.policy_outlined,color: Colors.deepPurple,),
                   title: const Text(

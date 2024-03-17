@@ -157,7 +157,7 @@ class _HomescreenState extends State<Homescreen> {
               IconButton(
               icon: const Icon(Icons.keyboard_voice_rounded),
               onPressed: () {
-             //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
+               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
                 print('Use voice command');
               },
             ),

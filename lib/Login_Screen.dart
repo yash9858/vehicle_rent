@@ -235,19 +235,18 @@ Future<void> _submit() async {
         setpreference.setString('uname', data['User_Name'].toString());
         setpreference.setString('email', data['Email'].toString());
         setpreference.setString('Role', data['Role'].toString());
-        setpreference.setString('Status', data['Status'].toString());
+        setpreference.setString('status', data['Status'].toString());
         setpreference.setString('vid', data['Vehicle_Id'].toString());
         if(data["Role"]=="1")
           {
            if(data["Status"] == "1")
              {
-               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const UserDasboard()), (Route<dynamic> route) => false);
+               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) =>  UserDasboard()), (Route<dynamic> route) => false);
              }
            else
              {
-               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => complete_Profile()), (Route<dynamic> route) => false);
+                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => complete_Profile()), (Route<dynamic> route) => false);
              }
-
           }
         else
           {

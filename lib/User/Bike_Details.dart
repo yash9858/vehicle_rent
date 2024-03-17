@@ -44,24 +44,9 @@ class _bike_detailState extends State<bike_detail> {
 
   void initState(){
     super.initState();
-    // bike_det();
     star_count();
   }
 
-  // Future bike_det() async{
-  //   http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
-  //   if(response.statusCode==200) {
-  //     data = response.body;
-  //     setState(() {
-  //       isLoading=false;
-  //       getUser2=jsonDecode(data!)["users"];
-  //     });
-  //     if (getUser2['error'] == false) {
-  //       SharedPreferences setpreference = await SharedPreferences.getInstance();
-  //       setpreference.setString('type', data['Vehicle_Type']);
-  //     }
-  //   }
-  // }
 
   Future star_avg() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",

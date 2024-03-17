@@ -21,7 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController ConfirmpasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   var logindata;
@@ -79,10 +78,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (val!.isEmpty) {
                       return "Please Enter name";
                     }
-                    else if (val.length == 20)
-                      {
-                        return "Out Of Range";
-                      }
                   },
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: size.height * 0.025),
@@ -112,10 +107,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}")
                           .hasMatch(val)) {
                         return null;
-                      }
-                      else if (val.length == 20)
-                      {
-                        return "Out Of Range";
                       }
                       else {
                         return "Enter a valid Email";
@@ -183,14 +174,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   obscureText: visibleconfirm,
                   keyboardType: TextInputType.text,
-                  controller: ConfirmpasswordController,
+                 // controller: ConfirmpasswordController,
                   validator: (val) {
                     if (val!.isEmpty
                       ) {
                       return "Enter Confirm Password ";
-                    }
-                    else if(val != passwordController){
-                      return "Password Are Not Match";
                     }
                   },
                   decoration: InputDecoration(

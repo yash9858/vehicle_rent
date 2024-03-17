@@ -43,11 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
         else
         {
-          if(pref.getString('Status')=="1"){
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const UserDasboard()), (Route<dynamic> route) => false);
-          }else{
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => complete_Profile()), (Route<dynamic> route) => false);
-          }
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) =>  UserDasboard()), (Route<dynamic> route) => false);
         }
       }
       else
