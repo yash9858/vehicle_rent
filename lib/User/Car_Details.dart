@@ -44,7 +44,6 @@ class _car_detailState extends State<car_detail> {
     super.initState();
     // cardet();
     getdata3();
-    getdata2();
 
   }
 
@@ -61,7 +60,6 @@ class _car_detailState extends State<car_detail> {
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
         }
-        // getdata3();
       }
       );
     }
@@ -76,12 +74,12 @@ class _car_detailState extends State<car_detail> {
       data3 = response.body;
 
       setState(() {
-        isLoading=false;
         feed1 = jsonDecode(data3!)["FEEDBACK1"];
         feed2 = jsonDecode(data3!)["FEEDBACK2"];
         feed3 = jsonDecode(data3!)["FEEDBACK3"];
         feed4 = jsonDecode(data3!)["FEEDBACK4"];
         feed5 = jsonDecode(data3!)["FEEDBACK5"];
+        getdata2();
       }
       );
     }
@@ -232,7 +230,7 @@ class _car_detailState extends State<car_detail> {
                                 ),
                               ),
                               SizedBox(height: mdheight * 0.02),
-                              getUser3==null?Column(children:[
+                              getUser3.length==0?Column(children:[
                                 SizedBox(height: 42,),
                                 Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
                                 SizedBox(height: 42,),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rentify/Admin/Admin_DashBoard.dart';
 import 'package:rentify/Login_Screen.dart';
+import 'package:rentify/User/Complete_Profile.dart';
 import 'package:rentify/User/User_DashBoard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Intro_Screen.dart';
@@ -42,7 +43,11 @@ class _SplashScreenState extends State<SplashScreen> {
         }
         else
         {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => UserDasboard()), (Route<dynamic> route) => false);
+          if(pref.getString('Status')=="1"){
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const UserDasboard()), (Route<dynamic> route) => false);
+          }else{
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => complete_Profile()), (Route<dynamic> route) => false);
+          }
         }
       }
       else

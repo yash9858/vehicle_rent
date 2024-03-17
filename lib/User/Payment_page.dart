@@ -189,32 +189,32 @@ var x;
             SizedBox(height: mheight*0.02,),
 
             //Credit Card
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text("Card",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                ),
-                SizedBox(height: mheight*0.01,),
-                Card(
-                  elevation: 6,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)
-                  ),
-
-                  child: ListTile(
-                    leading: Icon(Icons.credit_card_outlined,color: Colors.deepPurple.shade400,),
-                    title: const Text('Add Card',style: TextStyle(color: Colors.grey),),
-                    trailing: IconButton(
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Credit_Card()));
-                      },
-                    icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple.shade400,)),
-                  ),
-                ),
-              ],
-            ),
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(left: 10),
+            //       child: Text("Card",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+            //     ),
+            //     SizedBox(height: mheight*0.01,),
+            //     Card(
+            //       elevation: 6,
+            //       shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(12)
+            //       ),
+            //
+            //       child: ListTile(
+            //         leading: Icon(Icons.credit_card_outlined,color: Colors.deepPurple.shade400,),
+            //         title: const Text('Add Card',style: TextStyle(color: Colors.grey),),
+            //         trailing: IconButton(
+            //           onPressed: (){
+            //             Navigator.push(context, MaterialPageRoute(builder: (context)=> Credit_Card()));
+            //           },
+            //         icon: Icon(Icons.arrow_forward_ios,color: Colors.deepPurple.shade400,)),
+            //       ),
+            //     ),
+            //   ],
+            // ),
 
 
 

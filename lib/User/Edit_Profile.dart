@@ -75,7 +75,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
     imageUploadRequest.fields['Name'] = user.text;
     imageUploadRequest.fields['Lincence_Number'] = li.text;
-    imageUploadRequest.fields['DOB'] = dob.text;
+    imageUploadRequest.fields['Dob'] = dob.text;
     imageUploadRequest.fields['Address'] = address.text;
     imageUploadRequest.fields['Gender'] = _value.toString();
 
@@ -156,10 +156,10 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     children: [
                       CircleAvatar(
                         radius: 60,
-                      child:     _image==null?Image.network(getUser2[0]["Profile_Image"],height: 150,width: 150,fit: BoxFit.fill,):
-          Image.file(
-          _image!,height: 150,width: 150,
-          fit: BoxFit.fill,),
+                      child: _image==null?Image.network(getUser2[0]["Profile_Image"],height: 150,width: 150,fit: BoxFit.fill,):
+                      Image.file(
+                              _image!,height: 150,width: 150,
+                              fit: BoxFit.fill,),
                         // child:Image.network (
                         //   getUser2[0]["Profile_Image"]
                         // ),

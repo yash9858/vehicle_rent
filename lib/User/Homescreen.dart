@@ -81,7 +81,6 @@ class _HomescreenState extends State<Homescreen> {
     if(response.statusCode==200) {
       data3 = response.body;
       setState(() {
-        // getdata2();
         getUser4=jsonDecode(data3!)["users"];
       });
     }
@@ -158,7 +157,7 @@ class _HomescreenState extends State<Homescreen> {
               IconButton(
               icon: const Icon(Icons.keyboard_voice_rounded),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
+             //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
                 print('Use voice command');
               },
             ),

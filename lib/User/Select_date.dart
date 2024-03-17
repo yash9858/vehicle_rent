@@ -223,15 +223,35 @@ class _Select_dateState extends State<Select_date> {
     });
   }
   void PickupTime(){
-    showTimePicker(
-        context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour, minute: 00)).then((value){
+    showTimePicker(// This allows only hours to be selected
+        context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },).then((value){
       setState(() {
-        _PickupTime=value!;
+        if(DateTime.now().hour > value!.hour){
+          Fluttertoast.showToast(
+            msg: "Please select correct Time",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+          );
+        }else{
+          _PickupTime=value!;
+          _ReturnTime = TimeOfDay.now().replacing(hour: _PickupTime.hour + 1, minute: 00);
+        }
+
       });
     });
   }
+
+
+
   void ReturnTime(){
-    showTimePicker(context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour + 1 , minute: 00)).then((value){
+    showTimePicker(context: context, initialTime: TimeOfDay.now().replacing(hour: _PickupTime.hour , minute: 00)).then((value){
       setState(() {
         _ReturnTime=value!;
       });
