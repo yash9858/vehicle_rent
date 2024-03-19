@@ -147,7 +147,13 @@ class _BikeState extends State<Bike> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(getUser2[index]["Category_Name"],style: TextStyle(color: Colors.grey),),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.indigo.shade50,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(getUser2[index]["Category_Name"],style: TextStyle(color: Colors.blueGrey),)),
+                                  Icon(Icons.info_outline,color: Colors.blueGrey,)
                                  // IconButton(
                                  //   onPressed: (){
                                  //     nam =getUser2[index]["Vehicle_Id"];
@@ -192,6 +198,7 @@ class _BikeState extends State<Bike> {
                                       Row(
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
+                                        
                                         children: [
                                           Row(
                                             children: [
@@ -202,6 +209,7 @@ class _BikeState extends State<Bike> {
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold),
                                               ),
+
                                             ],
                                           ),
                                         ],

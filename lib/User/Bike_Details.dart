@@ -44,9 +44,25 @@ class _bike_detailState extends State<bike_detail> {
 
   void initState(){
     super.initState();
+    // bike_det();
     star_count();
+    star_avg();
   }
 
+  // Future bike_det() async{
+  //   http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
+  //   if(response.statusCode==200) {
+  //     data = response.body;
+  //     setState(() {
+  //       isLoading=false;
+  //       getUser2=jsonDecode(data!)["users"];
+  //     });
+  //     if (getUser2['error'] == false) {
+  //       SharedPreferences setpreference = await SharedPreferences.getInstance();
+  //       setpreference.setString('type', data['Vehicle_Type']);
+  //     }
+  //   }
+  // }
 
   Future star_avg() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
@@ -55,10 +71,10 @@ class _bike_detailState extends State<bike_detail> {
       data2 = response.body;
       setState(() {
         getUser3=jsonDecode(data2!)["users"];
-        isLoading=false;
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
         }
+        star_count();
       }
       );
     }
@@ -71,15 +87,14 @@ class _bike_detailState extends State<bike_detail> {
     if(response.statusCode==200) {
       data3 = response.body;
       setState(() {
+        isLoading=false;
         f1 = jsonDecode(data3!)["FEEDBACK1"];
         f2 = jsonDecode(data3!)["FEEDBACK2"];
         f3 = jsonDecode(data3!)["FEEDBACK3"];
         f4 = jsonDecode(data3!)["FEEDBACK4"];
         f5 = jsonDecode(data3!)["FEEDBACK5"];
-        star_avg();
       }
       );
-
     }
   }
 
@@ -240,7 +255,7 @@ class _bike_detailState extends State<bike_detail> {
                                   ),
                                 ),
                                 SizedBox(height: mheight * 0.02),
-                                getUser3.length==0?Column(children:[
+                                getUser3==null?Column(children:[
                                   SizedBox(height: 42,),
                                   Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
                                   SizedBox(height: 42,),

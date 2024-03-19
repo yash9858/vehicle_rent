@@ -88,8 +88,13 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(widget.name,style: TextStyle(color: Colors.grey),),
-                                  Icon(Icons.favorite_border,color: Colors.red,)
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.indigo.shade50,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(widget.name,style: TextStyle(color: Colors.blueGrey),)),
+                                  Icon(Icons.info_outline,color: Colors.blueGrey,)
                                 ],
                               ),
                             ),
@@ -131,16 +136,16 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          const Row(
-                                            children: [
-                                              Text("4.1"),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.orange,
-                                                size: 18,
-                                              )
-                                            ],
-                                          )
+                                          // const Row(
+                                          //   children: [
+                                          //     Text("4.1"),
+                                          //     Icon(
+                                          //       Icons.star,
+                                          //       color: Colors.orange,
+                                          //       size: 18,
+                                          //     )
+                                          //   ],
+                                          // )
                                         ],
                                       ),
                                     ]),

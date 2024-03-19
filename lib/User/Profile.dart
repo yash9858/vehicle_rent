@@ -168,7 +168,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   trailing: IconButton(
                   onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>  PrivacyPolicyPage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PrivacyPolicyPage()));
                   },
                   icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),

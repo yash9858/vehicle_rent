@@ -63,14 +63,7 @@ class _FeedBack_UserState extends State<FeedBack_User> {
           iconTheme: const IconThemeData(color: Colors.black),
           centerTitle: true,
         ),
-        body:
-        isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),): allrat.length==0?
-        Container(
-          child: Center(
-            child: Text("Be the first person to give Feedback",style:TextStyle(fontSize: 18)
-            ),
-          ),
-        )
+        body:  isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
             : SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(top:15,left: 15,right: 15),
@@ -237,9 +230,7 @@ class _reviewState extends State<review> {
   double rating=0;
   @override
   Widget build(BuildContext context) {
-    return
-
-      Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Rating & Review",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),

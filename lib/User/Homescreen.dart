@@ -260,7 +260,7 @@ class _HomescreenState extends State<Homescreen> {
             //card
 
             Container(
-              height: mheight * 0.32,
+              height: mheight * 0.30,
               child: PageView.builder(
                 itemCount: getUser4.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -292,19 +292,25 @@ class _HomescreenState extends State<Homescreen> {
                                         fontSize: 20,
                                       ),
                                     ),
-                                    Text(
-                                      "Model3 Long Range",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                      ),
-                                    ),
+                                    // Text(
+                                    // getUser4[index]["Vehicle_Description"],
+                                    //   style: TextStyle(
+                                    //     fontWeight: FontWeight.bold,
+                                    //     fontSize: 15,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
-                                Icon(
-                                  LineIcons.heart,
-                                  color: Colors.red,
-                                ),
+                                Container(
+
+                                  decoration: BoxDecoration(
+                                      color: Colors.indigo.shade50,
+                                      borderRadius: BorderRadius.circular(12),),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 5,right: 5),
+                                      child: Text(getUser4[index]["Vehicle_Type"],style: TextStyle(fontSize: 18),),
+                                    ))
+
                               ],
                             ),
                             Container(
@@ -339,6 +345,7 @@ class _HomescreenState extends State<Homescreen> {
                                     Text("/day"),
                                   ],
                                 ),
+
                                 Row(
                                   children: [
                                     Icon(
@@ -346,7 +353,7 @@ class _HomescreenState extends State<Homescreen> {
                                       color: Colors.orange,
                                     ),
                                     Text("4.9"),
-                                    Text("(25 Review)"),
+                                  //  Text("(25 Review)"),
                                   ],
                                 ),
                               ],
@@ -359,6 +366,9 @@ class _HomescreenState extends State<Homescreen> {
                 },
               ),
             ),
+
+
+
 
 
 
@@ -389,7 +399,7 @@ class _HomescreenState extends State<Homescreen> {
             // SizedBox(height: MediaQuery.sizeOf(context).height * 0.01),
             //car card
                Container(
-                height: MediaQuery.sizeOf(context).height * 0.25,
+                height: MediaQuery.sizeOf(context).height * 0.23,
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
                   //physics:  BouncingScrollPhysics(),
@@ -419,9 +429,16 @@ class _HomescreenState extends State<Homescreen> {
                                       .spaceBetween,
                                   children: [
 
-                                    Text(getUser2[index]["Category_Name"],
-                                      style: TextStyle(color: Colors.grey),),
-                                    Icon(LineIcons.heart, color: Colors.red,)
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.indigo.shade50,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(getUser2[index]["Category_Name"],
+                                        style: TextStyle(color: Colors.blueGrey),),
+                                    ),
+                                   // Icon(LineIcons.heart, color: Colors.red,)
+                                    Icon(LineIcons.infoCircle, color: Colors.blueGrey,)
                                   ],
                                 ),
                               ),
@@ -498,7 +515,7 @@ class _HomescreenState extends State<Homescreen> {
 
             //Bike car
             Container(
-                height: MediaQuery.sizeOf(context).height * 0.25,
+                height: MediaQuery.sizeOf(context).height * 0.23,
 
 
                 child: GridView.builder(
@@ -529,9 +546,15 @@ class _HomescreenState extends State<Homescreen> {
                                       .spaceBetween,
                                   children: [
 
-                                    Text(getUser3[index]["Category_Name"],
-                                      style: TextStyle(color: Colors.grey),),
-                                    Icon(LineIcons.heart, color: Colors.red,)
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.indigo.shade50,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(getUser3[index]["Category_Name"],
+                                        style: TextStyle(color: Colors.blueGrey),),
+                                    ),
+                                    Icon(LineIcons.infoCircle, color: Colors.blueGrey,)
                                   ],
                                 ),
                               ),

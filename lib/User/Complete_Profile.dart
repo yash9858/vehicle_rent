@@ -29,27 +29,10 @@ class complete_ProfileState extends State<complete_Profile> {
   final _formKey = GlobalKey<FormState>();
   var logindata;
   var data;
-  var getuser;
 
   bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
   File? _image;
-
-  Future getdata() async{
-    SharedPreferences share=await SharedPreferences.getInstance();
-    http.Response response= await http.post(Uri.parse(
-        "https://road-runner24.000webhostapp.com/API/Update_API/Available_Status.php"),
-        body: {'Login_Id':share.getString('id')});
-    if(response.statusCode==200) {
-      data = response.body;
-      setState(() {
-        getuser=jsonDecode(data!)["users"];
-      });
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => UserDasboard()),
-              (route) => false);
-    }
-  }
 
   Future _getImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -340,7 +323,11 @@ class complete_ProfileState extends State<complete_Profile> {
                           onPressed: () {
                             _submit2();
                             uploadImageMedia(_image!);
-                            getdata();
+
+                            //     print(_value);
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => UserDasboard()),
+                                    (route) => false);
                           },
                           child: Text('Save Details',
                               style: TextStyle(
@@ -376,7 +363,7 @@ class complete_ProfileState extends State<complete_Profile> {
         isLoading = false;
       });
       if (logindata['error'] == false) {
-        //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => Home()), (Route<dynamic> route) => false);
+        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => Home()), (Route<dynamic> route) => false);
       } else {
         Fluttertoast.showToast(
             msg: logindata['message'].toString(),

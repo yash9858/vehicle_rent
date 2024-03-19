@@ -89,8 +89,13 @@ class _Search_fetchState extends State<Search_fetch> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-                                  Text(getUser[index]["Category_Name"],style: TextStyle(color: Colors.grey),),
-                                  Icon(LineIcons.heart,color: Colors.red,)
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.indigo.shade50,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(getUser[index]["Category_Name"],style: TextStyle(color: Colors.blueGrey),)),
+                                  Icon(Icons.info_outline,color: Colors.blueGrey,)
                                 ],
                               ),
                             ),
