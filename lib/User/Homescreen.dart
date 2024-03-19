@@ -153,16 +153,7 @@ class _HomescreenState extends State<Homescreen> {
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 )),
                 leading: const Icon(Icons.search),
-                  trailing: [
-              IconButton(
-              icon: const Icon(Icons.keyboard_voice_rounded),
-              onPressed: () {
-               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginPage()),  (Route<dynamic> route) => false);
-                print('Use voice command');
-              },
-            ),
 
-          ],
 
                 hintText: "Find your vehicle",
 
