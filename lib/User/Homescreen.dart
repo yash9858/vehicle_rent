@@ -260,7 +260,7 @@ class _HomescreenState extends State<Homescreen> {
             //card
 
             Container(
-              height: mheight * 0.30,
+              height: mheight * 0.295,
               child: PageView.builder(
                 itemCount: getUser4.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -331,29 +331,21 @@ class _HomescreenState extends State<Homescreen> {
 
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                   Text(
-                                     "Rent Price"
-                                   )
-                                  ],
-                                ),
 
-                                Row(
-                                  children: [
-                                    Text(
-                                      "₹"+getUser4[index]["Rent_Price"],
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text("/day"),
-                                  //  Text("(25 Review)"),
-                                  ],
+                              children: [
+
+
+                                Text(
+                                  "₹"+getUser4[index]["Rent_Price"],
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
+                                Text("/day", style: TextStyle(
+                                  fontSize: 17,
+
+                                ),),
                               ],
                             ),
                           ],
