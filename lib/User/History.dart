@@ -84,6 +84,7 @@ class _History_pageState extends State<History_page> {
         TabBarView(
           children: [
             Container(
+
               padding: EdgeInsets.only(top: 5,left: 8,right: 8),
               child: ListView.builder(
                 itemCount: getUser2.length,
@@ -177,6 +178,8 @@ class _History_pageState extends State<History_page> {
 
             //second tab code
 
+
+
             Container(
               padding: EdgeInsets.only(top: 5,left: 8,right: 8),
               child: ListView.builder(
@@ -252,6 +255,10 @@ class _History_pageState extends State<History_page> {
                                         Text("/day"),
                                       ],
                                     ),
+                                    TextButton(onPressed: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Book_summary(val3: index,Bid:getUser[index]["Booking_Id"])));
+
+                                    }, child: Text("View"))
 
                                   ],
                                 ),
@@ -264,7 +271,8 @@ class _History_pageState extends State<History_page> {
 
                 },
               ),
-            ),
+            )
+
           ],
         ),
       ),

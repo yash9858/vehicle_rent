@@ -83,6 +83,7 @@ class _ComplainState extends State<Complain> {
               onChanged: (newValue) {
                 setState(() {
                   _selectedType = newValue!;
+                  _complaintController.text = newValue;
                 });
               },
               items: [
