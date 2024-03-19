@@ -335,24 +335,22 @@ class _HomescreenState extends State<Homescreen> {
                               children: [
                                 Row(
                                   children: [
+                                   Text(
+                                     "Rent Price"
+                                   )
+                                  ],
+                                ),
+
+                                Row(
+                                  children: [
                                     Text(
-                                  "₹"+getUser4[index]["Rent_Price"],
+                                      "₹"+getUser4[index]["Rent_Price"],
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text("/day"),
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.orange,
-                                    ),
-                                    Text("4.9"),
                                   //  Text("(25 Review)"),
                                   ],
                                 ),

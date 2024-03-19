@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
             // User Image
 
              Padding(
-                padding: EdgeInsets.only(top: 0),
+                padding: EdgeInsets.only(top: mHeight * 0.02),
                 child: Center(
                     child: Stack(
                       children: [
@@ -74,7 +74,7 @@ class _ProfileState extends State<Profile> {
                         )],
                     ))),
             SizedBox(
-              height: mHeight * 0.03,
+              height: mHeight * 0.032,
             ),
             Text(getUser2[0]["Name"],
               style: TextStyle(fontSize: 20),
@@ -120,24 +120,24 @@ class _ProfileState extends State<Profile> {
                     },
                     icon: const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
                 ))),
-                const Divider(),
-                InkWell(
-                  onTap: (){
-                  //Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
-                  },
-                  child:ListTile(
-                  leading: const Icon(LineIcons.heart,color: Colors.deepPurple,),
-                  title: const Text(
-                    "Favorite Vehicles",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  trailing:
-                  IconButton(
-                    onPressed: (){
-                    //  Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
-                    },
-                    icon:const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
-                ))),
+                // const Divider(),
+                // InkWell(
+                //   onTap: (){
+                //   //Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
+                //   },
+                //   child:ListTile(
+                //   leading: const Icon(LineIcons.heart,color: Colors.deepPurple,),
+                //   title: const Text(
+                //     "Favorite Vehicles",
+                //     style: TextStyle(fontSize: 20),
+                //   ),
+                //   trailing:
+                //   IconButton(
+                //     onPressed: (){
+                //     //  Navigator.push(context, MaterialPageRoute(builder: (context)=> Favorite()));
+                //     },
+                //     icon:const Icon(Icons.arrow_forward_ios,color: Colors.deepPurple,),
+                // ))),
                 const Divider(),
                 InkWell(
                   onTap: (){

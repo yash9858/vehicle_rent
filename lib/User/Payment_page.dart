@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rentify/User/Add_Card.dart';
+import 'package:rentify/User/Successful_Pay.dart';
 import 'package:rentify/User/User_DashBoard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -118,9 +121,13 @@ class _Payment_pageState extends State<Payment_page> {
       setState(() {
         isLoading=false;
         bstat=jsonDecode(data3!)["users"];
-
       });
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserDasboard()), (route) => false);
+      // Timer(const Duration(seconds: 4), ()
+      // {
+      //   Lottie.asset(
+      //       "assets/img/pay.json", height: 200, width: 300);
+      // });
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Pay()), (route) => false);
     }
   }
 
@@ -271,6 +278,7 @@ var x;
           onPressed: (){
              payment();
              Bstatus();
+
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

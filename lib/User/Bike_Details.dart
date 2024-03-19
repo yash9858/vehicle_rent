@@ -45,7 +45,6 @@ class _bike_detailState extends State<bike_detail> {
   void initState(){
     super.initState();
     // bike_det();
-    star_count();
     star_avg();
   }
 
@@ -256,9 +255,9 @@ class _bike_detailState extends State<bike_detail> {
                                 ),
                                 SizedBox(height: mheight * 0.02),
                                 getUser3==null?Column(children:[
-                                  SizedBox(height: 42,),
+                                  SizedBox(height: 50,),
                                   Center(child: Text("No Feedbacks", style: TextStyle(fontSize: 22, color: Colors.white)),),
-                                  SizedBox(height: 42,),
+                                  SizedBox(height: 50,),
                                 ])
                                     : ListView.builder(
                                     shrinkWrap: true,

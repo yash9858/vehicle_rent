@@ -83,6 +83,12 @@ class _History_pageState extends State<History_page> {
 
         TabBarView(
           children: [
+            getUser2==null?
+                Container(
+                    padding: EdgeInsets.only(top: 5,left: 8,right: 8),
+                    child:Center(
+                        child:Text('No Bookings'))
+                ):
             Container(
               padding: EdgeInsets.only(top: 5,left: 8,right: 8),
               child: ListView.builder(
@@ -159,24 +165,27 @@ class _History_pageState extends State<History_page> {
                                   ],
                                 ),
                                 TextButton(onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Book_summary(val3: index,Bid:getUser2[index]["Booking_Id"])));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Book_summary(val3: index,Bid:getUser2[index]["Booking_Id"], vid:getUser2[index]["Vehicle_Id"])));
 
                                 }, child: Text("View"))
                               ],
                             ),
                           ],
                         ))
-
                       ],
                     ),
                   );
-
                 },
               ),
             ),
 
             //second tab code
-
+            getUser==null?
+            Container(
+              padding: EdgeInsets.only(top: 5,left: 8,right: 8),
+              child:Center(
+                child:Text('No Past Data'))
+            ):
             Container(
               padding: EdgeInsets.only(top: 5,left: 8,right: 8),
               child: ListView.builder(

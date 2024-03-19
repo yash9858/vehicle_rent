@@ -14,7 +14,8 @@ import 'package:http/http.dart' as http;
 class Book_summary extends StatefulWidget {
   final int val3;
   final String Bid;
-  const Book_summary({required this.val3, required this.Bid});
+  final String vid;
+  const Book_summary({required this.val3, required this.Bid, required this.vid});
 
 
   @override
@@ -24,12 +25,16 @@ class Book_summary extends StatefulWidget {
 
 class _Book_summaryState extends State<Book_summary> {
   var data;
+  var data2;
   var getUser2;
+  var getUser;
+  List list = [];
   bool isLoading=true;
 
   void initState(){
     super.initState();
     getdata();
+    ratings();
   }
 
   Future getdata() async {
@@ -45,6 +50,36 @@ class _Book_summaryState extends State<Book_summary> {
         getUser2 = jsonDecode(data!)["users"];
       });
     }
+  }
+
+  Future ratings() async{
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
+    ),body: {'Vehicle_Id' : widget.vid});
+
+    if(response.statusCode==200) {
+      data2 = response.body;
+
+      setState(() {
+        isLoading=false;
+        getUser=jsonDecode(data2!)["users"];
+        for(var data in getUser){
+          list.add(double.parse(data["Ratings"]));
+        }
+      }
+      );
+    }
+  }
+
+  double avg()
+  {
+    if(list.isEmpty)
+      return 0.0;
+    double sum = 0.0;
+    for(var rating in list)
+    {
+      sum += rating;
+    }
+    return sum /list.length;
   }
 
 
@@ -120,7 +155,7 @@ void _showtimepicker(){
                             child: Text(getUser2[0]["Category_Name"])),
                         Row(
                           children: [
-                            const Text("4.1"),
+                            Text(avg().toString()),
                             Icon(
                               Icons.star,
                               color: Colors.orange,
