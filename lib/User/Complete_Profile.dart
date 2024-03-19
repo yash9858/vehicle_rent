@@ -258,7 +258,16 @@ class complete_ProfileState extends State<complete_Profile> {
                                 controller: phone,
                                 validator: (val) {
                                   if (val!.isEmpty) {
-                                    return "Please Enter Phone No";
+                                    return "enter Phone number";
+                                  }
+                                  else {
+                                    if (RegExp(
+                                        r"^[0-9]{10}$")
+                                        .hasMatch(val)) {
+                                      return null;
+                                    } else {
+                                      return "please enter 10 digit number";
+                                    }
                                   }
                                 },
                                 textInputAction: TextInputAction.next,

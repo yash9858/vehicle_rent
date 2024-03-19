@@ -132,7 +132,7 @@ class _Payment_pageState extends State<Payment_page> {
   }
 
 
-  var selectedOption;
+  var selectedOption ="cash";
 var total;
 var x;
   @override
@@ -183,8 +183,8 @@ var x;
                       groupValue: selectedOption,
                       onChanged: (value) {
                         setState(() {
-                          selectedOption = value;
-                          print("Button value: $value");
+                          selectedOption = value as String;
+                        //  print("Button value: $value");
                         });
                       },
                     ),

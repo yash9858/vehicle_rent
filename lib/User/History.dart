@@ -60,15 +60,15 @@ class _History_pageState extends State<History_page> {
       length: 2,
       child: Scaffold(
           appBar: AppBar(
-          //centerTitle: true,
-            title: Text("Booking History",style: TextStyle(fontWeight: FontWeight.bold,fontSize: mdheight*0.030),),
+          centerTitle: true,
+            title: Text("Booking History",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: mdheight*0.030),),
             elevation: 0,
-           // backgroundColor: Colors.transparent,
-          //  iconTheme: const IconThemeData(color: Colors.black),
+           backgroundColor: Colors.transparent,
+           iconTheme: const IconThemeData(color: Colors.black),
             bottom: const TabBar(
                 indicatorColor: Colors.deepPurple,
                 indicatorWeight: 3,
-                labelColor: Colors.white,
+                labelColor: Colors.black,
                 tabs: [
                   Tab(
                     text: 'Current Booking',
@@ -261,6 +261,10 @@ class _History_pageState extends State<History_page> {
                                         Text("/day"),
                                       ],
                                     ),
+                                    TextButton(onPressed: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Book_summary(val3: index,Bid:getUser[index]["Booking_Id"], vid:getUser[index]["Vehicle_Id"])));
+
+                                    }, child: Text("View"))
 
                                   ],
                                 ),
