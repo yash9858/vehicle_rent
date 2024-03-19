@@ -72,15 +72,7 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
               ),
               SizedBox(height: mheight * 0.02,),
 
-              for (String option in [
-                'Schedule change',
-                'Book Another Car',
-                'Found a Better Alternative',
-                'Want to Book another car',
-                'My Reason is not listed',
-                'Other'
-              ])
-
+              for (String option in Reason)
                 RadioListTile(
                   title: Text(option, style: TextStyle(fontSize: 18),),
                   value: option,
@@ -88,6 +80,7 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
                   onChanged: (value) {
                     setState(() {
                       selectedOption = value.toString();
+                      _cancel.text =value.toString();
                     });
                   },
                 ),
