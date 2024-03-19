@@ -139,9 +139,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ) {
                       return "Enter Password ";
                     }
-                    else if (val.length  >= 20)
-                    {
-                    return "Out Of Range";
+                    else if (val.length >= 20) {
+                      return "Password is too long (max 20 characters)";
                     }
                   },
                   obscureText: visiblepass,
@@ -176,9 +175,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.text,
                  // controller: ConfirmpasswordController,
                   validator: (val) {
-                    if (val!.isEmpty
-                      ) {
+                    if (val!.isEmpty) {
                       return "Enter Confirm Password ";
+                    }
+                    else if (val != passwordController.text) {
+                      return "Passwords Do Not Match";
                     }
                   },
                   decoration: InputDecoration(

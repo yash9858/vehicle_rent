@@ -113,8 +113,8 @@ class _Forget_passwordState extends State<Forget_password> {
                   ) {
                     return "Enter Confirm Password ";
                   }
-                  else if(val != passwordController){
-                    return "Password Are Not Match";
+                  else if(val != passwordController.text){
+                    return "Passwords Do Not Match";
                   }
                 },
                 obscureText: visibleconfirm,
