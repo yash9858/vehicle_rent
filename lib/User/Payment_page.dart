@@ -70,7 +70,7 @@ class _Payment_pageState extends State<Payment_page> {
     if (endHour > startHour) {
       totalPrice += (endHour - startHour) * (pricePerDate / 24);
     }
-    return totalPrice;
+    return double.parse(totalPrice.toStringAsFixed(2));
   }
 
 
@@ -97,7 +97,7 @@ class _Payment_pageState extends State<Payment_page> {
         body: {
           'Payment_Mode': selectedOption,
           'Booking_Id': bid,
-          'Total_Price': total_price.toString(),
+          'Total_Price': total_price.toStringAsFixed(2),
           'Login_Id':share.getString('id')});
     if(response.statusCode==200) {
       data2 = response.body;

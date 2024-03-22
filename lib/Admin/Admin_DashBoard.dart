@@ -12,6 +12,7 @@ import 'package:rentify/Admin/CancelBooking_Admin.dart';
 import 'package:rentify/Admin/Complain_Admin.dart';
 import 'package:rentify/Admin/Feedback_Admin.dart';
 import 'package:rentify/Admin/Payment_Admin.dart';
+import 'package:rentify/Admin/Report_Generate.dart';
 import 'package:rentify/Admin/UserList_Admin.dart';
 import 'package:rentify/Admin/Vehicle_Admin.dart';
 import 'package:rentify/Admin/Vehicle_Category_Admin.dart';
@@ -117,7 +118,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
   @override
   Widget build(BuildContext context) {
 
-    var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Total Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
+    var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Success Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
     var total = [det.toString(), cat.toString(), vehicle.toString(), book.toString(), pay.toString(), com.toString(), feed.toString()];
     var page =  [Admin_UserPage(), Admin_CategoryPage(), Admin_VehiclePage(), Admin_BookingPage(), Admin_PaymentPage(), Admin_ComplainPage(), Admin_FeedbackPage()];
     var image = ['assets/img/user.json','assets/img/category.json','assets/img/vehicle.json','assets/img/bookings.json','assets/img/payments.json','assets/img/complain.json','assets/img/feedback.json'];
@@ -229,9 +230,19 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
                   },
                 ),
                 DrawerNavigationItem(
+                  iconData: Icons.picture_as_pdf_rounded,
+                  title: "Generate Report",
+                  selected: _currentIndex == 9,
+                  onTap: () =>
+                  {
+                    Navigator.push(context , MaterialPageRoute(builder: (context) => Report_Admin())),
+                    _currentIndex = 0
+                  },
+                ),
+                DrawerNavigationItem(
                   iconData: Icons.logout_outlined,
                   title: "Log Out",
-                  selected: _currentIndex == 9,
+                  selected: _currentIndex == 10,
                   onTap: () async
                   {
                     final pref = await SharedPreferences.getInstance();
@@ -256,7 +267,7 @@ class _Admin_DashBoardState extends State<Admin_DashBoard> {
           return IconButton(icon: Icon(Icons.sort),
           onPressed: () => Scaffold.of(context).openDrawer());
           }),
-        title: const Text('Admin Dash Board'),
+        title: const Text('Admin DashBoard'),
         backgroundColor: Colors.deepPurple.shade800,
         iconTheme:  IconThemeData(
           color: Colors.white,

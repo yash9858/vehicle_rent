@@ -315,7 +315,7 @@ var sdate;
                               isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
                                   : Row(
                                 children: [
-                                  Text(avg().toString().characters.first),
+                                  Text(avg().toStringAsFixed(2)),
                                   Icon(
                                     Icons.star,
                                     color: Colors.orange,

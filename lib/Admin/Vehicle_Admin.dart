@@ -95,37 +95,31 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children :[
-                                Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                   Text('Vehicle Id : '+getUser[index]["Vehicle_Id"]),
-                                  SizedBox(height: 10),
-                                  Text('Vehicle Name : '+getUser[index]["Vehicle_Name"]),
-                                  SizedBox(height: 10),
-                                   Text('Vehicle Type : '+getUser[index]["Vehicle_Type"]),
-                                  SizedBox(height: 10),
-                                   Text('Vehicle Description : '),
-                                  Text(getUser[index]["Vehicle_Description"]),
-
-                                  SizedBox(height: 10),
-                                   Text('Rent Price: '+getUser[index]["Rent_Price"]+'/day'),
-                                  SizedBox(height: 10),
-                                ],
-                              ),
+                              Expanded(
+                                  child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Vehicle Id : '+getUser[index]["Vehicle_Id"]),
+                                    SizedBox(height: mdheight * 0.01),
+                                    Text('Vehicle Name : '+getUser[index]["Vehicle_Name"]),
+                                    SizedBox(height: mdheight * 0.01),
+                                    Text('Vehicle Type : '+getUser[index]["Vehicle_Type"]),
+                                    SizedBox(height: mdheight * 0.01),
+                                    Text('Rent Price: '+getUser[index]["Rent_Price"]+'/day'),
+                                    SizedBox(height: mdheight * 0.01),
+                                    Text('Vehicle Description : '+ getUser[index]["Vehicle_Description"]),
+                                    SizedBox(height: mdheight * 0.01),
+                                  ],
+                                )),
                                   Expanded(
                                     child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children:[
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.network(getUser[index]["Vehicle_Image"],
-                                          height: 100,//mdheight * 0.18,
-                                          width: 100,//mdwidth*0.3,
-                                          fit: BoxFit.fill,
+                                      Image.network(getUser[index]["Vehicle_Image"],
+                                          height : mdheight * 0.15,
+                                          fit: BoxFit.cover,
                                         ),
-                                      ),
-                                    ]
-                                                                  ),
+                                    ]),
                                   ),
                             ]
                         ),

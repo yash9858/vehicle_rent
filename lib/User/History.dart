@@ -133,16 +133,13 @@ class _History_pageState extends State<History_page> {
                                         borderRadius: BorderRadius.circular(6)
                                     ),
                                     child: Text(getUser2[index]["Category_Name"])),
-                                Row(
-                                  children: [
-                                    const Text("4.1"),
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.orange,
-                                      size: 18,
-                                    )
-                                  ],
-                                )
+                                Padding(
+                                    padding: EdgeInsets.only(left: 5,right: 5,top: 2),
+                                    child: Row(
+                                    children: [
+                                      Icon(Icons.bookmark,color: Colors.blueGrey,)
+                                    ],
+                                )),
                               ],),
                             SizedBox(height: mdheight*0.01,),
 
@@ -230,16 +227,13 @@ class _History_pageState extends State<History_page> {
                                             borderRadius: BorderRadius.circular(6)
                                         ),
                                         child: Text(getUser[index]["Category_Name"])),
-                                    Row(
-                                      children: [
-                                        const Text("4.1"),
-                                        Icon(
-                                          Icons.star,
-                                          color: Colors.orange,
-                                          size: 18,
-                                        )
-                                      ],
-                                    )
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 5,right: 5,top: 2),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.bookmark,color: Colors.blueGrey,)
+                                          ],
+                                        )),
                                   ],),
                                 SizedBox(height: mdheight*0.01,),
 

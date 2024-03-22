@@ -34,7 +34,6 @@ class _Book_summaryState extends State<Book_summary> {
   void initState(){
     super.initState();
     getdata();
-    ratings();
   }
 
   Future getdata() async {
@@ -48,11 +47,16 @@ class _Book_summaryState extends State<Book_summary> {
       setState(() {
         isLoading = false;
         getUser2 = jsonDecode(data!)["users"];
+        ratings();
       });
+
     }
   }
 
   Future ratings() async{
+    setState(() {
+      isLoading = true;
+    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.vid});
 
@@ -155,7 +159,7 @@ void _showtimepicker(){
                             child: Text(getUser2[0]["Category_Name"])),
                         Row(
                           children: [
-                            Text(avg().toString()),
+                            Text(avg().toStringAsFixed(2)),
                             Icon(
                               Icons.star,
                               color: Colors.orange,

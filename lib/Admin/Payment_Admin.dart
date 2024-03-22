@@ -83,8 +83,6 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
                         SizedBox(height: mdheight * 0.01,),
                         Text('Total Price : '+getUser[index]["Total_Price"]),
                         SizedBox(height: mdheight * 0.01,),
-                         Text('Payment Status : '+getUser[index]["Payment_Status"]),
-                        SizedBox(height: mdheight * 0.01,),
                       ],
                     ),
                   ),

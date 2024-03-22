@@ -4,10 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Cancel_Bookings extends StatefulWidget {
@@ -23,7 +19,7 @@ var logindata;
   var getUser;
   String? data2;
   var getUser2;
-  bool isLoading=true;
+  bool isLoading=false;
   var feed;
 
   void initState(){
@@ -32,6 +28,9 @@ var logindata;
     getdata2();
   }
   Future getdata() async{
+    setState(() {
+      isLoading = true;
+    });
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Cancel_Admin.php"));
     if(response.statusCode==200){
       data=response.body;
@@ -44,6 +43,9 @@ var logindata;
   }
 
   Future getdata2() async{
+    setState(() {
+      isLoading = true;
+    });
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Refund_Pending.php"));
     if(response.statusCode==200){
       data2=response.body;

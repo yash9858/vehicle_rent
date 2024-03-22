@@ -69,11 +69,11 @@ class _bike_detailState extends State<bike_detail> {
     if(response.statusCode==200) {
       data2 = response.body;
       setState(() {
+        star_count();
         getUser3=jsonDecode(data2!)["users"];
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
         }
-        star_count();
       }
       );
     }

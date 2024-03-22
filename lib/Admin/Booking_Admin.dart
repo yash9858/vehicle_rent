@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/Material.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
@@ -73,7 +71,7 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                             Text(getUser[index]["Booking_Timestamp"]),
                           ],
                         ),
-                        SizedBox(height: mdheight * 0.01,),
+                        SizedBox(height: mdheight * 0.01),
                          Row(
                            children: [
                              Text("Vehicle Name: "),
@@ -84,62 +82,22 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                          Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Start Date : '+getUser[index]["Start_Date"],),
-                            Text('Return Date : '+getUser[index]["Return_Date"]),
+                            Text('Start Date : '+getUser[index]["Start_Date"]),
+                            Text('Start Time : '+getUser[index]["Start_Time"]),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.01,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Start Time : '+getUser[index]["Start_Time"],),
+                            Text('Return Date : '+getUser[index]["Return_Date"]),
                             Text('Return Time : '+getUser[index]["Return_Time"]),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.01,),
-                         Text('Address: '+getUser[index]["Address"]),
+                        Text('Booking Status: '+getUser[index]["Booking_Status"]),
                         SizedBox(height: mdheight * 0.01,),
-                         //Text('Booking Status: '+getUser[index]["Booking_Status"]),
-                        //SizedBox(height: mdheight * 0.01,),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //   children: [
-                        //     MaterialButton(onPressed: (){
-                        //       CoolAlert.show(
-                        //         context: context,
-                        //         type: CoolAlertType.success,
-                        //         text: 'Booking Accepted',
-                        //         confirmBtnColor: Colors.deepPurple.shade800,
-                        //         backgroundColor: Colors.deepPurple.shade800,
-                        //       );
-                        //     },
-                        //         color: Colors.deepPurple.shade800,
-                        //         padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
-                        //         shape: RoundedRectangleBorder(
-                        //           borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
-                        //         ),
-                        //         child: const Text('Accept Booking', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                        //         )),
-                        //     MaterialButton(onPressed: (){
-                        //       CoolAlert.show(context: context,
-                        //           type: CoolAlertType.confirm,
-                        //           text: 'Do you Cancel Booking',
-                        //           confirmBtnColor: Colors.red,
-                        //           animType: CoolAlertAnimType.slideInDown,
-                        //           backgroundColor: Colors.red,
-                        //           cancelBtnTextStyle: const TextStyle(
-                        //             color: Colors.black,
-                        //           ));
-                        //     },
-                        //         color: Colors.red,
-                        //         padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
-                        //         shape: RoundedRectangleBorder(
-                        //           borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.015)),
-                        //         ),
-                        //         child: const Text('Cancel Booking', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                        //         )),
-                        //   ],
-                        // )
+                        Text('Address: '+getUser[index]["Address"]),
                       ],
                     ),
                   ),

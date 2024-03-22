@@ -23,7 +23,7 @@ class _FeedBack_UserState extends State<FeedBack_User> {
 
 
 
-  bool isLoading=false;
+  bool isLoading=true;
   var data;
   var allrat;
 
@@ -36,7 +36,6 @@ class _FeedBack_UserState extends State<FeedBack_User> {
     setState(() {
       isLoading = true;
     });
-
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.v_id});
 
@@ -304,7 +303,7 @@ class _reviewState extends State<review> {
                       )),
                   onPressed: (){
                     // Navigator.pop(context);
-                    _submit().whenComplete(() => FeedBack_User);
+                    _submit().whenComplete(() => Navigator.pop(context));
                   },
                   child:const Text("Submit")),
             ],

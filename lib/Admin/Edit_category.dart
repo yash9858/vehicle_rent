@@ -186,7 +186,7 @@ class _Edit_categoryState extends State<Edit_category> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
                             Radius.circular(15))),
-                    child: const Text('Add Category', style: TextStyle(
+                    child: const Text('Update Category', style: TextStyle(
                       color: Colors.white,),)),
                 SizedBox(height: mdheight * 0.01),
               ]

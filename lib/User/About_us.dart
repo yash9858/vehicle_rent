@@ -5,6 +5,7 @@ class About_us extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "About Us",
           style: TextStyle(fontSize: 20),

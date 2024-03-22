@@ -87,7 +87,8 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(getUser[index]["Ratings"]),
-                          Icon(LineIcons.starAlt, color: Colors.amber,),
+                          SizedBox(width: mdwidth * 0.002,),
+                          Icon(LineIcons.starAlt, color: Colors.amber),
                         ],
                       )
                     ],
