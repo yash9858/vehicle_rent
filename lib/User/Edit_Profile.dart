@@ -277,7 +277,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         child: MaterialButton(
                           onPressed: (){
                             uploadImageMedia(_image!);
-                            getdata().whenComplete(() => Navigator.pop(context));
+                            getdata().whenComplete(() => Edit_Profile());
                           },
                           child: Text('Save Details',
                               style: TextStyle(

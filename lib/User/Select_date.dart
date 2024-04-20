@@ -43,7 +43,7 @@ class _Select_dateState extends State<Select_date> {
   void initState(){
     super.initState();
     v_det();
-    address_fetch();
+    ratings();
   }
 
   Future v_det() async{
@@ -60,12 +60,15 @@ class _Select_dateState extends State<Select_date> {
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
+        address_fetch();
       });
-      ratings();
     }
   }
 
   Future address_fetch() async{
+    setState(() {
+      isLoading=true;
+    });
     SharedPreferences share=await SharedPreferences.getInstance();
     http.Response response= await http.post(Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Address_Booking.php"),
@@ -118,6 +121,9 @@ class _Select_dateState extends State<Select_date> {
 
 
   Future ratings() async{
+    setState(() {
+      isLoading=true;
+    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.v_id});
 
@@ -199,9 +205,9 @@ class _Select_dateState extends State<Select_date> {
 
   }
   DateTime _PickupDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
-  TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour,minute: 00);
+  TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour+1,minute: 00);
   DateTime _ReturnDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
-  TimeOfDay _ReturnTime = TimeOfDay(hour: DateTime.now().hour+1,minute: 00);
+  TimeOfDay _ReturnTime = TimeOfDay(hour: DateTime.now().hour+2,minute: 00);
 
   void Pickupdate(){
     showDatePicker(
@@ -224,7 +230,7 @@ class _Select_dateState extends State<Select_date> {
   }
   void PickupTime(){
     showTimePicker(// This allows only hours to be selected
-        context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour),
+      context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour+1),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
@@ -232,16 +238,18 @@ class _Select_dateState extends State<Select_date> {
         );
       },).then((value){
       setState(() {
-        if(DateTime.now().hour > value!.hour){
+        if(DateTime.now().hour + 1 > value!.hour){
           Fluttertoast.showToast(
             msg: "Please select correct Time",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 2,
           );
-        }else{
+        }
+        else{
           _PickupTime=value!;
-          _ReturnTime = TimeOfDay.now().replacing(hour: _PickupTime.hour + 1, minute: 00);
+          _ReturnTime = TimeOfDay.now().replacing(hour: _PickupTime.hour+1, minute: 00,
+          );
         }
 
       });
@@ -251,9 +259,29 @@ class _Select_dateState extends State<Select_date> {
 
 
   void ReturnTime(){
-    showTimePicker(context: context, initialTime: TimeOfDay.now().replacing(hour: _PickupTime.hour , minute: 00)).then((value){
+    showTimePicker(context: context, initialTime: TimeOfDay.now().replacing(hour: _PickupTime.hour + 1, minute: 00) ,
+      builder: (BuildContext context, Widget? child) {
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child!,
+      );
+    },).then((value){
       setState(() {
-        _ReturnTime=value!;
+        if(DateTime.now().hour + 2 > value!.hour){
+          Fluttertoast.showToast(
+            msg: "Please select correct Return Time",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+          );
+        }
+        else{
+          _ReturnTime=value!;
+          _ReturnTime = TimeOfDay.now().replacing(hour: _ReturnTime.hour + 2, minute: 00,
+          );
+        }
+
+
       });
     });
   }

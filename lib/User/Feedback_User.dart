@@ -20,9 +20,6 @@ class FeedBack_User extends StatefulWidget {
 }
 
 class _FeedBack_UserState extends State<FeedBack_User> {
-
-
-
   bool isLoading=true;
   var data;
   var allrat;
@@ -34,7 +31,7 @@ class _FeedBack_UserState extends State<FeedBack_User> {
 
   Future allrating() async{
     setState(() {
-      isLoading = true;
+      isLoading=true;
     });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.v_id});
@@ -136,7 +133,8 @@ class _FeedBack_UserState extends State<FeedBack_User> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            review(v_id: widget.v_id,)
+
+                            review(v_id: widget.v_id, v_type: widget.v_type,v_num: widget.num,)
                           ],
                         ),
                         // actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -162,13 +160,16 @@ class _FeedBack_UserState extends State<FeedBack_User> {
   }
 }
 class review extends StatefulWidget {
+  int v_num;
   String v_id;
-  review({super.key,required this.v_id});
+  String v_type;
+  review({super.key,required this.v_id, required this.v_type, required this.v_num});
   @override
   State<review> createState() => _reviewState();
 }
 
 class _reviewState extends State<review> {
+
   var logindata;
   bool isLoading=false;
   var data;
@@ -179,9 +180,6 @@ class _reviewState extends State<review> {
     if (form!.validate()) {
       setState(() {
         isLoading = true;
-
-
-
       });
       SharedPreferences s = await SharedPreferences.getInstance();
       final login_url = Uri.parse(
@@ -226,7 +224,7 @@ class _reviewState extends State<review> {
     }
   }
 
-  double rating=0;
+  double rating=1;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -243,8 +241,8 @@ class _reviewState extends State<review> {
           Align(
             alignment: Alignment.topLeft,
             child: RatingBar.builder(
-              initialRating: 0,
-              minRating: 0,
+              initialRating: 1,
+              minRating: 1,
               direction: Axis.horizontal,
               itemCount: 5,
               itemBuilder: (context,_) => const Icon(Icons.star,color: Colors.amber,),
@@ -288,7 +286,7 @@ class _reviewState extends State<review> {
             ),
           ),
           //  actionsAlignment: MainAxisAlignment.spaceBetween,
-          SizedBox(height: 20,),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -302,8 +300,8 @@ class _reviewState extends State<review> {
                         borderRadius: BorderRadius.circular(8),
                       )),
                   onPressed: (){
-                    // Navigator.pop(context);
-                    _submit().whenComplete(() => Navigator.pop(context));
+                    _submit().whenComplete(() =>  Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) =>  FeedBack_User(num: widget.v_num, v_id: widget.v_id, v_type: widget.v_type))));
                   },
                   child:const Text("Submit")),
             ],

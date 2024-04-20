@@ -22,7 +22,6 @@ class _BikeState extends State<Bike> {
   void initState(){
     super.initState();
     bikedata();
-//    fav2();
   }
 
   Future bikedata() async{
@@ -32,8 +31,6 @@ class _BikeState extends State<Bike> {
       setState(() {
         isLoading=false;
         getUser2=jsonDecode(data!)["users"];
-        //bik_id=jsonDecode(data!)["users"]["Vehicle_Id"];
-        //fav();
       });
     }
   }

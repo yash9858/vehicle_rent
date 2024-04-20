@@ -17,16 +17,13 @@ class _Category_Vehicle_UserState extends State<Category_Vehicle_User> {
   String? data;
   String?val;
   var getUser;
-  bool isLoading=false;
+  bool isLoading=true;
 
   void initState(){
     super.initState();
     getdata();
   }
   Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
     Map senddata ={
       'cat_id': widget.val
     };

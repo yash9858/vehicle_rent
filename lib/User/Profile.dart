@@ -32,6 +32,9 @@ class _ProfileState extends State<Profile> {
   }
 
   Future profile() async{
+    setState(() {
+      isLoading = true;
+    });
     SharedPreferences share=await SharedPreferences.getInstance();
     http.Response response= await http.post(Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Profile_User.php"),

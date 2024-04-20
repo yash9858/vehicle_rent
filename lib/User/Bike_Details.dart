@@ -1,13 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
-import 'package:rentify/User/Homescreen.dart';
 import 'package:rating_summary/rating_summary.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
 import 'Feedback_User.dart';
 import 'Select_date.dart';
 
@@ -44,24 +39,8 @@ class _bike_detailState extends State<bike_detail> {
 
   void initState(){
     super.initState();
-    // bike_det();
-    star_avg();
+    star_count();
   }
-
-  // Future bike_det() async{
-  //   http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Bike_Fetch.php"));
-  //   if(response.statusCode==200) {
-  //     data = response.body;
-  //     setState(() {
-  //       isLoading=false;
-  //       getUser2=jsonDecode(data!)["users"];
-  //     });
-  //     if (getUser2['error'] == false) {
-  //       SharedPreferences setpreference = await SharedPreferences.getInstance();
-  //       setpreference.setString('type', data['Vehicle_Type']);
-  //     }
-  //   }
-  // }
 
   Future star_avg() async{
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
@@ -69,7 +48,7 @@ class _bike_detailState extends State<bike_detail> {
     if(response.statusCode==200) {
       data2 = response.body;
       setState(() {
-        star_count();
+        isLoading = false;
         getUser3=jsonDecode(data2!)["users"];
         for(var data in getUser3){
           list.add(double.parse(data["Ratings"]));
@@ -86,12 +65,12 @@ class _bike_detailState extends State<bike_detail> {
     if(response.statusCode==200) {
       data3 = response.body;
       setState(() {
-        isLoading=false;
         f1 = jsonDecode(data3!)["FEEDBACK1"];
         f2 = jsonDecode(data3!)["FEEDBACK2"];
         f3 = jsonDecode(data3!)["FEEDBACK3"];
         f4 = jsonDecode(data3!)["FEEDBACK4"];
         f5 = jsonDecode(data3!)["FEEDBACK5"];
+        star_avg();
       }
       );
     }
@@ -334,7 +313,7 @@ class _bike_detailState extends State<bike_detail> {
 
 
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val1, v_id: widget.bikeid,v_type: "bike", )));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val1, v_id: widget.bikeid,v_type: widget.type)));
                 },child: Text("Book",
                 style: TextStyle(
                     fontSize: 17,

@@ -15,7 +15,7 @@ class _PayState extends State<Pay> {
 
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       load();
     });
   }

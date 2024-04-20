@@ -15,16 +15,13 @@ class _CategoryState extends State<Category> {
 
   String? data;
   var getUser;
-  bool isLoading=false;
+  bool isLoading=true;
 
   void initState(){
     super.initState();
     getdata();
   }
   Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/DashBoard_Category_Fetch.php"));
     if(response.statusCode==200) {
       data = response.body;
