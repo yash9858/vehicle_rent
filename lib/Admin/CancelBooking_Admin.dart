@@ -19,13 +19,12 @@ var logindata;
   var getUser;
   String? data2;
   var getUser2;
-  bool isLoading=false;
+  bool isLoading=true;
   var feed;
 
   void initState(){
     super.initState();
     getdata();
-    getdata2();
   }
   Future getdata() async{
     setState(() {
@@ -37,6 +36,7 @@ var logindata;
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
+        getdata2();
       });
     }
 
@@ -212,17 +212,11 @@ var logindata;
                                                       SizedBox(height: mdheight * 0.01),
                                                       Text('Refund Amount : '+getUser2[index]["Refund_Amount"]),
                                                       SizedBox(height: mdheight * 0.01),
-                                                      // const Text('Vehicle Description : This Is Fully Automated Car'),
-                                                      // SizedBox(height: mdheight * 0.01),
-                                                      // const Text('Rent Price: 500/day'),
-                                                      // SizedBox(height: mdheight * 0.01),
-                                                      // const Text('Availability : True'),
-                                                      // SizedBox(height: mdheight * 0.01),
                                                     ],
                                                   ),
                                                 ),
                                                 MaterialButton(onPressed: (){
-                                                 _submit2();
+                                                 _submit2().whenComplete(() => Navigator.pop(context));
                                                 },
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.02)),
@@ -282,7 +276,6 @@ Future<void> _submit2() async {
 
     setState(() {
       isLoading = false;
-      print(getUser2[0]["Cancle_Id"]);
     });
     if (logindata['error'] == false) {
 

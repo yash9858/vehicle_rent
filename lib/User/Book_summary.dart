@@ -28,6 +28,10 @@ class _Book_summaryState extends State<Book_summary> {
   var data2;
   var getUser2;
   var getUser;
+  var deduct;
+  var dec;
+  var rpay;
+  var rpay2;
   List list = [];
   bool isLoading=true;
 
@@ -44,9 +48,13 @@ class _Book_summaryState extends State<Book_summary> {
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Booking_Summery_User.php" ),body:senddata);
     if (response.statusCode == 200) {
       data = response.body;
+      dec = response.body;
+      rpay2 = response.body;
       setState(() {
         isLoading = false;
         getUser2 = jsonDecode(data!)["users"];
+        deduct = double.parse(jsonDecode(dec!)["users"][0]["Total_Price"]) /10;
+        rpay = double.parse(jsonDecode(rpay2!)["users"][0]["Total_Price"])- deduct;
         ratings();
       });
 
@@ -87,7 +95,7 @@ class _Book_summaryState extends State<Book_summary> {
   }
 
 
-DateTime _dateTime=DateTime(2023,1,12);
+DateTime _dateTime=DateTime(12,1,2023);
 TimeOfDay _timeOfDay = TimeOfDay(hour: 8,minute: 10);
 void _showdatepicker(){
   showDatePicker(
@@ -305,7 +313,7 @@ void _showtimepicker(){
 
                    backgroundColor: Colors.deepPurple.shade800,),
                  onPressed: () {
-                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[0]["Payment_Id"],b_id:getUser2[0]["Booking_Id"],amount:getUser2[0]['Total_Price'])));
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[0]["Payment_Id"],b_id:getUser2[0]["Booking_Id"],amount:rpay.toString())));
                  },
                  child: Text(
                      "Cancel"),)),

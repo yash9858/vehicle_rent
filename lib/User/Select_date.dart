@@ -43,10 +43,12 @@ class _Select_dateState extends State<Select_date> {
   void initState(){
     super.initState();
     v_det();
-    ratings();
   }
 
   Future v_det() async{
+    setState(() {
+      isLoading = true;
+    });
     final loginUrl = Uri.parse(
         "https://road-runner24.000webhostapp.com/API/User_Fetch_API/Select_Fetch_Vehicle.php");
     final response = await http
@@ -61,6 +63,7 @@ class _Select_dateState extends State<Select_date> {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
         address_fetch();
+        ratings();
       });
     }
   }
@@ -121,9 +124,6 @@ class _Select_dateState extends State<Select_date> {
 
 
   Future ratings() async{
-    setState(() {
-      isLoading=true;
-    });
     http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/User_Fetch_API/Car_Details_Feedback.php",
     ),body: {'Vehicle_Id' : widget.v_id});
 

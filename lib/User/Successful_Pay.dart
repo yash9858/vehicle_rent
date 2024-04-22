@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rentify/User/User_DashBoard.dart';
 
@@ -16,13 +17,14 @@ class _PayState extends State<Pay> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 2), () {
-      load();
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) =>  UserDasboard()), (Route<dynamic> route) => false);
+      Fluttertoast.showToast(
+          msg: "Payment Successful.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2);
     });
   }
-
-  Future load() async{
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) =>  UserDasboard()), (Route<dynamic> route) => false);
-}
 
   @override
   Widget build(BuildContext context) {

@@ -66,19 +66,19 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                          Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("User Name: "+getUser[index]["Name"] ),
+                            Text("User Name: "+getUser[index]["Name"]),
 
                             Text(getUser[index]["Booking_Timestamp"]),
                           ],
                         ),
-                        SizedBox(height: mdheight * 0.01),
+                        SizedBox(height: mdheight * 0.015),
                          Row(
                            children: [
                              Text("Vehicle Name: "),
                              Text(getUser[index]["Vehicle_Name"]),
                            ],
                          ),
-                        SizedBox(height: mdheight * 0.01,),
+                        SizedBox(height: mdheight * 0.015,),
                          Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -86,7 +86,7 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                             Text('Start Time : '+getUser[index]["Start_Time"]),
                           ],
                         ),
-                        SizedBox(height: mdheight * 0.01,),
+                        SizedBox(height: mdheight * 0.015,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -94,9 +94,9 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                             Text('Return Time : '+getUser[index]["Return_Time"]),
                           ],
                         ),
-                        SizedBox(height: mdheight * 0.01,),
+                        SizedBox(height: mdheight * 0.015,),
                         Text('Booking Status: '+getUser[index]["Booking_Status"]),
-                        SizedBox(height: mdheight * 0.01,),
+                        SizedBox(height: mdheight * 0.015,),
                         Text('Address: '+getUser[index]["Address"]),
                       ],
                     ),

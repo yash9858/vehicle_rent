@@ -141,7 +141,7 @@ class _car_detailState extends State<car_detail> {
                         ),
                         //overview
                         SizedBox(height: mdheight*0.022,),
-                        Text(widget.descripation,style: TextStyle(color: Colors.grey),),
+                        Text(widget.descripation,style: TextStyle(color: Colors.grey),maxLines: 3,),
                         SizedBox(height: mdheight*0.01,),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,7 +302,7 @@ class _car_detailState extends State<car_detail> {
                   backgroundColor: Colors.white.withOpacity(0.9), // Background color
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val, v_id :widget.carid,v_type: widget.type,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Select_date(num : widget.val, v_id :widget.carid,v_type: widget.type)));
                 },child: const Text("Book",
                 style: TextStyle(
                     fontSize: 17,

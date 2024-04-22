@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rentify/User/Add_Card.dart';
 import 'package:rentify/User/Successful_Pay.dart';
@@ -116,7 +117,6 @@ class _Payment_pageState extends State<Payment_page> {
           'Booking_Id': bid,});
     if(response.statusCode==200) {
       data3 = response.body;
-      print(data3);
       setState(() {
         isLoading=false;
         bstat=jsonDecode(data3!)["users"];
@@ -126,9 +126,9 @@ class _Payment_pageState extends State<Payment_page> {
   }
 
 
-  var selectedOption ="cash";
-var total;
-var x;
+  var selectedOption;
+  var total;
+  var x;
   @override
   Widget build(BuildContext context) {
     var mheight = MediaQuery.sizeOf(context).height;
@@ -177,8 +177,7 @@ var x;
                       groupValue: selectedOption,
                       onChanged: (value) {
                         setState(() {
-                          selectedOption = value as String;
-                        //  print("Button value: $value");
+                          selectedOption = value!;
                         });
                       },
                     ),
@@ -251,7 +250,7 @@ var x;
                           groupValue: selectedOption,
                           onChanged: (value) {
                             setState(() {
-                              selectedOption = value.toString();
+                              selectedOption = value!;
                             });
                           },
                         ),
@@ -269,9 +268,20 @@ var x;
         width: double.infinity,
         height: mheight*0.08,
         child: ElevatedButton(
-          onPressed: (){
-             payment();
-             Bstatus();
+          onPressed: () {
+            if (selectedOption != null) {
+              payment();
+              Bstatus();
+            }
+            else
+              {
+                Fluttertoast.showToast(
+                  msg: "Please select a payment method.",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 2
+                );
+              }
           },
           child: Text("Confirm Payment",style: TextStyle(fontSize: 15),),
         ),

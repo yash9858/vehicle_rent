@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/Material.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types
 class Admin_UserPage extends StatefulWidget {
@@ -19,17 +17,14 @@ class _Admin_UserPageState extends State<Admin_UserPage> {
   String? data2;
   var getUser;
   var getUser2;
-  bool isLoading=false;
+  bool isLoading=true;
 
   void initState(){
     super.initState();
     getdata();
   }
   Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/User_Details_Admin.php"));
+    http.Response response= await http.post(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/User_Details_Admin.php"));
     if(response.statusCode==200){
       data=response.body;
       setState(() {

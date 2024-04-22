@@ -130,8 +130,7 @@ class _update_VehicleState extends State<update_Vehicle> {
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
-    return isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
-    :Scaffold(
+    return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
           color: Colors.white,
@@ -144,7 +143,8 @@ class _update_VehicleState extends State<update_Vehicle> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),)
+      :SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(mdheight * 0.02),
           child: Column(

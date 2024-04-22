@@ -18,12 +18,8 @@ class _Wait_PayState extends State<Wait_Pay> {
     super.initState();
     Timer(
       Duration (seconds: 3), () {
-        success();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Pay()));
     });
-  }
-  Future success() async
-  {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Pay()));
   }
   @override
   Widget build(BuildContext context) {
