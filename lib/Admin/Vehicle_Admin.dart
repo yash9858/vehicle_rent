@@ -107,7 +107,7 @@ class _Admin_VehiclePageState extends State<Admin_VehiclePage> {
                                     SizedBox(height: mdheight * 0.01),
                                     Text('Rent Price: '+getUser[index]["Rent_Price"]+'/day'),
                                     SizedBox(height: mdheight * 0.01),
-                                    Text('Vehicle Description : '+ getUser[index]["Vehicle_Description"],maxLines: 2,),
+                                    Text('Vehicle Description : '+ getUser[index]["Vehicle_Description"],maxLines: 3,),
                                     SizedBox(height: mdheight * 0.01),
                                   ],
                                 )),

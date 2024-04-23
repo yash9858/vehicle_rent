@@ -1,10 +1,10 @@
 // ignore_for_file: camel_case_types
 
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/Material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class Admin_ComplainPage extends StatefulWidget {
   const Admin_ComplainPage({super.key});
@@ -34,11 +34,11 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
         getUser=jsonDecode(data!)["users"];
       });
     }
-  }
 
+  }
   String formatDate(String date) {
     DateTime dateTime = DateTime.parse(date);
-    return DateFormat('dd/MM/yyyy & HH:mm').format(dateTime);
+    return DateFormat('dd/MM/yyyy  HH:mm').format(dateTime);
   }
   @override
   Widget build(BuildContext context) {

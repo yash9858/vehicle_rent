@@ -20,6 +20,9 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
   var getUser;
   bool isLoading=false;
 
+
+
+
   void initState(){
     super.initState();
     getdata();
@@ -40,7 +43,7 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
 
   String formatDate(String date) {
     DateTime dateTime = DateTime.parse(date);
-    return DateFormat('dd/MM/yyyy & HH:mm').format(dateTime);
+    return DateFormat('dd/MM/yyyy  HH:mm').format(dateTime);
   }
   @override
   Widget build(BuildContext context) {
