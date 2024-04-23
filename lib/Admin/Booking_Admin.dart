@@ -45,6 +45,11 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
     return '$hour:$minute';
   }
 
+  String formatDateTime(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -82,7 +87,7 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                           children: [
                             Text("User Name: "+getUser[index]["Name"]),
 
-                            Text(getUser[index]["Booking_Timestamp"]),
+                            Text(formatDateTime(getUser[index]["Booking_Timestamp"])),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.015),

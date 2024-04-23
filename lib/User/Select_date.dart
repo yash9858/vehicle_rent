@@ -205,9 +205,9 @@ class _Select_dateState extends State<Select_date> {
 
   }
   DateTime _PickupDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
-  TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour+1,minute: 00);
+  TimeOfDay _PickupTime = TimeOfDay(hour: DateTime.now().hour+2,minute: 00);
   DateTime _ReturnDate=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
-  TimeOfDay _ReturnTime = TimeOfDay(hour: DateTime.now().hour+2,minute: 00);
+  TimeOfDay _ReturnTime = TimeOfDay(hour: DateTime.now().hour+3,minute: 00);
 
   void Pickupdate(){
     showDatePicker(
@@ -230,7 +230,7 @@ class _Select_dateState extends State<Select_date> {
   }
   void PickupTime(){
     showTimePicker(// This allows only hours to be selected
-      context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour+1),
+      context: context, initialTime: TimeOfDay.now().replacing(hour: DateTime.now().hour+2 , minute: 00),
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
@@ -238,7 +238,7 @@ class _Select_dateState extends State<Select_date> {
         );
       },).then((value){
       setState(() {
-        if(DateTime.now().hour + 1 > value!.hour){
+        if(DateTime.now().hour + 2 > value!.hour){
           Fluttertoast.showToast(
             msg: "Please select correct Time",
             toastLength: Toast.LENGTH_LONG,
@@ -251,7 +251,6 @@ class _Select_dateState extends State<Select_date> {
           _ReturnTime = TimeOfDay.now().replacing(hour: _PickupTime.hour+1, minute: 00,
           );
         }
-
       });
     });
   }
