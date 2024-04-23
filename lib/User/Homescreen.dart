@@ -193,6 +193,7 @@ class _HomescreenState extends State<Homescreen> {
             //  color: Colors.deepPurple,
               child: GridView.builder(
                   scrollDirection: Axis.horizontal,
+
                  physics: const BouncingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
