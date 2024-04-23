@@ -65,13 +65,19 @@ class _Cancel_bookingState extends State<Cancel_booking_user> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: mheight * 0.01,),
+              Padding(
+                padding: const EdgeInsets.only(left: 19),
+                child: Text("Note : If You Are Cancel Ride Than 10% Deduct In Your Refund Amount",
+                  style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),),
+              ),
+              SizedBox(height: mheight * 0.04,),
               Padding(
                 padding: const EdgeInsets.only(left: 19),
                 child: Text("Please Select the reason for cancellation:",
                   style: TextStyle(color: Colors.grey, fontSize: 15),),
               ),
               SizedBox(height: mheight * 0.02,),
-
               for (String option in Reason)
                 RadioListTile(
                   title: Text(option, style: TextStyle(fontSize: 18),),

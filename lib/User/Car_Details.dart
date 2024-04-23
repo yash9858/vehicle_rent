@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:rentify/User/Feedback_User.dart';
+import 'package:rentify/User/Show_Feedback.dart';
+import 'package:rentify/User/Write_Feedback.dart';
 import 'package:rentify/User/Homescreen.dart';
 import 'package:rentify/User/Select_date.dart';
 import 'package:rating_summary/rating_summary.dart';
@@ -161,7 +162,7 @@ class _car_detailState extends State<car_detail> {
                                                 BorderRadius.circular(mdheight * 0.02),
                                               )),
                                           onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val, v_id :widget.carid,v_type: widget.type)));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> Show_Feedback(num : widget.val, v_id :widget.carid,v_type: widget.type)));
                                           }, child: const Text('View All Review', style: TextStyle(color: Colors.black),),),
                                       ],
                                     ),

@@ -90,7 +90,7 @@ class PrivacyPolicyPage extends StatelessWidget {
           //  SectionTitle('Children\'s Privacy'),
             PolicyItem(
               'Children\'s Privacy',
-              'The App is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13 years of age. If you believe we have inadvertently collected information from a child under 13, please contact us to request deletion.',
+              'The App is not intended for children under the age of 16. We do not knowingly collect personal information from children under 16 years of age. If you believe we have inadvertently collected information from a child under 16, please contact us to request deletion.',
             ),
 
             // Add more sections as needed...

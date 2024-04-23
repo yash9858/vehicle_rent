@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:open_file/open_file.dart';
@@ -44,6 +45,11 @@ class _Report_AdminState extends State<Report_Admin> {
     await file.writeAsBytes(await pdf.save());
 
     await OpenFile.open(file.path);
+  }
+
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy & HH:mm').format(dateTime);
   }
 
   bool isLoading = false;
@@ -121,7 +127,7 @@ class _Report_AdminState extends State<Report_Admin> {
           color: Colors.white,
           fontSize: mdheight * 0.025,
         ),
-        title: const Text('Genrate Report'),
+        title: const Text('Generate Report'),
         backgroundColor: Colors.deepPurple.shade800,
         iconTheme: const IconThemeData(
           color: Colors.white,
@@ -129,7 +135,7 @@ class _Report_AdminState extends State<Report_Admin> {
         centerTitle: true,
       ),
       body: isLoading ? Center(
-          child: CircularProgressIndicator(color: Colors.white))
+          child: CircularProgressIndicator(color: Colors.deepPurple))
           : Padding(
         padding: EdgeInsets.all(20),
         child: ListView(
@@ -185,7 +191,7 @@ class _Report_AdminState extends State<Report_Admin> {
                       (index) {
                     return DataRow(cells: [
                       DataCell(Text(ne[index]["Booking_Id"])),
-                      DataCell(Text(ne[index]["Booking_Timestamp"])),
+                      DataCell(Text(formatDate(ne[index]["Booking_Timestamp"]))),
                       DataCell(Text(ne[index]["Name"])),
                     ]);
                   },
@@ -203,7 +209,7 @@ class _Report_AdminState extends State<Report_Admin> {
                       (index) {
                     return DataRow(cells: [
                       DataCell(Text(ne1[index]["Booking_Id"])),
-                      DataCell(Text(ne1[index]["Booking_Timestamp"])),
+                      DataCell(Text(formatDate(ne1[index]["Booking_Timestamp"]))),
                       DataCell(Text(ne1[index]["Name"])),
                     ]);
                   },
@@ -221,7 +227,7 @@ class _Report_AdminState extends State<Report_Admin> {
                       (index) {
                     return DataRow(cells: [
                       DataCell(Text(ne2[index]["Booking_Id"])),
-                      DataCell(Text(ne2[index]["Booking_Timestamp"])),
+                      DataCell(Text(formatDate(ne2[index]["Booking_Timestamp"]))),
                       DataCell(Text(ne2[index]["Name"])),
                     ]);
                   },

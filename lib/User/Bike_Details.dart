@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rating_summary/rating_summary.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
-import 'Feedback_User.dart';
+import 'package:rentify/User/Show_Feedback.dart';
+import 'Write_Feedback.dart';
 import 'Select_date.dart';
 
 class bike_detail extends StatefulWidget {
@@ -165,7 +166,7 @@ class _bike_detailState extends State<bike_detail> {
                                                   BorderRadius.circular(mheight * 0.02),
                                                 )),
                                             onPressed: (){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val1, v_id: widget.bikeid,v_type: widget.type)));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Show_Feedback(num : widget.val1, v_id: widget.bikeid,v_type: widget.type)));
                                             }, child: Text('View All Review', style: TextStyle(color: Colors.black),),),
                                         ],
                                       ),

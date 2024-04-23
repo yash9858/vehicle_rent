@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:rentify/Admin/CancelBooking_Admin.dart';
 import 'package:rentify/User/Cancel_booking.dart';
 import 'package:rentify/User/Complain.dart';
+import 'package:rentify/User/Write_Feedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -57,7 +58,6 @@ class _Book_summaryState extends State<Book_summary> {
         rpay = double.parse(jsonDecode(rpay2!)["users"][0]["Total_Price"])- deduct;
         ratings();
       });
-
     }
   }
 
@@ -94,27 +94,17 @@ class _Book_summaryState extends State<Book_summary> {
     return sum /list.length;
   }
 
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy ').format(dateTime);
+  }
 
-DateTime _dateTime=DateTime(12,1,2023);
-TimeOfDay _timeOfDay = TimeOfDay(hour: 8,minute: 10);
-void _showdatepicker(){
-  showDatePicker(
-      context: context,
-      firstDate: DateTime(2020), lastDate: DateTime(2025), initialDate: _dateTime,).then((value){
-        setState(() {
-          _dateTime=value!;
-        });
-  });
-  
-}
-
-void _showtimepicker(){
-  showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value){
-    setState(() {
-      _timeOfDay=value!;
-    });
-  });
-}
+  String formatTime(String time) {
+    DateTime dateTime = DateFormat.Hms().parse(time);
+    String hour = dateTime.hour.toString().padLeft(2, '0');
+    String minute = dateTime.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -212,8 +202,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      children: [
                        Text("Pick-Up Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                       Text(getUser2[0]["Start_Time"],style: TextStyle(fontSize: 16,)),
-
+                       Text(formatTime(getUser2[0]["Start_Time"]),style: TextStyle(fontSize: 16,)),
                      ],
                     ),
 
@@ -223,7 +212,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Pick-Up Date",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(getUser2[0]["Start_Date"],style: TextStyle(fontSize: 16,)),
+                        Text(formatDate(getUser2[0]["Start_Date"]),style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
@@ -234,7 +223,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Return  Time",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(getUser2[0]["Return_Time"],style: TextStyle(fontSize: 16,)),
+                        Text(formatTime(getUser2[0]["Return_Time"]),style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
@@ -245,7 +234,7 @@ void _showtimepicker(){
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Return Date",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(getUser2[0]["Return_Date"],style: TextStyle(fontSize: 16,)),
+                        Text(formatDate(getUser2[0]["Return_Date"]),style: TextStyle(fontSize: 16,)),
 
                       ],
                     ),
@@ -286,7 +275,7 @@ void _showtimepicker(){
                         Text("Total",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
                         Text("₹"+getUser2[0]["Total_Price"]),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -315,8 +304,7 @@ void _showtimepicker(){
                  onPressed: () {
                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Cancel_booking_user(p_id:getUser2[0]["Payment_Id"],b_id:getUser2[0]["Booking_Id"],amount:rpay.toString())));
                  },
-                 child: Text(
-                     "Cancel"),)),
+                 child: Text("Cancel"),)),
          ),
          SizedBox(width: 16,),
        ],
@@ -331,10 +319,24 @@ void _showtimepicker(){
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>Complain(v_id:getUser2[0]["Vehicle_Id"])));
                       },
-                      child: Text(
-                        "Complain",
-                      ))),
+                      child: Text("Complain"))),
             ),
+            SizedBox(width: 16,),
+            if(getUser2[0]["Booking_Status"] == "0") ...[
+              Expanded(
+                child: Container(
+                    height: mheight*0.065,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+
+                        backgroundColor: Colors.deepPurple.shade800,),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num: widget.val3, v_id: getUser2[0]["Vehicle_Id"], v_type: getUser2[0]["Vehicle_Type"])));
+                      },
+                      child: Text("Feedback"),)),
+              ),
+            ],
+
           ],
         ),
 
