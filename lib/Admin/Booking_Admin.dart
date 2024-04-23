@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/Material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 // ignore: camel_case_types
 class Admin_BookingPage extends StatefulWidget {
@@ -31,6 +32,19 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
       getUser=jsonDecode(data!)["users"];
     });
   }
+
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy ').format(dateTime);
+  }
+
+  String formatTime(String time) {
+    DateTime dateTime = DateFormat.Hms().parse(time);
+    String hour = dateTime.hour.toString().padLeft(2, '0');
+    String minute = dateTime.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -82,16 +96,16 @@ class _Admin_BookingPageState extends State<Admin_BookingPage> {
                          Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Start Date : '+getUser[index]["Start_Date"]),
-                            Text('Start Time : '+getUser[index]["Start_Time"]),
+                            Text('Start Date : '+formatDate(getUser[index]["Start_Date"])),
+                            Text('Start Time : '+formatTime(getUser[index]["Start_Time"])),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.015,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Return Date : '+getUser[index]["Return_Date"]),
-                            Text('Return Time : '+getUser[index]["Return_Time"]),
+                            Text('Return Date : '+formatDate(getUser[index]["Return_Date"])),
+                            Text('Return Time : '+formatTime(getUser[index]["Return_Time"])),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.015,),

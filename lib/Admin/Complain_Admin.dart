@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/Material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Admin_ComplainPage extends StatefulWidget {
   const Admin_ComplainPage({super.key});
@@ -33,7 +34,11 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
         getUser=jsonDecode(data!)["users"];
       });
     }
+  }
 
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy & HH:mm').format(dateTime);
   }
   @override
   Widget build(BuildContext context) {
@@ -73,7 +78,7 @@ class _Admin_ComplainPageState extends State<Admin_ComplainPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('User Name: '+getUser[index]["Name"]),
-                        Text(getUser[index]["Complain_Timestamp"]),
+                        Text(formatDate(getUser[index]["Complain_Timestamp"])),
                       ],
                     ),
                     SizedBox(height: mdheight * 0.01,),

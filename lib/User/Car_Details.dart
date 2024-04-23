@@ -42,7 +42,6 @@ class _car_detailState extends State<car_detail> {
 
   void initState(){
     super.initState();
-    // cardet();
     getdata3();
 
   }
@@ -162,7 +161,7 @@ class _car_detailState extends State<car_detail> {
                                                 BorderRadius.circular(mdheight * 0.02),
                                               )),
                                           onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val, v_id :widget.carid,v_type: "car")));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=> FeedBack_User(num : widget.val, v_id :widget.carid,v_type: widget.type)));
                                           }, child: const Text('View All Review', style: TextStyle(color: Colors.black),),),
                                       ],
                                     ),

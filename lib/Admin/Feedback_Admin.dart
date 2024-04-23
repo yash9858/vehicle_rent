@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/Material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,7 +36,11 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
         getUser=jsonDecode(data!)["users"];
       });
     }
+  }
 
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy & HH:mm').format(dateTime);
   }
   @override
   Widget build(BuildContext context) {
@@ -75,7 +80,7 @@ class _Admin_FeedbackPageState extends State<Admin_FeedbackPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('User Name: '+getUser[index]["Name"]),
-                          Text(getUser[index]["Feedback_Time"]),
+                          Text(formatDate(getUser[index]["Feedback_Time"])),
                         ],
                       ),
                       SizedBox(height: mdheight * 0.01,),

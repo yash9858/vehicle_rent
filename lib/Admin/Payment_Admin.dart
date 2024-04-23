@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 // ignore: camel_case_types
 class Admin_PaymentPage extends StatefulWidget {
@@ -34,8 +35,14 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
         getUser=jsonDecode(data!)["users"];
       });
     }
-
   }
+
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -77,7 +84,7 @@ class _Admin_PaymentPageState extends State<Admin_PaymentPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('Payment Mode : '+getUser[index]["Payment_Mode"]),
-                            Text(getUser[index]['Payment_Timestamp']),
+                            Text(formatDate(getUser[index]['Payment_Timestamp'])),
                           ],
                         ),
                         SizedBox(height: mdheight * 0.01,),

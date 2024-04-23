@@ -38,7 +38,6 @@ class _FeedBack_UserState extends State<FeedBack_User> {
 
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         allrat=jsonDecode(data!)["users"];
@@ -133,26 +132,9 @@ class _FeedBack_UserState extends State<FeedBack_User> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-
                             review(v_id: widget.v_id, v_type: widget.v_type,v_num: widget.num,)
                           ],
                         ),
-                        // actionsAlignment: MainAxisAlignment.spaceBetween,
-                        // actions: [
-                        //   OutlinedButton(onPressed: (){
-                        //     Navigator.pop(context);
-                        //   }, child:const Text("Cancel") ),
-                        //   ElevatedButton(
-                        //       style: ElevatedButton.styleFrom(
-                        //           shape: RoundedRectangleBorder(
-                        //             borderRadius: BorderRadius.circular(mdheight * 0.02),
-                        //           )),
-                        //       onPressed: (){
-                        //         // Navigator.pop(context);
-                        //
-                        //       },
-                        //       child:const Text("Submit")),
-                        // ],
                       );
                     });
                   }, child: const Text("Write Review", style: TextStyle(fontSize: 17),)),
@@ -178,48 +160,57 @@ class _reviewState extends State<review> {
   Future<void> _submit() async {
     final form = _formKey.currentState;
     if (form!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
-      SharedPreferences s = await SharedPreferences.getInstance();
-      final login_url = Uri.parse(
-          "https://road-runner24.000webhostapp.com/API/Insert_API/Feedback_Insert.php");
-      final response = await http
-          .post(login_url, body: {
-
-        "Login_Id": s.getString('id'),
-        "Vehicle_Id":widget.v_id,
-        "Ratings":rating.toString(),
-        "Comment":comment.text,
-
-      });
-      if (response.statusCode == 200) {
-        logindata = jsonDecode(response.body);
-        data =
-        jsonDecode(response.body)['user'];
-        print(logindata);
+      if (comment.text.trim().isNotEmpty) {
         setState(() {
-          isLoading = false;
+          isLoading = true;
+        });
+        SharedPreferences s = await SharedPreferences.getInstance();
+        final login_url = Uri.parse(
+            "https://road-runner24.000webhostapp.com/API/Insert_API/Feedback_Insert.php");
+        final response = await http
+            .post(login_url, body: {
+
+          "Login_Id": s.getString('id'),
+          "Vehicle_Id":widget.v_id,
+          "Ratings":rating.toString(),
+          "Comment":comment.text,
 
         });
-        if (logindata['error'] == false) {
-          Fluttertoast.showToast(
-              msg: logindata['message'].toString(),
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2
-          );
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(builder: (context) => ()),
-          //         (route) => false);
-        } else {
-          Fluttertoast.showToast(
-              msg: logindata['message'].toString(),
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2
-          );
+        if (response.statusCode == 200) {
+          logindata = jsonDecode(response.body);
+          data =
+          jsonDecode(response.body)['user'];
+          print(logindata);
+          setState(() {
+            isLoading = false;
+
+          });
+          if (logindata['error'] == false) {
+            Fluttertoast.showToast(
+                msg: logindata['message'].toString(),
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 2
+            );
+            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FeedBack_User(num: widget.v_num, v_id: widget.v_id, v_type: widget.v_type)));
+          } else {
+            Fluttertoast.showToast(
+                msg: logindata['message'].toString(),
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 2
+            );
+          }
         }
+      }
+      else {
+        Fluttertoast.showToast(
+            msg: "Comment cannot be empty",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2
+        );
       }
     }
   }
@@ -285,7 +276,6 @@ class _reviewState extends State<review> {
               ),
             ),
           ),
-          //  actionsAlignment: MainAxisAlignment.spaceBetween,
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -300,8 +290,7 @@ class _reviewState extends State<review> {
                         borderRadius: BorderRadius.circular(8),
                       )),
                   onPressed: (){
-                    _submit().whenComplete(() =>  Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) =>  FeedBack_User(num: widget.v_num, v_id: widget.v_id, v_type: widget.v_type))));
+                    _submit();
                   },
                   child:const Text("Submit")),
             ],

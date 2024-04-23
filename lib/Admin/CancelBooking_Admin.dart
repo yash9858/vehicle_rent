@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 
 class Cancel_Bookings extends StatefulWidget {
@@ -58,7 +59,10 @@ var logindata;
 
   }
 
-
+String formatDate(String date) {
+  DateTime dateTime = DateTime.parse(date);
+  return DateFormat('dd/MM/yyyy & HH:mm').format(dateTime);
+}
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -126,7 +130,7 @@ var logindata;
                             Row(
                             children: [
                             Text("Cancelation Date & Time : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                            Text(getUser[index]["Cancelation_Time"]),
+                            Text(formatDate(getUser[index]["Cancelation_Time"])),
                             ]),
                             //Text("Booking Date & Time 17-11-2023,11:45 AM"),
                             SizedBox(height: 16),
@@ -180,7 +184,7 @@ var logindata;
                             Row(
                                 children: [
                                   Text("Cancelation Date & Time : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  Text(getUser2[index]["Cancelation_Time"]),
+                                  Text(formatDate(getUser2[index]["Cancelation_Time"])),
                                 ]),
                             //Text("Booking Date & Time 17-11-2023,11:45 AM"),
                             SizedBox(height: 16),
@@ -216,7 +220,9 @@ var logindata;
                                                   ),
                                                 ),
                                                 MaterialButton(onPressed: (){
-                                                 _submit2().whenComplete(() => Navigator.pop(context));
+                                                 _submit2(index).whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Cancel_Bookings())));
+                                                 _submit2(index).whenComplete(() => Navigator.pop(context));
+
                                                 },
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.02)),
@@ -255,7 +261,7 @@ var logindata;
     );
   }
 
-Future<void> _submit2() async {
+Future<void> _submit2(int index) async {
   // final form = formKey.currentState;
   // if (form!.validate()) {
   //   setState(() {
@@ -265,7 +271,7 @@ Future<void> _submit2() async {
       "https://road-runner24.000webhostapp.com/API/Update_API/Refund_Status_update.php");
   final response = await http
       .post(login_url, body: {
-    "Cancle_Id": getUser2[0]["Cancle_Id"],
+    "Cancle_Id": getUser2[index]["Cancle_Id"],
 
   });
   if (response.statusCode == 200) {
@@ -278,8 +284,6 @@ Future<void> _submit2() async {
       isLoading = false;
     });
     if (logindata['error'] == false) {
-
-
       Navigator.of(context).pop();
     }else{
       Fluttertoast.showToast(
