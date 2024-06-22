@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:rentify/Admin/Vehicle_Add_Admin.dart';
+import 'package:get/get.dart';
+import 'package:rentify/Admin/vehicle_add_admin.dart';
 import 'package:http/http.dart' as http;
 
 class Category extends StatefulWidget {
@@ -13,13 +13,15 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   String? data;
-  var getUser;
+  dynamic getUser;
   bool isLoading=false;
 
+  @override
   void initState(){
     super.initState();
     getdata();
   }
+
   Future getdata() async{
     setState(() {
       isLoading = true;
@@ -27,13 +29,11 @@ class _CategoryState extends State<Category> {
     http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Category_Admin.php"));
     if(response.statusCode==200) {
       data = response.body;
-
       setState(() {
         isLoading=false;
         getUser=jsonDecode(data!)["users"];
       });
     }
-
   }
   @override
 
@@ -46,13 +46,12 @@ class _CategoryState extends State<Category> {
         backgroundColor: Colors.deepPurple.shade800,
         title: Text(" Select Category",style: TextStyle(color: Colors.white,
           fontSize: mheight * 0.025,),),
-        //    iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
 
       ),
-      body: isLoading ?  Center(child: CircularProgressIndicator(color: Colors.deepPurple),) :  Container(
-        padding: EdgeInsets.only(top: 20,),
-        child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      body: isLoading ?  const Center(child: CircularProgressIndicator(color: Colors.deepPurple),) :  Container(
+        padding: const EdgeInsets.only(top: 20,),
+        child: GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             mainAxisSpacing: 5,
             crossAxisCount: 3,
             crossAxisSpacing: 5
@@ -61,13 +60,12 @@ class _CategoryState extends State<Category> {
             itemBuilder: (BuildContext context,int index){
               return GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Admin_Add_Vehicle(id:getUser[index]["Category_Id"],name:getUser[index]["Category_Name"])));
+                  Get.to(()=>AdminAddVehicle(id:getUser[index]["Category_Id"],name:getUser[index]["Category_Name"]));
                 },
                 child:  Column(
                   children: [
                     Card(
                       elevation: 5,
-
                       child: ClipRRect(
                         borderRadius:
                         BorderRadius.circular(10),
@@ -80,7 +78,7 @@ class _CategoryState extends State<Category> {
                     ),
                     Text(
                       getUser[index]["Category_Name"],
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     )
                   ],
                 ),

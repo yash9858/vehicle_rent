@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Splash_Screen.dart';
+import 'package:get/get.dart';
+import 'splash_screen.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       primarySwatch: Colors.deepPurple,
