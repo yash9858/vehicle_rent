@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onboarding_intro_screen/onboarding_screen.dart';
-import 'package:rentify/login_screen.dart';
+import 'package:rentify/AuthPages/login_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -16,7 +16,7 @@ class _IntroScreenState extends State<IntroScreen> {
     return Scaffold(
       body: OnBoardingScreen(
         onSkip: () {
-          Get.offAll(()=> const LoginPage());
+          Get.offAll(()=> LoginPage());
         },
         showPrevNextButton: true,
         showIndicator: true,

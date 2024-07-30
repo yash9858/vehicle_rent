@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rentify/Admin/admin_dashboard.dart';
-import 'package:rentify/login_screen.dart';
+import 'package:rentify/AuthPages/login_screen.dart';
 import 'package:rentify/User/user_dash_board.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Intro_screen.dart';
+import 'intro_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
       else
       {
-        Get.offAll(() => const LoginPage());
+        Get.offAll(() => LoginPage());
       }
     }
     else

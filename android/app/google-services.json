@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "858678269731",
+    "project_id": "rentify-yash",
+    "storage_bucket": "rentify-yash.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858678269731:android:ad88b67f22889ebc911e96",
+        "android_client_info": {
+          "package_name": "com.example.rentify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiWclkhwLUkRmWplz6ZOwUacgQ_s2aG1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

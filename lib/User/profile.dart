@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:rentify/login_screen.dart';
+import 'package:rentify/AuthPages/login_screen.dart';
 import 'package:rentify/User/about_us.dart';
 import 'package:rentify/User/edit_profile.dart';
 import 'package:http/http.dart' as http;
@@ -177,7 +177,7 @@ class _ProfileState extends State<Profile> {
                     final pref = await SharedPreferences.getInstance();
                     await pref.clear();
                     await pref.setBool('seen', true);
-                    Get.offAll(()=> const LoginPage());
+                    Get.offAll(()=> LoginPage());
                   },
                 child: const ListTile(
                   leading: Icon(Icons.logout,color: Colors.deepPurple,),

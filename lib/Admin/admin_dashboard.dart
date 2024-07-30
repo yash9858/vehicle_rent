@@ -13,7 +13,7 @@ import 'package:rentify/Admin/report_generate.dart';
 import 'package:rentify/Admin/user_list_admin.dart';
 import 'package:rentify/Admin/vehicle_admin.dart';
 import 'package:rentify/Admin/vehicle_category_admin.dart';
-import 'package:rentify/login_screen.dart';
+import 'package:rentify/AuthPages/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerNavigationItem extends StatelessWidget {
@@ -251,7 +251,7 @@ class _AdminDashBoardState extends State<AdminDashBoard> {
                     await pref.clear();
                     await pref.setBool('seen', true);
 
-                    Get.offAll(()=> const LoginPage());
+                    Get.offAll(()=> LoginPage());
                     _currentIndex = 0;
                   },
                 ),
