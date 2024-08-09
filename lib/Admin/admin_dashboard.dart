@@ -121,7 +121,7 @@ class _AdminDashBoardState extends State<AdminDashBoard> {
 
     var pageName = ['Total Users', 'Total Categories' ,'Total Vehicles','Success Bookings', 'Total Payments', 'Total Complains', 'Total Feedbacks'];
     var total = [det.toString(), cat.toString(), vehicle.toString(), book.toString(), pay.toString(), com.toString(), feed.toString()];
-    var page =  [const AdminUserPage(), const AdminCategoryPage(), const AdminVehiclePage(), const AdminBookingPage(), const AdminPaymentPage(), const AdminComplainPage(), const AdminFeedbackPage()];
+    var page =  [const AdminUserPage(), AdminCategoryPage(), AdminVehiclePage(), const AdminBookingPage(), const AdminPaymentPage(), const AdminComplainPage(), const AdminFeedbackPage()];
     var image = ['assets/img/user.json','assets/img/category.json','assets/img/vehicle.json','assets/img/bookings.json','assets/img/payments.json','assets/img/complain.json','assets/img/feedback.json'];
 
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -167,7 +167,7 @@ class _AdminDashBoardState extends State<AdminDashBoard> {
                   selected: _currentIndex == 2,
                   onTap: () =>
                   {
-                    Get.to(()=> const AdminCategoryPage()),
+                    Get.to(()=> AdminCategoryPage()),
                     _currentIndex = 0
                   },
                 ),
@@ -177,7 +177,7 @@ class _AdminDashBoardState extends State<AdminDashBoard> {
                   selected: _currentIndex == 3,
                   onTap: () =>
                   {
-                    Get.to(()=> const AdminVehiclePage()),
+                    Get.to(()=> AdminVehiclePage()),
                     _currentIndex = 0
                   },
                 ),

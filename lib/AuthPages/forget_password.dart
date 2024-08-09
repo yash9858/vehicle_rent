@@ -1,6 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rentify/AuthPages/StateManagement/StateManagement/forget_pass_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rentify/AuthPages/login_screen.dart';
+
+class ForgetPasswordController extends GetxController {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  final auth = FirebaseAuth.instance;
+
+  var isLoading = false.obs;
+  var visiblePass = true.obs;
+  var visibleConfirm = true.obs;
+
+  void togglePasswordVisibility() {
+    visiblePass.value = !visiblePass.value;
+  }
+
+  void toggleConfirmVisibility() {
+    visibleConfirm.value = !visibleConfirm.value;
+  }
+
+  Future<void> forgetPass() async {
+    final form = formKey.currentState;
+    if (form!.validate()) {
+      isLoading.value = true;
+
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
+        isLoading.value = false;
+        Fluttertoast.showToast(
+            msg: "Password reset email sent",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2
+        );
+        Get.offAll(() => LoginPage());
+      }
+      catch (e) {
+        isLoading.value = false;
+        Fluttertoast.showToast(
+            msg: e.toString(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2);
+      }
+    }
+  }
+}
 
 class ForgetPassword extends StatelessWidget {
   ForgetPassword({super.key});
@@ -12,15 +61,24 @@ class ForgetPassword extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Forget Password",
-            style: TextStyle(color: Colors.black, fontSize: 20)),
+        title: const Text(
+            "Forget Password",
+            style: TextStyle(
+                color: Colors.black, fontSize: 20
+            )
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(
+            color: Colors.black
+        ),
       ),
       body: Obx(() => controller.isLoading.value
           ? const Center(
-          child: CircularProgressIndicator(color: Colors.deepPurple))
+          child: CircularProgressIndicator(
+              color: Colors.deepPurple
+          )
+      )
           : Form(
         key: controller.formKey,
         child: SingleChildScrollView(
@@ -34,21 +92,25 @@ class ForgetPassword extends StatelessWidget {
                     if (val!.isEmpty) {
                       return "Email must not be empty";
                     } else {
-                      if (RegExp(
-                          r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}")
-                          .hasMatch(val)) {
+                      if (
+                      RegExp(r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}").hasMatch(val)) {
                         return null;
-                      } else {
+                      }
+                      else {
                         return "Enter a valid Email";
                       }
                     }
                   },
                   decoration: InputDecoration(
                     contentPadding:
-                    EdgeInsets.symmetric(vertical: Get.size.height * 0.025 ),
+                    EdgeInsets.symmetric(
+                        vertical: Get.size.height * 0.025
+                    ),
                     filled: true,
                     hintText: "Enter Your Email ",
-                    prefixIcon: const Icon(Icons.email_outlined),
+                    prefixIcon: const Icon(
+                        Icons.email_outlined
+                    ),
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
@@ -57,7 +119,9 @@ class ForgetPassword extends StatelessWidget {
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: Get.size.height * 0.04),
+                SizedBox(
+                    height: Get.size.height * 0.04
+                ),
                 TextFormField(
                   obscureText: controller.visiblePass.value,
                   controller: controller.passwordController,
@@ -69,14 +133,19 @@ class ForgetPassword extends StatelessWidget {
                   },
                   decoration: InputDecoration(
                     contentPadding:
-                    EdgeInsets.symmetric(vertical: Get.size.height * 0.025),
+                    EdgeInsets.symmetric(
+                        vertical: Get.size.height * 0.025
+                    ),
                     filled: true,
                     hintText: "New Password ",
-                    prefixIcon: const Icon(Icons.key),
+                    prefixIcon: const Icon(
+                        Icons.key
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(controller.visiblePass.value
                           ? Icons.visibility
-                          : Icons.visibility_off),
+                          : Icons.visibility_off
+                      ),
                       onPressed: controller.togglePasswordVisibility,
                     ),
                     fillColor: Colors.white,
@@ -87,7 +156,9 @@ class ForgetPassword extends StatelessWidget {
                   ),
                   keyboardType: TextInputType.text,
                 ),
-                SizedBox(height: Get.size.height * 0.04),
+                SizedBox(
+                    height: Get.size.height * 0.04
+                ),
                 TextFormField(
                   validator: (val) {
                     if (val!.isEmpty) {
@@ -100,7 +171,9 @@ class ForgetPassword extends StatelessWidget {
                   obscureText: controller.visibleConfirm.value,
                   decoration: InputDecoration(
                     contentPadding:
-                    EdgeInsets.symmetric(vertical: Get.size.height * 0.025),
+                    EdgeInsets.symmetric(
+                        vertical: Get.size.height * 0.025
+                    ),
                     filled: true,
                     hintText: "Confirm Password ",
                     prefixIcon: const Icon(Icons.key),
@@ -120,7 +193,7 @@ class ForgetPassword extends StatelessWidget {
                 ),
                 SizedBox(height: Get.size.height * 0.04),
                 ElevatedButton(
-                  onPressed: controller.submit,
+                  onPressed: controller.forgetPass,
                   child: const Text('Reset Password'),
                 ),
               ],

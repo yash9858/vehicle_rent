@@ -1,8 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rentify/AuthPages/StateManagement/StateManagement/register_state.dart';
 import 'package:rentify/AuthPages/login_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+class RegisterController extends GetxController {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance.collection("Users");
+
+  var isLoading = false.obs;
+  var visiblePass = true.obs;
+  var visibleConfirm = true.obs;
+
+  void togglePasswordVisibility() {
+    visiblePass.value = !visiblePass.value;
+  }
+
+  void toggleConfirmVisibility() {
+    visibleConfirm.value = !visibleConfirm.value;
+  }
+
+  Future<void> signUp() async {
+    final form = formKey.currentState;
+
+    if (form!.validate()) {
+      isLoading.value = true;
+      try {
+        UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: emailController.text.toString(),
+          password: passwordController.text.toString(),
+        );
+
+        String name = nameController.text.toString();
+        String email = emailController.text.toString();
+        String role = "User";
+        String status = "0";
+        var id = userCredential.user!.email;
+
+        await firestore.doc(id).set({
+          'User_Name': name,
+          'Email': email,
+          'Role': role,
+          'Status': status,
+        });
+
+        Fluttertoast.showToast(
+          msg: "Successful User Registration",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+        );
+        Get.offAll(() => LoginPage());
+        isLoading.value = false;
+      } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(
+          msg: e.message ?? "Error occurred",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+        );
+        isLoading.value = false;
+      }
+    }
+  }
+}
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -188,7 +256,7 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(height: Get.size.height * 0.025),
                   MaterialButton(
                     padding: EdgeInsets.zero,
-                    onPressed: controller.submit,
+                    onPressed: controller.signUp,
                     child: Container(
                       alignment: Alignment.center,
                       height: Get.size.height * 0.080,

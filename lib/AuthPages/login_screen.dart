@@ -1,12 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rentify/AuthPages/StateManagement/StateManagement/login_state.dart';
 import 'package:rentify/AuthPages/forget_password.dart';
 import 'package:rentify/AuthPages/register_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rentify/Admin/admin_dashboard.dart';
+import 'package:rentify/User/ProfilePages/complete_profile.dart';
+import 'package:rentify/User/HomePages/user_dash_board.dart';
+
+class LoginController extends GetxController {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
+
+  var isLoading = false.obs;
+  var isPasswordVisible = true.obs;
+
+  Future<void> login() async {
+    final form = formKey.currentState;
+    if (form!.validate()) {
+      isLoading.value = true;
+
+      try{
+        UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email:emailController.text.toString(),
+          password: passwordController.text.toString(),
+        );
+        DocumentSnapshot userDoc= await firestore.collection("Users").doc(userCredential.user!.email).get();
+
+        if (userDoc.exists){
+          Map<String ,dynamic> userData = userDoc.data() as Map < String , dynamic >;
+
+          if (userData["Role"] == "Admin"){
+            Get.offAll(() => const AdminDashBoard());
+          }
+          else{
+            if(userData["Status"] == "1"){
+              Get.offAll(() => const UserDashboard());
+            }
+            else{
+              Get.offAll(() => const CompleteProfile());
+            }
+          }
+        }
+        else{
+          Fluttertoast.showToast(
+              msg: "User Not Found",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 2
+          );
+          isLoading.value = false;
+        }
+      }
+      on FirebaseAuthException catch(e){
+        Fluttertoast.showToast(
+            msg: e.toString(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2
+        );
+        isLoading.value = false;
+      }
+    }
+  }
+
+  void togglePasswordVisibility() {
+    isPasswordVisible(!isPasswordVisible.value);
+  }
+}
 
 class LoginPage extends StatelessWidget {
-
 
   final LoginController loginController = Get.put(LoginController());
 
@@ -169,7 +238,8 @@ class LoginPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: Text("Don't Have An Account?",
+                            child: Text(
+                                "Don't Have An Account?",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
@@ -180,7 +250,8 @@ class LoginPage extends StatelessWidget {
                               onPressed: () {
                                 Get.to(() => RegisterPage());
                               },
-                              child: Text('Sign Up',
+                              child: Text(
+                                  'Sign Up',
                                   style: TextStyle(
                                     decoration: TextDecoration.underline,
                                     decorationColor: const Color.fromRGBO(225, 225, 225, 0.9),

@@ -2,25 +2,24 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rentify/User/successful_pay.dart';
+import 'package:rentify/User/PaymentPages/successful_pay.dart';
 
-class WaitPay extends StatefulWidget {
-  const WaitPay({super.key});
-
+class WaitPayController extends GetxController {
   @override
-  State<WaitPay> createState() => _WaitPayState();
+  void onInit() {
+    super.onInit();
+    Timer(
+      const Duration(seconds: 3),
+          () {
+        Get.off(() => Pay());
+      },
+    );
+  }
 }
 
-class _WaitPayState extends State<WaitPay> {
-
-  @override
-  void initState()
-  {
-    super.initState();
-    Timer(
-      const Duration (seconds: 3), () {
-        Get.off(()=> const Pay());
-    });
+class WaitPay extends StatelessWidget {
+  WaitPay({super.key}) {
+    Get.put(WaitPayController());
   }
 
   @override
@@ -33,12 +32,16 @@ class _WaitPayState extends State<WaitPay> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset("assets/img/load_pay.json", height: 250, width: 250),
-            const Text('Wait For Confirmation', style: TextStyle(
-              fontSize: 18,
-            ),)
+            const Text(
+              'Wait For Confirmation',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+

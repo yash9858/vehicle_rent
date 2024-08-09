@@ -1,280 +1,202 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:flutter/foundation.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:mime/mime.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rentify/Admin/category_add_admin.dart';
 import 'package:rentify/Admin/edit_category.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
-class AdminCategoryPage extends StatefulWidget {
-  const AdminCategoryPage({super.key});
+class AdminCategoryController extends GetxController {
+  var isLoading = false.obs;
+  var categories = <Category>[].obs;
 
-  @override
-  State<AdminCategoryPage> createState() => _AdminCategoryPageState();
-}
-
-class _AdminCategoryPageState extends State<AdminCategoryPage> {
-  String? data;
-  String? data2;
-  dynamic getUser;
-  dynamic getUser2;
-  bool isLoading = false;
-  TextEditingController nameController = TextEditingController();
+  final picker = ImagePicker();
+  File? selectedImage;
 
   @override
-  void initState() {
-    super.initState();
-    getdata();
+  void onInit() {
+    super.onInit();
+    fetchCategories();
   }
 
-  Future getdata() async {
-    setState(() {
-      isLoading = true;
-    });
-    http.Response response = await http.get(Uri.parse(
-        "https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Category_Admin.php"));
-    if (response.statusCode == 200) {
-      data = response.body;
-      setState(() {
-        isLoading = false;
-        getUser = jsonDecode(data!)["users"];
-      });
+  Future<void> fetchCategories() async {
+    try {
+      isLoading(true);
+      var snapshot = await FirebaseFirestore.instance.collection('Categories').get();
+      var categoryList = snapshot.docs.map((doc) => Category.fromDocument(doc)).toList();
+      categories.assignAll(categoryList);
+    }
+    catch (e) {
+      Get.snackbar("Error", "Failed to fetch categories: $e");
+    }
+    finally {
+      isLoading(false);
     }
   }
 
-  Future cat(String cid) async{
-    http.Response response= await http.post(Uri.parse(
-      "https://road-runner24.000webhostapp.com/API/Delete_API/Category_Vehicle.php",
-    ), body: {'Category_Id' : cid});
-    if(response.statusCode==200){
-      data2=response.body;
-      setState(() {
-        isLoading=false;
-        getUser2=jsonDecode(data2!)["users"];
-      });
-    }
-  }
-  final ImagePicker _picker = ImagePicker();
-  File? _image;
+  Future<void> deleteCategory(String categoryId, String imageUrl) async {
+    try {
+      final storageRef = FirebaseStorage.instance.refFromURL(imageUrl);
+      await storageRef.delete();
 
-  Future getImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(pickedFile!.path);
-    });
-    if (kDebugMode) {
-      print(_image);
+      await FirebaseFirestore.instance.collection('Categories').doc(categoryId).delete();
+      fetchCategories();
+    } catch (e) {
+      Get.snackbar("Error", "Failed to delete category: $e");
     }
   }
 
-  TextEditingController name1 = TextEditingController();
+  Future<void> selectImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedImage = File(pickedFile.path);
+    }
+  }
 
-  Future uploadImageMedia(File? fileImage) async {
-    final mimeTypeData = lookupMimeType(fileImage!.path, headerBytes: [0xFF, 0xD8])?.split('/');
-    final imageUploadRequest = http.MultipartRequest('POST',
-        Uri.parse("https://road-runner24.000webhostapp.com/API/Insert_API/Vehicle_Category_Insert.php"));
-    final file = await http.MultipartFile.fromPath(
-      'Category_Image',
-      fileImage.path,
-      contentType: MediaType(mimeTypeData![0], mimeTypeData[1]),
-    );
-
-    imageUploadRequest.fields['Category_Name'] = name1.text;
-    imageUploadRequest.files.add(file);
+  Future<void> uploadCategory(String categoryName) async {
+    if (selectedImage == null) return;
 
     try {
-      setState(() {
-        isLoading = true;
+      isLoading(true);
+      final storageRef = FirebaseStorage.instance.ref().child('Categories').child(categoryName);
+      await storageRef.putFile(selectedImage!);
+      final imageUrl = await storageRef.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('Categories').add({
+        'Cat_Name': categoryName,
+        'Cat_Image': imageUrl,
       });
 
-      final streamedResponse = await imageUploadRequest.send();
-      streamedResponse.stream.transform(utf8.decoder).listen((value) {
-        if (streamedResponse.statusCode == 200) {
-          setState(() {
-            isLoading = false;
-          });
-          if (kDebugMode) {
-            print(name1.text);
-          }
-          if (kDebugMode) {
-            print(_image);
-          }
-          dynamic logindata;
-          logindata = jsonDecode(value);
-          if (kDebugMode) {
-            print(logindata['message']);
-          }
-          Fluttertoast.showToast(
-            msg: logindata['message'].toString(),
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 2,
-          );
-          Get.back();
-          if (kDebugMode) {
-            print(streamedResponse.stream);
-          }
-          if (kDebugMode) {
-            print(value);
-          }
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          Fluttertoast.showToast(
-            msg: "Something went wrong",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 2,
-          );
-          if (kDebugMode) {
-            print(value);
-          }
-        }
-      });
+      fetchCategories();
+      Get.back();
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      Get.snackbar("Error", "Failed to upload category: $e");
+    } finally {
+      isLoading(false);
     }
   }
+}
+
+class AdminCategoryPage extends StatelessWidget {
+  final controller = Get.put(AdminCategoryController());
+
+  AdminCategoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var mdheight = MediaQuery.sizeOf(context).height;
-    var mdwidth = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: mdheight * 0.025,
-        ),
-        title: const Text('All Category'),
+        title: const Text('All Categories'),
         backgroundColor: Colors.deepPurple.shade800,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
         centerTitle: true,
       ),
-      body: isLoading ? const Center(
-        child: CircularProgressIndicator(color: Colors.deepPurple),) :
-      ListView.builder(
-          itemCount: getUser.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(padding: EdgeInsets.symmetric(
-                horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
-                child: Card(
-                  elevation: 5.0,
-                  shadowColor: Colors.deepPurple.shade800,
-                  semanticContainer: true,
-                  surfaceTintColor: Colors.deepPurple.shade800,
-                  child: Padding(
-                    padding: EdgeInsets.all(mdheight * 0.017),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text('Category Id : ' ),
-                                          Text(getUser[index]["Category_Id"]),
-                                        ],
-                                      ),
-                                      SizedBox(height: mdheight * 0.01,),
-                                      Row(
-                                        children: [
-                                          const Text('Category Name : '),
-                                          Text(getUser[index]["Category_Name"]),
-                                        ],
-                                      ),
-                                      SizedBox(height: mdheight * 0.01,),
-                                    ],
-                                  )),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.network(
-                                        getUser[index]["Category_Image"],
-                                        height: mdheight * 0.1,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ]
-                              ),
-                            ]
-                        ),
-                        SizedBox(height: mdheight * 0.015,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            MaterialButton(
-                              onPressed:(){
-                                Get.to(() => EditCategory(val:index));
-                              },
-                                color: Colors.deepPurple.shade800,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: mdwidth * 0.05,
-                                    vertical: mdwidth * 0.01),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(mdheight * 0.015)),
-                                ),
-                                child: const Text('Edit Category',
-                                  style: TextStyle(color: Colors.white,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                            MaterialButton(onPressed: () {
-                              CoolAlert.show(context: context,
-                                  type: CoolAlertType.confirm,
-                                  text: 'Do you Remove Category',
-                                  confirmBtnColor: Colors.red,
-                                  onConfirmBtnTap: ()
-                                  {
-                                    cat(getUser[index]["Category_Id"]).whenComplete(() {getdata();});
-                                  },
-                                  animType: CoolAlertAnimType.slideInDown,
-                                  backgroundColor: Colors.red,
-                                  cancelBtnTextStyle: const TextStyle(
-                                    color: Colors.black,
-                                  ));
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator(color: Colors.deepPurple));
+        }
+
+        if (controller.categories.isEmpty) {
+          return const Center(child: Text("No categories found."));
+        }
+
+        return ListView.builder(
+          itemCount: controller.categories.length,
+          itemBuilder: (context, index) {
+            final category = controller.categories[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Card(
+                elevation: 5.0,
+                shadowColor: Colors.deepPurple.shade800,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Category Name: ${category.name}'),
+                              ],
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.network(
+                              category.imageUrl,
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          MaterialButton(
+                            onPressed: () {
+                              Get.to(() => EditCategory(val: index));
                             },
-                                color: Colors.red,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: mdwidth * 0.05,
-                                    vertical: mdwidth * 0.01),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(mdheight * 0.015)),
+                            color: Colors.deepPurple.shade800,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Text(
+                              'Edit Category',
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              CoolAlert.show(
+                                context: context,
+                                type: CoolAlertType.confirm,
+                                text: 'Do you want to remove this category?',
+                                confirmBtnColor: Colors.red,
+                                onConfirmBtnTap: () {
+                                  controller.deleteCategory(category.id, category.imageUrl).whenComplete(() {
+                                    Get.back();
+                                  });
+                                },
+                                animType: CoolAlertAnimType.slideInDown,
+                                backgroundColor: Colors.red,
+                                cancelBtnTextStyle: const TextStyle(
+                                  color: Colors.black,
                                 ),
-                                child: const Text('Delete Category',
-                                  style: TextStyle(color: Colors.white,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ],
-                        )
-                      ],
-                    ),
+                              );
+                            },
+                            color: Colors.red,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Text(
+                              'Delete Category',
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ));
-          }),
+                ),
+              ),
+            );
+          },
+        );
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(() => const CategoryAdd());
+          Get.to(() => CategoryAdd(controller: controller));
         },
         backgroundColor: Colors.deepPurple.shade800,
         shape: const RoundedRectangleBorder(
@@ -284,5 +206,20 @@ class _AdminCategoryPageState extends State<AdminCategoryPage> {
       ),
     );
   }
+}
 
+class Category {
+  final String id;
+  final String name;
+  final String imageUrl;
+
+  Category({required this.id, required this.name, required this.imageUrl});
+
+  factory Category.fromDocument(DocumentSnapshot doc) {
+    return Category(
+      id: doc.id,
+      name: doc['Cat_Name'],
+      imageUrl: doc['Cat_Image'],
+    );
+  }
 }

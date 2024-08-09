@@ -1,114 +1,84 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mime/mime.dart';
 
-class AdminAddVehicle extends StatefulWidget {
-  final String id;
-  final String name;
-  const AdminAddVehicle({super.key,required this.id ,required this.name});
+class AddVehicleController extends GetxController {
+  var isLoading = false.obs;
+  final ImagePicker _picker = ImagePicker();
+  File? image;
 
-  @override
-  State<AdminAddVehicle> createState() => _AdminAddVehicleState();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  Future<void> getImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+      update();
+    }
+  }
+
+  Future<void> uploadVehicleData(String categoryName) async {
+    if (image == null) {
+      Fluttertoast.showToast(msg: "Please select an image");
+      return;
+    }
+    if (nameController.text.isEmpty ||
+        numberController.text.isEmpty ||
+        typeController.text.isEmpty ||
+        priceController.text.isEmpty ||
+        descriptionController.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please fill all fields");
+      return;
+    }
+
+    isLoading.value = true;
+
+    try {
+      String fileName = nameController.text.trim().toLowerCase().replaceAll(" ", "_");
+      final storageRef = FirebaseStorage.instance.ref().child('vehicle_images/$fileName.jpg');
+      await storageRef.putFile(image!);
+      String downloadUrl = await storageRef.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('Vehicles').add({
+        'Vehicle_Name': nameController.text,
+        'Vehicle_Number': numberController.text,
+        'Vehicle_Type': typeController.text,
+        'Rent_Price': priceController.text,
+        'Vehicle_Description': descriptionController.text,
+        'Cat_Name': categoryName,
+        'Vehicle_Image': downloadUrl,
+      });
+
+      Fluttertoast.showToast(msg: "Vehicle added successfully");
+      Get.back();
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Something went wrong");
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }
 
-class _AdminAddVehicleState extends State<AdminAddVehicle> {
+class AdminAddVehicle extends StatelessWidget {
+  final String name;
 
-  bool _isLoading = false;
-  final ImagePicker _picker = ImagePicker();
-  File? _image;
+  AdminAddVehicle({super.key, required this.name});
 
-  Future _getImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(pickedFile!.path);
-    });
-    if (kDebugMode) {
-      print(_image);
-    }
-  }
-
-  TextEditingController name = TextEditingController();
-  TextEditingController number = TextEditingController();
-  TextEditingController type = TextEditingController();
-  TextEditingController price = TextEditingController();
-  TextEditingController description = TextEditingController();
-
-  uploadImageMedia(File fileImage) async {
-    if (kDebugMode) {
-      print(fileImage);
-    }
-    final mimeTypeData = lookupMimeType(
-        fileImage.path, headerBytes: [0xFF, 0xD8])?.split('/');
-    final imageUploadRequest = http.MultipartRequest('POST', Uri.parse(
-        "https://road-runner24.000webhostapp.com/API/Insert_API/Vehicle.php"));
-    final file = await http.MultipartFile.fromPath(
-        'Vehicle_Image', fileImage.path,
-        contentType: MediaType(mimeTypeData![0], mimeTypeData[1]));
-
-    imageUploadRequest.fields['Vehicle_Name'] = name.text;
-    imageUploadRequest.fields['Vehicle_Number'] = number.text;
-    imageUploadRequest.fields['Vehicle_Type'] = type.text;
-    imageUploadRequest.fields['Rent_Price'] = price.text;
-    imageUploadRequest.fields['Vehicle_Description'] = description.text;
-    imageUploadRequest.fields['Category_Id'] = widget.id;
-
-    imageUploadRequest.files.add(file);
-    try {
-      _isLoading = true;
-      final streamedResponse = await imageUploadRequest.send();
-      streamedResponse.stream.transform(utf8.decoder).listen((value) {
-        if (streamedResponse.statusCode == 200) {
-          setState(() {
-            _isLoading = false;
-          });
-          dynamic logindata;
-          logindata = jsonDecode(value);
-          Fluttertoast.showToast(
-              msg: logindata['message'].toString(),
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2
-          );
-          Get.back();
-          if (kDebugMode) {
-            print(streamedResponse.stream);
-          }
-          if (kDebugMode) {
-            print(value);
-          }
-        } else {
-          setState(() {
-            _isLoading = false;
-          });
-          Fluttertoast.showToast(
-              msg: "Something went wrong",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2
-          );
-          if (kDebugMode) {
-            print(value);
-          }
-        }
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
+  final AddVehicleController addVehicleController = Get.put(AddVehicleController());
 
   @override
   Widget build(BuildContext context) {
-    var mdheight = MediaQuery.sizeOf(context).height;
-    var mdwidth = MediaQuery.sizeOf(context).width;
+    var mdheight = MediaQuery.of(context).size.height;
+    var mdwidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -122,150 +92,169 @@ class _AdminAddVehicleState extends State<AdminAddVehicle> {
         ),
         centerTitle: true,
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
-          : SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(mdheight * 0.02),
-          child: Column(
-            children: [
-              Center(
+      body: Obx(() {
+        return addVehicleController.isLoading.value
+            ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
+            : SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(mdheight * 0.02),
+            child: Column(
+              children: [
+                Center(
                   child: Stack(
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        child:_image==null?Image.asset(
-                          "assets/img/Logo.jpg",height: 150,width: 150,fit: BoxFit.fill,):Image.file(_image!,height: 150,width: 150,fit: BoxFit.fill,),
+                        child: addVehicleController.image == null
+                            ? Image.asset(
+                          "assets/img/Logo.jpg",
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.fill,
+                        )
+                            : Image.file(
+                          addVehicleController.image!,
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                       Positioned(
                         left: 80,
                         bottom: 1,
                         child: CircleAvatar(
-
                           child: IconButton(
-                              onPressed: _getImage,
-                              icon: const Icon(Icons.edit)),
+                            onPressed: addVehicleController.getImage,
+                            icon: const Icon(Icons.edit),
+                          ),
                         ),
                       )
                     ],
-                  )),
-              SizedBox(height: mdheight * 0.04),
-              Form(
-                //  key: _formKey,
-                  child: Column(children: [
-                    TextFormField(
-                      controller: name,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please Enter name";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
+                  ),
+                ),
+                SizedBox(height: mdheight * 0.04),
+                Form(
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: addVehicleController.nameController,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "Please enter name";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
                           hintText: 'Enter Vehicle Name',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          )
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: mdheight * 0.025,),
-                    TextFormField(
-                      controller: number,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please Enter Number";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
+                      SizedBox(height: mdheight * 0.025),
+                      TextFormField(
+                        controller: addVehicleController.numberController,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "Please enter number";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
                           hintText: 'Enter Vehicle Number',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          )
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: mdheight * 0.025,),
-                    TextFormField(
-                      controller: type,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please Enter Vehicle Type";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
+                      SizedBox(height: mdheight * 0.025),
+                      TextFormField(
+                        controller: addVehicleController.typeController,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "Please enter vehicle type";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
                           hintText: 'Enter Vehicle Type',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          )
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: mdheight * 0.025,),
-                    TextFormField(
-                      controller: description,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please Enter Description";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
+                      SizedBox(height: mdheight * 0.025),
+                      TextFormField(
+                        controller: addVehicleController.descriptionController,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "Please enter description";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
                           hintText: 'Enter Vehicle Description',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          )
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: mdheight * 0.025,),
-                    TextFormField(
-                      controller: price,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Please Enter Price";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
+                      SizedBox(height: mdheight * 0.025),
+                      TextFormField(
+                        controller: addVehicleController.priceController,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "Please enter price";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
                           hintText: 'Enter Rent Price',
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          )
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: mdheight * 0.04),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(mdheight * 0.02),
+                    color: Colors.deepPurple.shade800,
+                  ),
+                  height: mdheight * 0.06,
+                  width: mdwidth * 0.7,
+                  child: MaterialButton(
+                    onPressed: () {
+                      addVehicleController.uploadVehicleData(name);
+                    },
+                    child: Text(
+                      'Add Vehicle',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: mdheight * 0.025,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],)),
-              SizedBox(height: mdheight * 0.04,),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(mdheight * 0.02),
-                  color: Colors.deepPurple.shade800,
+                  ),
                 ),
-                height: mdheight * 0.06,
-                width: mdwidth * 0.7,
-                child: MaterialButton(
-                  onPressed: () {
-                    uploadImageMedia(_image!);
-                  },
-                  child: Text('Add Vehicle',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: mdheight * 0.025,
-                          fontWeight: FontWeight.bold)),
-                ),
-              )
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

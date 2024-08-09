@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:rentify/User/available_bike.dart';
-import 'package:rentify/User/available_car.dart';
-import 'package:rentify/User/homescreen.dart';
-import 'package:rentify/User/profile.dart';
+import 'package:rentify/User/HomePages/available_bike.dart';
+import 'package:rentify/User/HomePages/available_car.dart';
+import 'package:rentify/User/HomePages/homescreen.dart';
+import 'package:rentify/User/ProfilePages/profile.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -15,27 +14,42 @@ class UserDashboard extends StatefulWidget {
 }
 
 class _UserDashboardState extends State<UserDashboard> {
-  var _currentIndex=0;
-  var pagelist =  [
-    const Homescreen(),
+  int _currentIndex = 0;
+  final PageController _pageController = PageController();
+
+  final List<Widget> _pages = [
+    Homescreen(),
     const Bike(),
     const Car(),
-    const Profile(),
+    Profile(),
   ];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  void _onItemTapped(int index) {
+    _pageController.jumpToPage(index);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pagelist[_currentIndex],
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: _pages.map((page) => page).toList(),
+      ),
       bottomNavigationBar: SalomonBottomBar(
-        onTap: (i){
-          if (kDebugMode) {
-            print("onTap $i");
-          }
-          setState(() {
-            _currentIndex=i;
-          });
-        },
+        onTap: _onItemTapped,
         currentIndex: _currentIndex,
         items: [
           SalomonBottomBarItem(

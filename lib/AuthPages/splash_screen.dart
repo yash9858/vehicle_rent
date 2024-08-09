@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rentify/Admin/admin_dashboard.dart';
 import 'package:rentify/AuthPages/login_screen.dart';
-import 'package:rentify/User/user_dash_board.dart';
+import 'package:rentify/User/HomePages/user_dash_board.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'intro_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,42 +18,47 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      login();
+      checkLoginStatus();
     });
   }
 
-  Future login() async {
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    bool seen=(pref.getBool('seen')??false);
-    if(seen)
-    {
-      if(pref.getString('id')!=null)
-      {
-        if(pref.getString('Role')=="0")
-        {
-          Get.offAll(() => const AdminDashBoard());
+  Future<void> checkLoginStatus() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    bool seen = (pref.getBool('seen') ?? false);
+
+    if (seen) {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        String? email = user.email;
+        DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore.instance.collection('Users').doc(email).get();
+
+        if (userDoc.exists) {
+          String role = userDoc.data()?['Role'] ?? 'User';
+          if (role == 'Admin') {
+            Get.offAll(() => const AdminDashBoard());
+          }
+          else {
+            Get.offAll(() => const UserDashboard());
+          }
         }
-        else
-        {
-          Get.offAll(() => const UserDashboard());
+        else {
+          Get.offAll(() => LoginPage());
         }
       }
-      else
-      {
+      else {
         Get.offAll(() => LoginPage());
       }
     }
-    else
-    {
+    else {
       await pref.setBool('seen', true);
       Get.offAll(() => const IntroScreen());
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,10 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset("assets/img/car.json", height: 200, width: 300),
-            const SizedBox(
-              height: 40,
-            ),
-            const Text("Welcome")
+            const SizedBox(height: 40),
+            const Text("Welcome"),
           ],
         ),
       ),
