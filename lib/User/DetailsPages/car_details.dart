@@ -235,7 +235,6 @@ class _CarDetailsState extends State<CarDetails> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         ListTile(
-                                          trailing: Text(feedback['Feedback_Time'], style: const TextStyle(color: Colors.white)),
                                           title: Text(feedback['Name'], style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                                           subtitle: RatingBar.builder(
                                             ignoreGestures: true,
@@ -253,7 +252,25 @@ class _CarDetailsState extends State<CarDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(10),
-                                          child: Text(feedback['Comment'], style: const TextStyle(color: Colors.white)),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  feedback["Comment"],
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                feedback["Feedback_Time"].toString(),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

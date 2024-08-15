@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rentify/User/CategoriesPages/search_fetch_vehicle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,8 +24,14 @@ class SearchController extends GetxController {
         return data;
       }).toList();
       isLoading(false);
-    } catch (e) {
-      Get.snackbar("Error", "Failed to fetch vehicles: $e");
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching Vehicle Data",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
     }
   }
 }
@@ -32,7 +39,6 @@ class SearchController extends GetxController {
 class SearchPage extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
   final SearchController controller = Get.put(SearchController());
-
   SearchPage({super.key});
 
   @override
@@ -62,7 +68,7 @@ class SearchPage extends StatelessWidget {
                           final searchText = _controller.text;
                           if (searchText.isNotEmpty) {
                             var vehicle = controller.vehicle.firstWhere(
-                                  (vehicle) => vehicle["Vehicle_Name"] == searchText,
+                                (vehicle) => vehicle["Vehicle_Name"] == searchText,
                             );
                               Get.to(() => SearchFetch(
                                 vid : vehicle["Vehicle_Id"].toString(),

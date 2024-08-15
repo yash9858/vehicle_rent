@@ -87,7 +87,7 @@ class _BikeState extends State<Bike> {
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            mainAxisExtent: mheight * 0.27, // Adjust this value
+            mainAxisExtent: mheight * 0.3,
             crossAxisSpacing: 5,
             mainAxisSpacing: 5,
           ),

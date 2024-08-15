@@ -110,7 +110,12 @@ class _BookSummaryState extends State<BookSummary> {
       calculateAverageRating();
       isLoading = false;
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(
+        msg: "Failed To Fetch Rating.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
       isLoading = false;
     }
   }
@@ -126,7 +131,7 @@ class _BookSummaryState extends State<BookSummary> {
 
   String formatDate(String date) {
     DateTime dateTime = DateTime.parse(date);
-    return DateFormat('dd/MM/yyyy ').format(dateTime);
+    return DateFormat('dd/MM/yyyy').format(dateTime);
   }
 
   @override
@@ -149,283 +154,283 @@ class _BookSummaryState extends State<BookSummary> {
       ),
       body: isLoading
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.deepPurple,
-              ),
-            )
+        child: CircularProgressIndicator(
+          color: Colors.deepPurple,
+        ),
+      )
           : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 15,
-                  left: 15,
-                  right: 15,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Image.network(
-                          widget.image,
-                          fit: BoxFit.contain,
-                          height: mheight * 0.15,
-                          width: mwidth * 0.4,
-                        ),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, right: 5, top: 2, bottom: 2),
-                                    decoration: BoxDecoration(
-                                        color: Colors.pink.shade50,
-                                        borderRadius: BorderRadius.circular(6)),
-                                    child: Text(widget.catName)),
-                                Row(
-                                  children: [
-                                    Text(averageRating.toString()),
-                                    const Icon(
-                                      Icons.star,
-                                      color: Colors.orange,
-                                      size: 18,
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: mheight * 0.01,
-                            ),
-                            Text(
-                              widget.name,
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: mheight * 0.03,
-                            ),
-                            Row(
-                              children: [
-                                const Text("₹"),
-                                Text(
-                                  widget.price,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Text("/day"),
-                              ],
-                            ),
-                          ],
-                        ))
-                      ],
-                    ),
-                    Divider(
-                      height: mheight * 0.05,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Pick-Up Time",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              bookingData["Start_Time"].toString(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: mheight * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Pick-Up Date",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              formatDate(bookingData["Start_Date"]),
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: mheight * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Return  Time",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              bookingData["Return_Time"].toString(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: mheight * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Return Date",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              formatDate(bookingData["Return_Date"]),
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Divider(
-                      height: mheight * 0.05,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("Payment Mode",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                            Text(mode.toString()),
-                          ],
-                        ),
-                        SizedBox(
-                          height: mheight * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("Amount",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                            Row(children: [
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 15,
+            left: 15,
+            right: 15,
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Image.network(
+                    widget.image,
+                    fit: BoxFit.contain,
+                    height: mheight * 0.15,
+                    width: mwidth * 0.4,
+                  ),
+                  Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 5, right: 5, top: 2, bottom: 2),
+                                  decoration: BoxDecoration(
+                                      color: Colors.pink.shade50,
+                                      borderRadius: BorderRadius.circular(6)),
+                                  child: Text(widget.catName)),
+                              Row(
+                                children: [
+                                  Text(averageRating.toString()),
+                                  const Icon(
+                                    Icons.star,
+                                    color: Colors.orange,
+                                    size: 18,
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: mheight * 0.01,
+                          ),
+                          Text(
+                            widget.name,
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: mheight * 0.03,
+                          ),
+                          Row(
+                            children: [
                               const Text("₹"),
                               Text(
-                                "${widget.price}/day",
+                                widget.price,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ])
-                          ],
-                        ),
-                        Divider(
-                          height: mheight * 0.03,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("Total",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                            Row(
-                              children: [
-                                const Text("₹"),
-                                Text(totalPrice?.toString() ?? "N/A"),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: mheight * 0.08,
-                    ),
-                  ],
-                ),
+                              const Text("/day"),
+                            ],
+                          ),
+                        ],
+                      ))
+                ],
               ),
-            ),
+              Divider(
+                height: mheight * 0.05,
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Pick-Up Time",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        bookingData["Start_Time"].toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: mheight * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Pick-Up Date",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        formatDate(bookingData["Start_Date"]),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: mheight * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Return  Time",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        bookingData["Return_Time"].toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: mheight * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Return Date",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        formatDate(bookingData["Return_Date"]),
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Divider(
+                height: mheight * 0.05,
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Payment Mode",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      Text(mode.toString()),
+                    ],
+                  ),
+                  SizedBox(
+                    height: mheight * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Amount",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      Row(children: [
+                        const Text("₹"),
+                        Text(
+                          "${widget.price}/day",
+                        ),
+                      ])
+                    ],
+                  ),
+                  Divider(
+                    height: mheight * 0.03,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Total",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      Row(
+                        children: [
+                          const Text("₹"),
+                          Text(totalPrice?.toString() ?? "N/A"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: mheight * 0.08,
+              ),
+            ],
+          ),
+        ),
+      ),
       bottomSheet: Container(
         padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
         child: isLoading
             ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.deepPurple,
-                ),
-              )
+          child: CircularProgressIndicator(
+            color: Colors.deepPurple,
+          ),
+        )
             : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (bookingData["Booking_Status"] == "Paid") ...[
-                    Expanded(
-                      child: SizedBox(
-                          height: mheight * 0.065,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurple.shade800,
-                            ),
-                            onPressed: () {
-                              Get.to(() => CancelBookingUser(
-                                    bid: bookingData["Booking_Id"].toString(),
-                                    amount: remainingPay.toString(),
-                                  ));
-                            },
-                            child: const Text("Cancel"),
-                          )),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                  ],
-                  Expanded(
-                    child: SizedBox(
-                        height: mheight * 0.065,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black),
-                            onPressed: () {
-                              Get.to(() =>
-                                  Complain(vid: bookingData["Vehicle_Id"]));
-                            },
-                            child: const Text("Complain"))),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  if (bookingData["Booking_Status"] == "Cancel") ...[
-                    Expanded(
-                      child: SizedBox(
-                          height: mheight * 0.065,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurple.shade800,
-                            ),
-                            onPressed: () {
-                              Get.to(() => FeedBackUser(
-                                    num: widget.index,
-                                    vid: bookingData["Vehicle_Id"].toString(),
-                                  ));
-                            },
-                            child: const Text("Feedback"),
-                          )),
-                    ),
-                  ],
-                ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (bookingData["Booking_Status"] == "Paid") ...[
+              Expanded(
+                child: SizedBox(
+                    height: mheight * 0.065,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple.shade800,
+                      ),
+                      onPressed: () {
+                        Get.to(() => CancelBookingUser(
+                          bid: bookingData["Booking_Id"].toString(),
+                          amount: remainingPay.toString(),
+                        ));
+                      },
+                      child: const Text("Cancel"),
+                    )),
               ),
+              const SizedBox(
+                width: 16,
+              ),
+            ],
+            Expanded(
+              child: SizedBox(
+                  height: mheight * 0.065,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black),
+                      onPressed: () {
+                        Get.to(() =>
+                            Complain(vid: bookingData["Vehicle_Id"]));
+                      },
+                      child: const Text("Complain"))),
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            if (bookingData["Booking_Status"] == "Pending Refund" || bookingData["Booking_Status"] == "Refund") ...[
+              Expanded(
+                child: SizedBox(
+                    height: mheight * 0.065,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple.shade800,
+                      ),
+                      onPressed: () {
+                        Get.to(() => FeedBackUser(
+                          num: widget.index,
+                          vid: bookingData["Vehicle_Id"].toString(),
+                        ));
+                      },
+                      child: const Text("Feedback"),
+                    )),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

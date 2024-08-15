@@ -8,7 +8,6 @@ class FeedbackController extends GetxController {
   final String vehicleId;
   var isLoading = true.obs;
   var feedbacks = [].obs;
-
   FeedbackController(this.vehicleId);
 
   @override
@@ -19,15 +18,19 @@ class FeedbackController extends GetxController {
 
   Future<void> fetchFeedbacks() async {
     try {
-      var feedbackSnapshot = await FirebaseFirestore.instance
-          .collection('Feedbacks')
-          .where('Vehicle_Id', isEqualTo: vehicleId)
-          .get();
+      var feedbackSnapshot = await FirebaseFirestore.instance.collection('Feedbacks')
+          .where('Vehicle_Id', isEqualTo: vehicleId).get();
 
       feedbacks.value = feedbackSnapshot.docs.map((doc) => doc.data()).toList();
       isLoading.value = false;
-    } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching Feedback Data",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
       isLoading.value = false;
     }
   }
@@ -36,12 +39,7 @@ class FeedbackController extends GetxController {
 class ShowFeedback extends StatelessWidget {
   final String vehicleId;
   final FeedbackController controller;
-
-  ShowFeedback({
-    Key? key,
-    required this.vehicleId,
-  })  : controller = Get.put(FeedbackController(vehicleId)),
-        super(key: key);
+  ShowFeedback({Key? key, required this.vehicleId,})  : controller = Get.put(FeedbackController(vehicleId)), super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +62,16 @@ class ShowFeedback extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(color: Colors.deepPurple),
           );
-        } else if (controller.feedbacks.isEmpty) {
+        }
+        else if (controller.feedbacks.isEmpty) {
           return const Center(
             child: Text(
               "No Feedback Available",
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
           );
-        } else {
+        }
+        else {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
@@ -90,10 +90,6 @@ class ShowFeedback extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ListTile(
-                                trailing: Text(
-                                  feedback["Feedback_Time"].toString(),
-                                  style: const TextStyle(color: Colors.black),
-                                ),
                                 title: Text(
                                   feedback["Name"],
                                   style: const TextStyle(
@@ -121,11 +117,21 @@ class ShowFeedback extends StatelessWidget {
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(10),
-                                child: Text(
-                                  feedback["Comment"],
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                  ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        feedback["Comment"],
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      feedback["Feedback_Time"].toString(),
+                                    )
+                                  ],
                                 ),
                               ),
                             ],
@@ -135,7 +141,7 @@ class ShowFeedback extends StatelessWidget {
                       );
                     },
                   ),
-                  SizedBox(height: mdheight * 0.012),
+                  SizedBox(height: mdheight * 0.01),
                 ],
               ),
             ),

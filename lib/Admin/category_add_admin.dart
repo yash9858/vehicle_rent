@@ -5,15 +5,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:rentify/Admin/vehicle_category_admin.dart';
 
-
-class CategoryAddController extends GetxController {
+class AdminCategoryAddController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final _picker = ImagePicker();
   final formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
   var image = Rxn<File>();
+  dynamic catId;
 
   Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -27,13 +26,24 @@ class CategoryAddController extends GetxController {
       isLoading(true);
       try {
         String categoryName = nameController.text.trim();
-        final querySnapshot = await FirebaseFirestore.instance.collection('Categories').where('Cat_Name', isEqualTo: categoryName).get();
+        final querySnapshot = await FirebaseFirestore.instance.collection('Categories')
+            .where('Cat_Name', isEqualTo: categoryName).get();
 
+        var counterRef = FirebaseFirestore.instance.collection('Counter').doc('CatCounter');
+        var counterSnapshot = await counterRef.get();
+        if (counterSnapshot.exists) {
+          catId = counterSnapshot.data()?['latestId'] + 1;
+        }
+        else {
+          catId = 1;
+        }
+        await counterRef.set({'latestId': catId});
         if (querySnapshot.docs.isNotEmpty) {
           Fluttertoast.showToast(
             msg: "Category Name Already Exists",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2
           );
           isLoading(false);
           return;
@@ -43,53 +53,52 @@ class CategoryAddController extends GetxController {
         final storageRef = FirebaseStorage.instance.ref().child(fileName);
         await storageRef.putFile(image.value!);
         String imageUrl = await storageRef.getDownloadURL();
-
-        await FirebaseFirestore.instance.collection('Categories').add({
+        await FirebaseFirestore.instance.collection('Categories').doc(catId.toString()).set({
+          'Cat_Id': catId,
           'Cat_Name': categoryName,
           'Cat_Image': imageUrl,
         });
 
         Fluttertoast.showToast(
-          msg: "Category added successfully",
+          msg: "Category Added Successfully",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2
         );
         Get.back();
       }
       catch (error) {
         Fluttertoast.showToast(
-          msg: "Something went wrong: $error",
+          msg: "Failed to Add Category",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2
         );
       }
       finally {
         isLoading(false);
       }
-    } else if (image.value == null) {
+    }
+    else if (image.value == null) {
       Fluttertoast.showToast(
-        msg: "Please select an image",
+        msg: "Please Select An Image",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2
       );
     }
   }
 }
 
-class CategoryAdd extends StatefulWidget {
-  const CategoryAdd({super.key, required AdminCategoryController controller});
-
-  @override
-  State<CategoryAdd> createState() => _CategoryAddState();
-}
-
-class _CategoryAddState extends State<CategoryAdd> {
-  final CategoryAddController controller = Get.put(CategoryAddController());
+class CategoryAdd extends StatelessWidget {
+  final AdminCategoryAddController controller = Get.put(AdminCategoryAddController());
+  CategoryAdd({super.key});
 
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
+
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: TextStyle(
@@ -111,7 +120,8 @@ class _CategoryAddState extends State<CategoryAdd> {
           children: [
             SizedBox(height: mdheight * 0.02),
             Padding(
-              padding: EdgeInsets.only(left: mdwidth * 0.05, right: mdwidth * 0.01),
+              padding: EdgeInsets.only(
+                  left: mdwidth * 0.05, right: mdwidth * 0.01),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -127,8 +137,7 @@ class _CategoryAddState extends State<CategoryAdd> {
                               height: 150,
                               width: 150,
                               fit: BoxFit.fill,
-                            )
-                                : Image.file(
+                            ) : Image.file(
                               controller.image.value!,
                               height: 150,
                               width: 150,
@@ -141,8 +150,9 @@ class _CategoryAddState extends State<CategoryAdd> {
                           bottom: 1,
                           child: CircleAvatar(
                             child: IconButton(
-                                onPressed: controller.pickImage,
-                                icon: const Icon(Icons.edit)),
+                              onPressed: controller.pickImage,
+                              icon: const Icon(Icons.edit),
+                            ),
                           ),
                         )
                       ],
@@ -163,7 +173,7 @@ class _CategoryAddState extends State<CategoryAdd> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a category name';
+                          return 'Please Enter A Category Name';
                         }
                         return null;
                       },
@@ -187,7 +197,7 @@ class _CategoryAddState extends State<CategoryAdd> {
                 ),
                 child: controller.isLoading.value
                     ? const CircularProgressIndicator(
-                  color: Colors.white,
+                  color: Colors.deepPurple,
                 )
                     : const Text(
                   'Add Category',

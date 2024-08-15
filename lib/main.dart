@@ -14,10 +14,13 @@ void main() async{
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple.shade800),
         useMaterial3: false
       ),
-      home: const SplashScreen(),
+      home: SplashScreen(),
     )
   );
 }

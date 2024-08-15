@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:rentify/User/HomePages/available_bike.dart';
 import 'package:rentify/User/HomePages/available_car.dart';
@@ -6,18 +7,30 @@ import 'package:rentify/User/HomePages/homescreen.dart';
 import 'package:rentify/User/ProfilePages/profile.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-class UserDashboard extends StatefulWidget {
-  const UserDashboard({super.key});
+class UserDashboardController extends GetxController {
+  var currentIndex = 0.obs;
+  PageController pageController = PageController();
+
+  void onPageChanged(int index) {
+    currentIndex.value = index;
+  }
+
+  void onItemTapped(int index) {
+    pageController.jumpToPage(index);
+  }
 
   @override
-  State<UserDashboard> createState() => _UserDashboardState();
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 }
 
-class _UserDashboardState extends State<UserDashboard> {
-  int _currentIndex = 0;
-  final PageController _pageController = PageController();
+class UserDashboard extends StatelessWidget {
+  UserDashboard({Key? key}) : super(key: key);
+  final UserDashboardController controller = Get.put(UserDashboardController());
 
-  final List<Widget> _pages = [
+  final List<Widget> pages = [
     Homescreen(),
     const Bike(),
     const Car(),
@@ -25,36 +38,21 @@ class _UserDashboardState extends State<UserDashboard> {
   ];
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
-  void _onItemTapped(int index) {
-    _pageController.jumpToPage(index);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        controller: _pageController,
-        onPageChanged: _onPageChanged,
-        children: _pages.map((page) => page).toList(),
+        controller: controller.pageController,
+        onPageChanged: controller.onPageChanged,
+        children: pages,
       ),
-      bottomNavigationBar: SalomonBottomBar(
-        onTap: _onItemTapped,
-        currentIndex: _currentIndex,
+      bottomNavigationBar: Obx(() => SalomonBottomBar(
+        onTap: controller.onItemTapped,
+        currentIndex: controller.currentIndex.value,
+        unselectedItemColor: Colors.black,
         items: [
           SalomonBottomBarItem(
             icon: const Icon(Icons.home),
-            title: const Text("Home"),
+            title: const Text("Home",),
             selectedColor: Colors.deepPurple.shade300,
           ),
           SalomonBottomBarItem(
@@ -73,7 +71,7 @@ class _UserDashboardState extends State<UserDashboard> {
             selectedColor: Colors.teal,
           ),
         ],
-      ),
+      )),
     );
   }
 }

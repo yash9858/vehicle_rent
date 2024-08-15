@@ -1,77 +1,106 @@
-import 'dart:convert';
 import 'package:flutter/Material.dart';
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminBookingPage extends StatefulWidget {
-  const AdminBookingPage({super.key});
+class AdminBookingController extends GetxController {
+  var isLoading = false.obs;
+  var bookings = [].obs;
 
   @override
-  State<AdminBookingPage> createState() => _AdminBookingPageState();
+  void onInit() {
+    super.onInit();
+    fetchBookings();
+  }
+
+  void fetchBookings() async {
+    try {
+      isLoading(true);
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Bookings')
+          .where('Booking_Status', isEqualTo: 'Paid').get();
+
+      List<Map<String, dynamic>> fetchedBookings = [];
+      for (var doc in snapshot.docs) {
+        var bookingData = doc.data() as Map<String, dynamic>;
+        DocumentSnapshot vehicleSnapshot = await FirebaseFirestore.instance.collection('Vehicles')
+            .doc(bookingData['Vehicle_Id']).get();
+        String vehicleName = vehicleSnapshot['Vehicle_Name'];
+
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('Users')
+            .doc(bookingData['Login_Id']).get();
+        String userName = userSnapshot['Name'];
+        String address = userSnapshot['Address'];
+
+        bookingData['Vehicle_Name'] = vehicleName;
+        bookingData['Name'] = userName;
+        bookingData['Address'] = address;
+        fetchedBookings.add(bookingData);
+      }
+      bookings.value = fetchedBookings;
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+          msg: "Failed To Fetch Bookings",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2
+      );
+    }
+    finally {
+      isLoading(false);
+    }
+  }
 }
 
-class _AdminBookingPageState extends State<AdminBookingPage> {
-
-  String? data;
-  dynamic getUser;
-  bool isLoading=true;
-
-  @override
-  void initState(){
-    super.initState();
-    getdata();
-  }
-
-  Future getdata() async{
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Booking_Admin.php"));
-    if(response.statusCode==200){
-      data=response.body;
-    }
-    setState(() {
-      isLoading=false;
-      getUser=jsonDecode(data!)["users"];
-    });
-  }
-
-  String formatDate(String date) {
-    DateTime dateTime = DateTime.parse(date);
-    return DateFormat('dd/MM/yyyy ').format(dateTime);
-  }
-
-  String formatTime(String time) {
-    DateTime dateTime = DateFormat.Hms().parse(time);
-    String hour = dateTime.hour.toString().padLeft(2, '0');
-    String minute = dateTime.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
-
-  String formatDateTime(String date) {
-    DateTime dateTime = DateTime.parse(date);
-    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
-  }
+class AdminBookingPage extends StatelessWidget {
+  AdminBookingPage({super.key});
+  final AdminBookingController controller = Get.put(AdminBookingController());
 
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
+
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         titleTextStyle: TextStyle(
-        color: Colors.white,
-        fontSize: mdheight * 0.025,
-    ),
-    title: const Text('All Bookings'),
-    backgroundColor: Colors.deepPurple.shade800,
-    iconTheme: const IconThemeData(
-    color: Colors.white,
-    ),
-          centerTitle: true,
-    ),
-      body: isLoading ?  const Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
-          itemCount: getUser.length,
-          itemBuilder: (BuildContext context, int index)
-          {
-            return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
+          color: Colors.white,
+          fontSize: mdheight * 0.025,
+        ),
+        title: const Text('All Bookings'),
+        backgroundColor: Colors.deepPurple.shade800,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        centerTitle: true,
+      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator(color: Colors.deepPurple));
+        }
+
+        if (controller.bookings.isEmpty) {
+          return Center(
+            child: Text(
+              'No Bookings Available',
+              style: TextStyle(
+                color: Colors.deepPurple.shade800,
+                fontSize: mdheight * 0.02,
+              ),
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: ()async{
+            controller.fetchBookings();
+          },
+          child: ListView.builder(
+            itemCount: controller.bookings.length,
+            itemBuilder: (BuildContext context, int index) {
+              var booking = controller.bookings[index];
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
                 child: Card(
                   elevation: 5.0,
                   shadowColor: Colors.deepPurple.shade800,
@@ -82,80 +111,25 @@ class _AdminBookingPageState extends State<AdminBookingPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const Text("User Name: "),
-                                Text(getUser[index]["Name"]),
-                              ],
-                            ),
-                            Text(formatDateTime(getUser[index]["Booking_Timestamp"])),
-                          ],
-                        ),
-                        SizedBox(height: mdheight * 0.015),
-                         Row(
-                           children: [
-                             const Text("Vehicle Name: "),
-                             Text(getUser[index]["Vehicle_Name"]),
-                           ],
-                         ),
-                        SizedBox(height: mdheight * 0.015,),
-                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const Text('Start Date : '),
-                                Text(formatDate(getUser[index]["Start_Date"])),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Text('Start Time : '),
-                                Text(formatTime(getUser[index]["Start_Time"])),
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(height: mdheight * 0.015,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const Text('Return Date : '),
-                                Text(formatDate(getUser[index]["Return_Date"])),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Text('Return Time : '),
-                                Text(formatTime(getUser[index]["Return_Time"])),
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(height: mdheight * 0.015,),
-                        Row(
-                          children: [
-                            const Text('Booking Status : '),
-                            Text(getUser[index]["Booking_Status"]),
-                          ],
-                        ),
-                        SizedBox(height: mdheight * 0.015,),
-                        Row(
-                          children: [
-                            const Text('Address : '),
-                            Text(getUser[index]["Address"]),
-                          ],
-                        )
+                        Text("User Name: ${booking["Name"]}", style: TextStyle(fontSize: mdheight * 0.024,fontWeight: FontWeight.bold),),
+                        SizedBox(height: mdheight * 0.01),
+                        Text("Vehicle Name: ${booking["Vehicle_Name"]}"),
+                        Text('Start Date : ${booking["Start_Date"]}'),
+                        Text('Start Time : ${booking["Start_Time"]}'),
+                        Text('Return Date : ${booking["Return_Date"]}'),
+                        Text('Return Time : ${booking["Return_Time"]}'),
+                        Text('Booking Status : ${booking["Booking_Status"]}'),
+                        Text('Address : ${booking["Address"]}'),
+                        SizedBox(height: mdheight * 0.01),
                       ],
                     ),
                   ),
-                ));
-          }),
+                ),
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }

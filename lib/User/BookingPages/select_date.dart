@@ -65,7 +65,6 @@ class SelectDateController extends GetxController {
       context: context,
       initialTime: pickupTime.value,
     );
-
     if (picked != null) {
       final now = TimeOfDay.now();
       if (picked.hour < now.hour || (picked.hour == now.hour && picked.minute < now.minute)) {
@@ -76,8 +75,17 @@ class SelectDateController extends GetxController {
         );
       } else {
         pickupTime.value = picked;
-        if (pickupDate.value.isAtSameMomentAs(returnDate.value) && picked.hour > returnTime.value.hour) {
-          returnTime.value = TimeOfDay(hour: picked.hour + 1, minute: picked.minute);
+        if (pickupDate.value.isAtSameMomentAs(returnDate.value)) {
+          final int pickupMinutes = pickupTime.value.hour * 60 + pickupTime.value.minute;
+          final int returnMinutes = returnTime.value.hour * 60 + returnTime.value.minute;
+
+          if (returnMinutes <= pickupMinutes) {
+            final newReturnTime = TimeOfDay(
+              hour: (pickupMinutes + 60) ~/ 60,
+              minute: (pickupMinutes + 60) % 60,
+            );
+            returnTime.value = newReturnTime;
+          }
         }
       }
     }
@@ -103,19 +111,24 @@ class SelectDateController extends GetxController {
     );
 
     if (picked != null) {
-      if (returnDate.value.isAtSameMomentAs(pickupDate.value) && picked.hour < pickupTime.value.hour) {
-        Fluttertoast.showToast(
-          msg: "Return time must be after pickup time.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-        );
-      } else {
-        returnTime.value = picked;
+      if (pickupDate.value.isAtSameMomentAs(returnDate.value)) {
+        final int pickupMinutes = pickupTime.value.hour * 60 + pickupTime.value.minute;
+        final int returnMinutes = picked.hour * 60 + picked.minute;
+
+        if (returnMinutes <= pickupMinutes) {
+          Fluttertoast.showToast(
+            msg: "Return Time Must Be Greater Than Start Time",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+          return;
+        }
       }
+
+      // If valid, update the return time
+      returnTime.value = picked;
     }
   }
-
-
   Future<void> fetchAddress() async {
     isLoading.value = true;
     try {
@@ -215,8 +228,6 @@ class SelectDateController extends GetxController {
 
         await counterRef.set({'latestId': bookingId});
 
-
-
         await FirebaseFirestore.instance.collection('Bookings').doc(bookingId.toString()).set({
           'Booking_Id': bookingId,
           'Start_Date': DateFormat('yyyy-MM-dd').format(pickupDate.value),
@@ -258,7 +269,6 @@ class SelectDateController extends GetxController {
   }
 }
 
-
 class SelectDate extends StatelessWidget {
   final String vid;
   final String name;
@@ -291,14 +301,8 @@ class SelectDate extends StatelessWidget {
       price: price,
     ));
 
-    var mheight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    var mwidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var mheight = MediaQuery.of(context).size.height;
+    var mwidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -313,13 +317,11 @@ class SelectDate extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
       ),
-      body: Obx(
-            () =>
+      body: Obx(() =>
         controller.isLoading.value
             ? const Center(
           child: CircularProgressIndicator(color: Colors.deepPurple),
-        )
-            : SingleChildScrollView(
+        ) : SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(15),
             child: Form(
@@ -385,27 +387,35 @@ class SelectDate extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  const Divider(height: 0.01,color: Colors.grey,),
+                  const SizedBox(height: 10),
                   buildDateTimePicker(
                     context: context,
+                    icon: const Icon(Icons.calendar_month,size: 25,),
+                    timeIcon: const Icon(Icons.timer,size: 25,),
                     label: "Select Pickup Date",
                     date: controller.pickupDate.value,
                     time: controller.pickupTime.value,
                     onDatePressed: () => controller.pickDate(context),
                     onTimePressed: () => controller.pickTime(context),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
+                  const Divider(height: 0.01),
+                  const SizedBox(height: 15),
                   buildDateTimePicker(
                     context: context,
-                    label: "Select Return Date",
+                    label: "Select Return Date And Time",
+                    timeIcon: const Icon(Icons.timer,size: 25,),
+                    icon: const Icon(Icons.calendar_month,size: 25,),
                     date: controller.returnDate.value,
                     time: controller.returnTime.value,
-                    onDatePressed: () =>
-                        controller.returnDatePicker(context),
-                    onTimePressed: () =>
-                        controller.returnTimePicker(context),
+                    onDatePressed: () => controller.returnDatePicker(context),
+                    onTimePressed: () => controller.returnTimePicker(context)
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
+                  const Divider(height: 0.01,color: Colors.grey,),
+                  const SizedBox(height: 25),
                   TextFormField(
                     controller: controller.addressController,
                     maxLines: 5,
@@ -423,23 +433,31 @@ class SelectDate extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
-                      ),
-                      onPressed: () {
-                        controller.updateAddress();
-                        controller.submitBooking(context);
-                      },
-                      child: const Text("Payment"),
-                    ),
-                  ),
                 ],
               ),
             ),
           ),
         ),
+      ),
+      bottomSheet: BottomSheet(
+        onClosing: (){},
+        builder: (BuildContext context){
+          return Container(
+            padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
+            width: double.infinity,
+            height: mheight * 0.08,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+              ),
+              onPressed: () {
+                controller.updateAddress();
+                controller.submitBooking(context);
+              },
+              child: const Text("Payment",style: TextStyle(fontSize: 16)),
+            ),
+          );
+        },
       ),
     );
   }
@@ -447,6 +465,8 @@ class SelectDate extends StatelessWidget {
   Widget buildDateTimePicker({
     required BuildContext context,
     required String label,
+    required Icon icon,
+    required Icon timeIcon,
     required DateTime date,
     required TimeOfDay time,
     required VoidCallback onDatePressed,
@@ -455,34 +475,38 @@ class SelectDate extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 10),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17)),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              onTap: onDatePressed,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(DateFormat('yyyy-MM-dd').format(date)),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Text(DateFormat('yyyy-MM-dd').format(date),style: const TextStyle(fontSize: 16),),
+                  const SizedBox(width: 10,),
+                  IconButton(onPressed: onDatePressed, icon: icon,color: Colors.deepPurple,)
+                ],
               ),
             ),
-            InkWell(
-              onTap: onTimePressed,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  '${time.hour.toString().padLeft(2, '0')}:${time.minute
-                      .toString().padLeft(2, '0')}',
-                ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Text('${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
+                    style: const TextStyle(fontSize: 16),),
+                  const SizedBox(width: 10,),
+                  IconButton(onPressed: onTimePressed, icon: timeIcon,color: Colors.deepPurple,)
+                ],
               ),
             ),
           ],

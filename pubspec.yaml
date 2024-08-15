@@ -45,13 +45,11 @@ dependencies:
   expansion_tile_group: ^1.2.4
   fluttertoast: 8.2.5
   image_picker: 1.1.1
-  mime: ^1.0.5
+
 
   # Network And Local Storage
   intl: ^0.19.0
-  http: ^1.2.1
   shared_preferences: ^2.2.3
-  http_parser: ^4.0.2
 
   # Launcher Icon
   flutter_launcher_icons: "^0.13.1"

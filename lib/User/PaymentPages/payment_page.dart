@@ -84,7 +84,6 @@ class _PaymentPageState extends State<PaymentPage> {
         isLoading = false;
       });
     } catch (e) {
-      print('Error fetching booking ID: $e');
       Fluttertoast.showToast(msg: "Error fetching booking ID. Please try again.");
       setState(() {
         isLoading = false;
@@ -105,15 +104,28 @@ class _PaymentPageState extends State<PaymentPage> {
 
       await counterRef.set({'latestId': paymentId});
 
+      String formatDateTime(DateTime date) {
+        int hour = date.hour;
+        String period = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12;
+        if (hour == 0) hour = 12;
+
+        return "${date.day}/${date.month}/${date.year}, $hour:${date.minute.toString().padLeft(2, '0')} $period";
+      }
+
+      DateTime now = DateTime.now();
+      String formattedDate = formatDateTime(now);
+
       var paymentCollection = FirebaseFirestore.instance.collection('Payments');
       await paymentCollection.add({
+        'Payment_Time': formattedDate,
         'Payment_Mode': selectedOption,
         'Booking_Id': bookingId.toString(),
         'Total_Price': totalPrice,
         'Login_Id': currentUser?.email,
+        'Vehicle_Id' : widget.vid,
       });
     } catch (e) {
-      print('Error making payment: $e');
       Fluttertoast.showToast(msg: "Error making payment. Please try again.");
     }
   }
@@ -124,12 +136,10 @@ class _PaymentPageState extends State<PaymentPage> {
       var vehicleCollection = FirebaseFirestore.instance.collection('Vehicles');
 
       await bookingCollection.doc(bookingId).update({'Booking_Status': 'Paid'});
-
       await vehicleCollection.doc(widget.vid).update({'Status': 'Unavailable'});
 
       Get.to(() => WaitPay());
     } catch (e) {
-      print('Error updating booking or vehicle status: $e');
       Fluttertoast.showToast(msg: "Error updating status. Please try again.");
     }
   }

@@ -25,8 +25,7 @@ class _CarState extends State<Car> {
 
   Future<void> fetchCarData() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Vehicles')
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Vehicles')
           .where('Vehicle_Type', isEqualTo: 'Car')
           .get();
 
@@ -90,7 +89,7 @@ class _CarState extends State<Car> {
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            mainAxisExtent: mheight * 0.27, // Adjust this value
+            mainAxisExtent: mheight * 0.3,
             crossAxisSpacing: 5,
             mainAxisSpacing: 5,
           ),

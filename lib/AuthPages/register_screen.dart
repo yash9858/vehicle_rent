@@ -11,13 +11,12 @@ class RegisterController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance.collection("Users");
-
   var isLoading = false.obs;
   var visiblePass = true.obs;
   var visibleConfirm = true.obs;
+  dynamic userId;
 
   void togglePasswordVisibility() {
     visiblePass.value = !visiblePass.value;
@@ -37,20 +36,28 @@ class RegisterController extends GetxController {
           email: emailController.text.toString(),
           password: passwordController.text.toString(),
         );
-
         String name = nameController.text.toString();
         String email = emailController.text.toString();
         String role = "User";
         String status = "0";
         var id = userCredential.user!.email;
 
+        var counterRef = FirebaseFirestore.instance.collection('Counter').doc('UserCounter');
+        var counterSnapshot = await counterRef.get();
+        if (counterSnapshot.exists) {
+          userId = counterSnapshot.data()?['latestId'] + 1;
+        }
+        else {
+          userId = 1;
+        }
+        await counterRef.set({'latestId': userId});
         await firestore.doc(id).set({
+          'Uid' : userId,
           'User_Name': name,
           'Email': email,
           'Role': role,
           'Status': status,
         });
-
         Fluttertoast.showToast(
           msg: "Successful User Registration",
           toastLength: Toast.LENGTH_LONG,
@@ -59,7 +66,8 @@ class RegisterController extends GetxController {
         );
         Get.offAll(() => LoginPage());
         isLoading.value = false;
-      } on FirebaseAuthException catch (e) {
+      }
+      on FirebaseAuthException catch (e) {
         Fluttertoast.showToast(
           msg: e.message ?? "Error occurred",
           toastLength: Toast.LENGTH_LONG,
@@ -127,9 +135,17 @@ class RegisterPage extends StatelessWidget {
                     controller: controller.nameController,
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return "Please Enter name";
+                        return "Please Enter Name";
                       }
-                      return null;
+                      if(RegExp(r'^[a-zA-Z\s]+$').hasMatch(val)){
+                        if (val.length > 20) {
+                          return "Name Are To Long";
+                        }
+                        return null;
+                      }
+                      else{
+                        return "Enter Valid Name";
+                      }
                     },
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
@@ -153,15 +169,22 @@ class RegisterPage extends StatelessWidget {
                     controller: controller.emailController,
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return "Email must not be empty";
-                      } else {
-                        if (RegExp(
-                            r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}")
-                            .hasMatch(val)) {
-                          return null;
-                        } else {
-                          return "Enter a valid Email";
+                        return "Email Must Not Be Empty";
+                      }
+                      else {
+                        if (!val.endsWith('@gmail.com')) {
+                          return "Email Must Contain '@gmail.com'";
                         }
+                        final emailParts = val.split('@');
+                        final localPart = emailParts[0];
+                        final domainPart = emailParts[1];
+                        if (domainPart != 'gmail.com') {
+                          return "Email Must Contain '@gmail.com'";
+                        }
+                        if (localPart.contains('.') || RegExp(r"[^a-zA-Z0-9]").hasMatch(localPart)) {
+                          return "Only Alphanumeric Characters Allowed Before '@gmail.com'";
+                        }
+                        return null;
                       }
                     },
                     keyboardType: TextInputType.text,
@@ -187,9 +210,9 @@ class RegisterPage extends StatelessWidget {
                     controller: controller.passwordController,
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return "Enter Password ";
-                      } else if (val.length >= 20) {
-                        return "Password is too long (max 20 characters)";
+                        return "Enter Password";
+                      } else if (val.length < 8 || val.length > 16) {
+                        return "Password must be 8 to 16 characters long";
                       }
                       return null;
                     },

@@ -95,7 +95,6 @@ class PrivacyPolicyPage extends StatelessWidget {
 
 class SectionTitle extends StatelessWidget {
   final String title;
-
   const SectionTitle(this.title, {super.key});
 
   @override
@@ -116,7 +115,6 @@ class SectionTitle extends StatelessWidget {
 class PolicyItem extends StatelessWidget {
   final String title;
   final String content;
-
   const PolicyItem(this.title, this.content, {super.key});
 
   @override

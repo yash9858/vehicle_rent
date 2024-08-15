@@ -14,79 +14,71 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
-
   var isLoading = false.obs;
   var isPasswordVisible = true.obs;
 
   Future<void> login() async {
-    final form = formKey.currentState;
-    if (form!.validate()) {
-      isLoading.value = true;
-
-      try{
-        UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email:emailController.text.toString(),
-          password: passwordController.text.toString(),
-        );
-        DocumentSnapshot userDoc= await firestore.collection("Users").doc(userCredential.user!.email).get();
-
-        if (userDoc.exists){
-          Map<String ,dynamic> userData = userDoc.data() as Map < String , dynamic >;
-
-          if (userData["Role"] == "Admin"){
-            Get.offAll(() => const AdminDashBoard());
-          }
-          else{
-            if(userData["Status"] == "1"){
-              Get.offAll(() => const UserDashboard());
+      final form = formKey.currentState;
+      if (form!.validate()) {
+        isLoading.value = true;
+        try {
+          UserCredential userCredential = await auth.signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+          DocumentSnapshot userDoc = await firestore.collection("Users").doc(
+              userCredential.user!.email).get();
+          if (userDoc.exists) {
+            Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+            if (userData["Role"] == "Admin") {
+              Get.offAll(() => AdminDashBoard());
             }
-            else{
-              Get.offAll(() => const CompleteProfile());
+            else {
+              if (userData["Status"] == "1") {
+                Get.offAll(() => UserDashboard());
+              }
+              else {
+                Get.offAll(() => CompleteProfile());
+              }
             }
-          }
-        }
-        else{
-          Fluttertoast.showToast(
+          } else {
+            Fluttertoast.showToast(
               msg: "User Not Found",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 2
+              timeInSecForIosWeb: 2,
+            );
+            isLoading.value = false;
+          }
+        } catch (e) {
+          Fluttertoast.showToast(
+            msg: "Email Or Password Are Wrong",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
           );
           isLoading.value = false;
         }
       }
-      on FirebaseAuthException catch(e){
-        Fluttertoast.showToast(
-            msg: e.toString(),
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 2
-        );
-        isLoading.value = false;
-      }
+    }
+
+    void togglePasswordVisibility() {
+      isPasswordVisible(!isPasswordVisible.value);
     }
   }
 
-  void togglePasswordVisibility() {
-    isPasswordVisible(!isPasswordVisible.value);
-  }
-}
-
 class LoginPage extends StatelessWidget {
-
   final LoginController loginController = Get.put(LoginController());
-
   LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Obx(() => loginController.isLoading.value
-            ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
-            : Container(
+      body: Obx(() => loginController.isLoading.value
+          ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
+          : Container(
           height: double.infinity,
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -130,15 +122,8 @@ class LoginPage extends StatelessWidget {
                       validator: (val) {
                         if (val!.isEmpty) {
                           return "Email must not be empty";
-                        } else {
-                          if (RegExp(
-                              r"^[a-zA-Z0-9]+[^#$%&*]+[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}")
-                              .hasMatch(val)) {
-                            return null;
-                          } else {
-                            return "Enter a valid Email";
-                          }
                         }
+                        return null;
                       },
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(vertical: Get.size.height * 0.025),
@@ -192,20 +177,23 @@ class LoginPage extends StatelessWidget {
                     ),
                     SizedBox(height: Get.size.height * 0.01),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Get.to(() => ForgetPassword());
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => ForgetPassword());
                             },
-                            child: Text('Forget Password ?',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Get.size.height * 0.020,
-                                )),
+                          child: Text(
+                            'Forget Password ?',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: Get.size.height * 0.020,
+                            ),
                           ),
-                        ]),
+                        ),
+                      ]
+                    ),
                     SizedBox(height: Get.size.height * 0.025),
                     MaterialButton(
                       padding: EdgeInsets.zero,
@@ -239,11 +227,13 @@ class LoginPage extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                                "Don't Have An Account?",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: Get.size.height * 0.022)),
+                              "Don't Have An Account?",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: Get.size.height * 0.022
+                              ),
+                            ),
                           ),
                           Expanded(
                             child: TextButton(
@@ -251,22 +241,25 @@ class LoginPage extends StatelessWidget {
                                 Get.to(() => RegisterPage());
                               },
                               child: Text(
-                                  'Sign Up',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: const Color.fromRGBO(225, 225, 225, 0.9),
-                                    color: const Color.fromRGBO(225, 225, 225, 0.9),
-                                    fontSize: Get.size.height * 0.023,
-                                  )),
+                                'Sign Up',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: const Color.fromRGBO(225, 225, 225, 0.9),
+                                  color: const Color.fromRGBO(225, 225, 225, 0.9),
+                                  fontSize: Get.size.height * 0.023,
+                                ),
+                              ),
                             ),
-                          )
-                        ]),
+                          ),
+                        ]
+                    ),
                   ],
                 ),
               ),
             ),
           ),
         ),
-        ));
+        ),
+    );
   }
 }

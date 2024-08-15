@@ -32,12 +32,18 @@ class HomeController extends GetxController {
       await fetchNewArrivals();
       isLoading.value = false;
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching Data:",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
     }
   }
 
   Future<void> fetchCategories() async {
-    var snapshot = await FirebaseFirestore.instance.collection('Categories').get();
+    var snapshot = await FirebaseFirestore.instance.collection('Categories')
+        .get();
     categories.assignAll(snapshot.docs.map((doc) => doc.data()).toList());
   }
 
@@ -51,10 +57,17 @@ class HomeController extends GetxController {
         data['Vehicle_Id'] = doc.id;
         return data;
       }).toList();
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Failed to load cars");
-    } finally {
-        isLoading(false);
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching Cars Data",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
+    }
+    finally {
+      isLoading(false);
     }
   }
 
@@ -68,9 +81,16 @@ class HomeController extends GetxController {
         data['Vehicle_Id'] = doc.id;
         return data;
       }).toList();
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Failed to load cars");
-    } finally {
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching Bike Data",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
+    }
+    finally {
       isLoading(false);
     }
   }
@@ -86,8 +106,14 @@ class HomeController extends GetxController {
         data['Vehicle_Id'] = doc.id;
         return data;
       }).toList());
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Failed to load new arrivals");
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching New Arrive Data",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
     }
   }
 
@@ -95,20 +121,46 @@ class HomeController extends GetxController {
     final User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       try {
-        var response = await FirebaseFirestore.instance.collection('Users').doc(currentUser.email).get();
-          username.value = response["Name"].toString();
-      }
-      catch(e){
-        Fluttertoast.showToast(msg: e.toString());
+        var response = await FirebaseFirestore.instance.collection('Users')
+            .doc(currentUser.email).get();
+
+        if (response.exists && response.data() != null) {
+          username.value =
+              response.data()?["Name"]?.toString() ?? "Unknown User";
+        } else {
+          Fluttertoast.showToast(
+            msg: "User Document Does Not Exist Or Is Empty",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+          );
+        }
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "Failed To Fetch Username",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+        );
       }
       finally {
         isLoading(false);
       }
     }
+    else {
+      Fluttertoast.showToast(
+        msg: "No Current User Found",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
+      isLoading(false);
+    }
   }
 }
 
-class Homescreen extends StatelessWidget {
+
+  class Homescreen extends StatelessWidget {
   Homescreen({super.key});
   final HomeController controller = Get.put(HomeController());
 
@@ -126,40 +178,36 @@ class Homescreen extends StatelessWidget {
           children: [
             const Text(
               "Hy,",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
             ),
             const SizedBox(width: 5),
             Obx(() => controller.isLoading.value
                 ? const Center(child: CircularProgressIndicator(color: Colors.transparent))
                 : Text(
               controller.username.value.capitalize.toString(),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
             )),
           ],
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8),
-            child: CircleAvatar(
+            child: Obx(() => CircleAvatar(
               backgroundColor: Colors.black,
-              child: Obx(() => controller.isLoading.value
-                  ? const Center(child: CircularProgressIndicator(color: Colors.transparent))
-                  : Text(
-                controller.username.value.characters.first.capitalize.toString(),
+              child: controller.isLoading.value
+                  ? const CircularProgressIndicator(color: Colors.transparent)
+                  : Text(controller.username.value.isNotEmpty
+                    ? controller.username.value.characters.first.capitalize!
+                    : "",
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w400,
                 ),
-              )),
-            ),
+              ),
+            )),
           ),
         ],
+
       ),
       body: Obx(() => controller.isLoading.value
           ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
@@ -179,7 +227,7 @@ class Homescreen extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                 ),
-                leading: const Icon(Icons.search),
+                leading: const Icon(Icons.search,color: Colors.black,),
                 hintText: "Find your vehicle",
                 hintStyle: WidgetStateProperty.all(
                   const TextStyle(color: Colors.grey),
@@ -232,7 +280,7 @@ class Homescreen extends StatelessWidget {
                               child: Image.network(
                                 category["Cat_Image"],
                                 fit: BoxFit.cover,
-                                height: mwidth * 0.15,
+                                height: mwidth * 0.14,
                               ),
                             ),
                           ),
@@ -262,7 +310,7 @@ class Homescreen extends StatelessWidget {
               ),
               SizedBox(height: mheight * 0.01),
               SizedBox(
-                height: mheight * 0.32,
+                height: mheight * 0.35,
                 child: PageView.builder(
                   itemCount: controller.newArrivals.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -347,17 +395,12 @@ class Homescreen extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: mheight * 0.01,),
-                              Row(
-                                children: [
-                                  const Text("₹"),
-                                  Text(
-                                    "${arrival["Rent_Price"].toString()}/ Day",
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "₹ ${arrival["Rent_Price"].toString()}/ Day",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
@@ -389,10 +432,7 @@ class Homescreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
         ],
       ),
     );
@@ -400,7 +440,7 @@ class Homescreen extends StatelessWidget {
 
   Widget _buildHorizontalList(List<dynamic> items, double mheight, String type) {
     return SizedBox(
-      height: mheight * 0.27,
+      height: mheight * 0.31,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -419,8 +459,7 @@ class Homescreen extends StatelessWidget {
                 description: item["Vehicle_Description"],
                 price: item["Rent_Price"].toString(),
                 image: item["Vehicle_Image"],
-              )
-                  : BikeDetail(
+              ) : BikeDetail(
                 index: index,
                 bikeId: item["Vehicle_Id"].toString(),
                 catName: item["Cat_Name"],
@@ -453,7 +492,7 @@ class Homescreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 5, right: 5),
                             child: Text(
                               item["Cat_Name"],
-                              style: const TextStyle(fontSize: 18),
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ),
                         ),
@@ -463,7 +502,7 @@ class Homescreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
                         item["Vehicle_Image"],
-                        height: mheight * 0.14,
+                        height: mheight * 0.15,
                         width: mheight * 0.2,
                         fit: BoxFit.cover,
                       ),
@@ -473,21 +512,15 @@ class Homescreen extends StatelessWidget {
                       item["Vehicle_Name"],
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 17,
+                        fontSize: 15,
                       ),
                     ),
-                    SizedBox(height: mheight * 0.01,),
-                    Row(
-                      children: [
-                        const Text("₹"),
-                        Text(
-                          "${item["Rent_Price"].toString()}/ Day",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "₹ ${item["Rent_Price"].toString()}/ Day",
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rentify/User/BookingPages/book_summary.dart';
@@ -27,10 +28,9 @@ class HistoryController extends GetxController {
 
       var pastSnapshot = await bookingCollection
           .where('Login_Id', isEqualTo: currentUser?.email)
-          .where('Booking_Status', isEqualTo: 'Cancel')
+          .where('Booking_Status', isEqualTo: 'Pending Refund')
           .get();
 
-      // Fetch vehicle data for current bookings
       await Future.wait(currentSnapshot.docs.map((doc) async {
         var vehicleData = await getVehicleData(doc['Vehicle_Id']);
         if (vehicleData != null) {
@@ -41,7 +41,6 @@ class HistoryController extends GetxController {
         }
       }));
 
-      // Fetch vehicle data for past bookings
       await Future.wait(pastSnapshot.docs.map((doc) async {
         var vehicleData = await getVehicleData(doc['Vehicle_Id']);
         if (vehicleData != null) {
@@ -51,9 +50,16 @@ class HistoryController extends GetxController {
           });
         }
       }));
-    } catch (e) {
-      print("Error fetching booking history: $e");
-    } finally {
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetch Booking Data.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
+    }
+    finally {
       isLoading.value = false;
     }
   }
@@ -69,13 +75,16 @@ class HistoryController extends GetxController {
         return vehicleDoc.exists ? vehicleDoc.data() : null;
       }
     } catch (e) {
-      print("Error fetching vehicle data: $e");
-      return null;
+      Fluttertoast.showToast(
+        msg: "Failed To Fetch Vehicle Data.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
     }
     return null;
   }
 }
-
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -116,8 +125,7 @@ class HistoryPage extends StatelessWidget {
               () => controller.isLoading.value
               ? const Center(
             child: CircularProgressIndicator(color: Colors.deepPurple),
-          )
-              : TabBarView(
+          ) : TabBarView(
             children: [
               buildBookingList(controller.currentBookings, mdheight, mwidth),
               buildBookingList(controller.pastBookings, mdheight, mwidth),
@@ -162,8 +170,7 @@ class HistoryPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(
-                                left: 5, right: 5, top: 2, bottom: 2),
+                            padding: const EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
                             decoration: BoxDecoration(
                                 color: Colors.pink.shade50,
                                 borderRadius: BorderRadius.circular(6)),
@@ -173,10 +180,7 @@ class HistoryPage extends StatelessWidget {
                             padding: EdgeInsets.only(left: 5, right: 5, top: 2),
                             child: Row(
                               children: [
-                                Icon(
-                                  Icons.bookmark,
-                                  color: Colors.blueGrey,
-                                )
+                                Icon(Icons.bookmark, color: Colors.blueGrey,)
                               ],
                             ),
                           ),
@@ -191,24 +195,11 @@ class HistoryPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  const Text("₹",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                  Text(
-                                    vehicleData["Rent_Price"].toString(),
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              const Text("/day"),
-                            ],
+                          Text(
+                            '₹ ${vehicleData["Rent_Price"].toString()} /day',
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ),
                           TextButton(
                               onPressed: () {
@@ -221,7 +212,8 @@ class HistoryPage extends StatelessWidget {
                                   price : vehicleData["Rent_Price"].toString(),
                                 ));
                               },
-                              child: const Text("View"))
+                              child: const Text("View")
+                          ),
                         ],
                       ),
                     ],

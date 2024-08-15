@@ -42,9 +42,7 @@ class HelpCenterController extends GetxController {
 }
 
 class HelpCenter extends StatelessWidget {
-  HelpCenter({super.key}) {
-    Get.put(HelpCenterController());
-  }
+  HelpCenter({super.key}) {Get.put(HelpCenterController());}
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +69,8 @@ class HelpCenter extends StatelessWidget {
             indicatorWeight: 2,
             labelColor: Colors.black,
             tabs: [
-              Tab(
-                text: 'FAQ',
-              ),
-              Tab(
-                text: 'Contact Us',
-              ),
+              Tab(text: 'FAQ',),
+              Tab(text: 'Contact Us',),
             ],
           ),
         ),

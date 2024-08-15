@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import '../DetailsPages/car_details.dart';
 import '../DetailsPages/bike_details.dart';
@@ -19,8 +20,14 @@ class SearchFetchController extends GetxController {
         return data;
       }).toList();
       isLoading(false);
-    } catch (e) {
-      Get.snackbar("Error", "Failed to fetch vehicles: $e");
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching Vehicle Data",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
     }
   }
 }
@@ -29,7 +36,6 @@ class SearchFetch extends StatelessWidget {
   final String vid;
   final String vName;
   final SearchFetchController controller = Get.put(SearchFetchController());
-
   SearchFetch({super.key, required this.vName, required this.vid}) {
     controller.fetchVehicles(vName);
   }
@@ -66,7 +72,7 @@ class SearchFetch extends StatelessWidget {
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisExtent: mheight * 0.27,
+                mainAxisExtent: mheight * 0.31,
                 crossAxisSpacing: 5,
                 mainAxisSpacing: 5
             ),
@@ -86,7 +92,8 @@ class SearchFetch extends StatelessWidget {
                       price: vehicle["Rent_Price"].toString(),
                       image: vehicle["Vehicle_Image"],
                     ));
-                  } else if (vehicle["Vehicle_Type"] == "Bike") {
+                  }
+                  else if (vehicle["Vehicle_Type"] == "Bike") {
                     Get.to(() => BikeDetail(
                       index: index,
                       bikeId: vehicle["Vehicle_Id"].toString(),
@@ -97,8 +104,6 @@ class SearchFetch extends StatelessWidget {
                       price: vehicle["Rent_Price"].toString(),
                       image: vehicle["Vehicle_Image"],
                     ));
-                  } else {
-                    Get.snackbar("Info", "Unsupported vehicle type");
                   }
                 },
                 child: Card(
@@ -146,7 +151,7 @@ class SearchFetch extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(
                               left: 4, bottom: 2, right: 4),
-                          child: Column(
+                              child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment:
                               MainAxisAlignment.spaceEvenly,
@@ -157,33 +162,11 @@ class SearchFetch extends StatelessWidget {
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Text(
-                                          "₹",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "${vehicle["Rent_Price"]}",
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    const Text(
-                                      "/ Day",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                                Text(
+                                  "₹ ${vehicle["Rent_Price"]} / Day",
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ]),
                         ),

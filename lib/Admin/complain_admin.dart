@@ -1,45 +1,63 @@
-import 'dart:convert';
-import 'package:intl/intl.dart';
-import 'package:flutter/Material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminComplainPage extends StatefulWidget {
-  const AdminComplainPage({super.key});
-
-  @override
-  State<AdminComplainPage> createState() => _AdminComplainPageState();
-}
-
-class _AdminComplainPageState extends State<AdminComplainPage> {
-
-  String? data;
-  dynamic getUser;
-  bool isLoading=false;
+class AdminComplainController extends GetxController {
+  var isLoading = false.obs;
+  var complains = [].obs;
 
   @override
-  void initState(){
-    super.initState();
-    getdata();
+  void onInit() {
+    super.onInit();
+    fetchComplains();
   }
 
-  Future getdata() async{
-    setState(() {
-      isLoading = true;
-    });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Complain_Admin.php"));
-    if(response.statusCode==200){
-      data=response.body;
-      setState(() {
-        isLoading=false;
-        getUser=jsonDecode(data!)["users"];
-      });
+  Future<void> fetchComplains() async {
+    try {
+      isLoading(true);
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Complains')
+          .orderBy('Timestamp', descending: true).get();
+
+
+      for (var complainDoc in snapshot.docs) {
+        var complainData = complainDoc.data() as Map<String, dynamic>;
+        var vehicleId = complainData['Vehicle_Id'];
+        var loginId = complainData['Login_Id'];
+
+        DocumentSnapshot vehicleSnapshot = await FirebaseFirestore.instance.collection('Vehicles')
+            .doc(vehicleId).get();
+
+        if (vehicleSnapshot.exists) {
+          complainData['Vehicle_Name'] = vehicleSnapshot['Vehicle_Name'];
+        }
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('Users')
+            .doc(loginId).get();
+
+        if (userSnapshot.exists) {
+          complainData['Name'] = userSnapshot['Name'];
+        }
+        complains.add(complainData);
+      }
+    }
+    catch(e){
+      Fluttertoast.showToast(
+          msg: "Failed To Fetch Complain",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2
+      );
+    }
+    finally {
+      isLoading(false);
     }
   }
+}
 
-  String formatDate(String date) {
-    DateTime dateTime = DateTime.parse(date);
-    return DateFormat('dd/MM/yyyy  HH:mm').format(dateTime);
-  }
+class AdminComplainPage extends StatelessWidget {
+  AdminComplainPage({super.key});
+  final AdminComplainController controller = Get.put(AdminComplainController());
+
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
@@ -57,55 +75,65 @@ class _AdminComplainPageState extends State<AdminComplainPage> {
         ),
         centerTitle: true,
       ),
-      body:isLoading ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple),) : ListView.builder(
-            itemCount: getUser.length,
-              itemBuilder: (BuildContext context, int index)
-            {
-              return Padding(padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
-              child: Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                margin: EdgeInsets.all(mdheight * 0.01),
-                shadowColor: Colors.deepPurple.shade800,
-                semanticContainer: true,
-                surfaceTintColor: Colors.deepPurple.shade800,
-                child: Padding(
-                  padding: EdgeInsets.all(mdheight * 0.017),
-                  child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.deepPurple),
+          );
+        }
+
+        if (controller.complains.isEmpty) {
+          return Center(
+            child: Text(
+              'No Complains available',
+              style: TextStyle(
+                color: Colors.deepPurple.shade800,
+                fontSize: mdheight * 0.02,
+              ),
+            ),
+          );
+        }
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              controller.fetchComplains();
+            },
+            child:  ListView.builder(
+                itemCount: controller.complains.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var complain = controller.complains[index];
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: mdwidth * 0.025, vertical: mdheight * 0.005),
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      margin: EdgeInsets.all(mdheight * 0.01),
+                      shadowColor: Colors.deepPurple.shade800,
+                      semanticContainer: true,
+                      surfaceTintColor: Colors.deepPurple.shade800,
+                      child: Padding(
+                        padding: EdgeInsets.all(mdheight * 0.017),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('User Name: '),
-                            Text(getUser[index]["Name"]),
+                            Text('User Name : ${complain["Name"]}', style: TextStyle(fontSize: mdheight * 0.024, fontWeight: FontWeight.bold),),
+                            SizedBox(height: mdheight * 0.01),
+                            Text('Complain Time : ${complain["Timestamp"].toString()}'),
+                            Text('Vehicle Name : ${complain["Vehicle_Name"]}'),
+                            Text('Complain Description : ${complain["Complain"]}'),
+                            SizedBox(height: mdheight * 0.01),
                           ],
                         ),
-                        Text(formatDate(getUser[index]["Complain_Timestamp"])),
-                      ],
+                      ),
                     ),
-                    SizedBox(height: mdheight * 0.01,),
-                    Row(
-                       children: [
-                         const Text('Vehicle Name: '),
-                         Text(getUser[index]["Vehicle_Name"]),
-                       ],
-                     ),
-                    SizedBox(height: mdheight * 0.01,),
-                    Row(
-                      children: [
-                        const Text('Complain Description: '),
-                        Text(getUser[index]["Complain"]),
-                      ],
-                    ),
-                    SizedBox(height: mdheight * 0.01,),
-                  ],
-                ),
-              ),
-            ));
-          }),
+                  );
+                }
+            ),
+          );
+        }
+      ),
     );
   }
 }

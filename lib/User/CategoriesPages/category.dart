@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rentify/User/CategoriesPages/category_vehicle_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,19 +19,23 @@ class CategoryController extends GetxController {
       isLoading(true);
       var snapshot = await FirebaseFirestore.instance.collection('Categories').get();
       categories.assignAll(snapshot.docs.map((doc) => doc.data()).toList());
-    } catch (e) {
-      Get.snackbar("Error", "Failed to fetch categories: $e");
-    } finally {
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed To Fetching Category ",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
+    }
+    finally {
       isLoading(false);
     }
   }
 }
 
-
-
 class Category extends StatelessWidget {
   final CategoryController controller = Get.put(CategoryController());
-
   Category({super.key});
 
   @override

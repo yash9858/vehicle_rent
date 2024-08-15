@@ -10,7 +10,7 @@ class PayController extends GetxController {
   void onInit() {
     super.onInit();
     Timer(const Duration(seconds: 2), () {
-      Get.offAll(() => const UserDashboard());
+      Get.offAll(() => UserDashboard());
       Fluttertoast.showToast(
         msg: "Payment Successful.",
         toastLength: Toast.LENGTH_LONG,

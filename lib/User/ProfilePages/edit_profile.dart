@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rentify/User/HomePages/user_dash_board.dart';
 
 class EditProfileController extends GetxController {
   final TextEditingController user = TextEditingController();
@@ -14,15 +13,57 @@ class EditProfileController extends GetxController {
   final TextEditingController li = TextEditingController();
   final TextEditingController address = TextEditingController();
   final _picker = ImagePicker();
-
   var isLoading = true.obs;
   var userData = {}.obs;
   var profileImage = Rxn<File>();
+  var gender = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     getData();
+  }
+
+  void _showDatePicker(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    ).then((date) {
+      if (date != null) {
+        final formattedDate = "${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}";
+        dob.text = formattedDate;
+      }
+    });
+  }
+
+  bool _isValidDOB(String dob) {
+    final dateParts = dob.split("-");
+    if (dateParts.length != 3) return false;
+
+    final day = int.tryParse(dateParts[0]);
+    final month = int.tryParse(dateParts[1]);
+    final year = int.tryParse(dateParts[2]);
+
+    if (day == null || month == null || year == null) return false;
+
+    final now = DateTime.now();
+    final age = now.year - year;
+    if (age < 18 || (age == 18 && (now.month < month || (now.month == month && now.day < day)))) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _isValidLicence(String licence) {
+    final regex = RegExp(r'^[a-zA-Z0-9]+$');
+    return regex.hasMatch(licence);
+  }
+
+  bool _isValidName(String name) {
+    final regex = RegExp(r'^[a-zA-Z\s]+$');
+    return regex.hasMatch(name);
   }
 
   Future<void> getData() async {
@@ -35,15 +76,17 @@ class EditProfileController extends GetxController {
           userData.value = response.data()!;
           user.text = userData["Name"] ?? "";
           dob.text = userData["Dob"] ?? "";
-          li.text = userData["License"] ?? "";
+          li.text = userData["Licence"] ?? "";
           address.text = userData["Address"] ?? "";
+          gender.value = userData["Gender"] ?? ""; // Set gender value
         }
       }
     } catch (error) {
       Fluttertoast.showToast(
-        msg: "Error fetching user data: $error",
+        msg: "Failed To Fetching User Data",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
       );
     } finally {
       isLoading(false);
@@ -51,7 +94,7 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> selectImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       profileImage.value = File(pickedFile.path);
     }
@@ -65,12 +108,13 @@ class EditProfileController extends GetxController {
         Map<String, dynamic> updateData = {
           'Name': user.text,
           'Dob': dob.text,
-          'License': li.text,
+          'Licence': li.text,
           'Address': address.text,
+          'Gender': gender.value, 
         };
 
         if (profileImage.value != null) {
-          String fileName = 'profiles_images/${currentUser.uid}/${profileImage.value!.path.split('/').last}';
+          String fileName = 'profile_images/${currentUser.uid}/${profileImage.value!.path.split('/').last}';
           final storageRef = FirebaseStorage.instance.ref().child(fileName);
           await storageRef.putFile(profileImage.value!);
 
@@ -79,38 +123,41 @@ class EditProfileController extends GetxController {
         }
 
         await FirebaseFirestore.instance.collection('Users').doc(currentUser.email).update(updateData);
-
         Fluttertoast.showToast(
-          msg: "Profile updated successfully",
+          msg: "Profile Updated Successfully",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
         );
-
-        Get.offAll(() => const UserDashboard());
+        getData();
       } else {
         Fluttertoast.showToast(
-          msg: "User not found",
+          msg: "User Not Found",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
         );
       }
     } catch (error) {
       Fluttertoast.showToast(
-        msg: "Something went wrong: $error",
+        msg: "Failed To Update Profile",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
       );
     } finally {
       isLoading(false);
     }
   }
-}
 
+  void updateGender(String value) {
+    gender.value = value;
+  }
+}
 
 class EditProfile extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final EditProfileController controller = Get.put(EditProfileController());
-
   EditProfile({super.key});
 
   @override
@@ -163,7 +210,8 @@ class EditProfile extends StatelessWidget {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextField(
+                    TextFormField(
+                      validator: (value) => controller._isValidName('Please Enter Valid Name').toString(),
                       controller: controller.user,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.name,
@@ -177,7 +225,13 @@ class EditProfile extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: mdheight * 0.025),
-                    TextField(
+                    TextFormField(
+                      validator: (value){
+                        if(value!.length < 10 || value.length > 50){
+                          return "PLease Enter A Valid Range Of Address";
+                        }
+                        return null;
+                      },
                       controller: controller.address,
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
@@ -190,7 +244,8 @@ class EditProfile extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: mdheight * 0.025),
-                    TextField(
+                    TextFormField(
+                      validator: (value) => controller._isValidDOB("PLease Enter Valid DOB").toString(),
                       controller: controller.dob,
                       keyboardType: TextInputType.datetime,
                       textInputAction: TextInputAction.next,
@@ -199,13 +254,17 @@ class EditProfile extends StatelessWidget {
                         filled: true,
                         hintText: 'YYYY-MM-DD',
                         labelText: "Date Of Birth",
-                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIcon: IconButton(
+                            onPressed: () => controller._showDatePicker(context),
+                            icon: const Icon(Icons.calendar_month)
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(mdheight * 0.02)),
                       ),
                     ),
                     SizedBox(height: mdheight * 0.025),
                     TextFormField(
+                      validator: (value) => controller._isValidLicence('PLease Enter Valid Licence Number').toString(),
                       controller: controller.li,
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
@@ -221,32 +280,34 @@ class EditProfile extends StatelessWidget {
                   ],
                 ),
               ),
-              Row(children: [
-                Radio(
-                  value: "Male",
-                  groupValue: controller.userData['Gender'],
-                  onChanged: (value) {
-                    controller.userData['Gender'] = value;
-                  },
-                ),
-                const Text('Male', style: TextStyle(fontSize: 18)),
-                Radio(
-                  value: "Female",
-                  groupValue: controller.userData['Gender'],
-                  onChanged: (value) {
-                    controller.userData['Gender'] = value;
-                  },
-                ),
-                const Text('Female', style: TextStyle(fontSize: 18)),
-                Radio(
-                  value: "Other",
-                  groupValue: controller.userData['Gender'],
-                  onChanged: (value) {
-                    controller.userData['Gender'] = value;
-                  },
-                ),
-                const Text('Other', style: TextStyle(fontSize: 18)),
-              ]),
+              Row(
+                children: [
+                  Obx(() => Radio(
+                    value: "Male",
+                    groupValue: controller.gender.value,
+                    onChanged: (value) {
+                      controller.updateGender(value!);
+                    },
+                  )),
+                  const Text('Male', style: TextStyle(fontSize: 18)),
+                  Obx(() => Radio(
+                    value: "Female",
+                    groupValue: controller.gender.value,
+                    onChanged: (value) {
+                      controller.updateGender(value!);
+                    },
+                  )),
+                  const Text('Female', style: TextStyle(fontSize: 18)),
+                  Obx(() => Radio(
+                    value: "Other",
+                    groupValue: controller.gender.value,
+                    onChanged: (value) {
+                      controller.updateGender(value!);
+                    },
+                  )),
+                  const Text('Other', style: TextStyle(fontSize: 18)),
+                ],
+              ),
               SizedBox(height: mdheight * 0.03),
               Container(
                 decoration: BoxDecoration(
@@ -261,11 +322,14 @@ class EditProfile extends StatelessWidget {
                       controller.uploadImageMedia();
                     }
                   },
-                  child: Text('Save Details',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: mdheight * 0.025,
-                          fontWeight: FontWeight.bold)),
+                  child: Text(
+                    'Save Details',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: mdheight * 0.025,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
                 ),
               ),
             ],

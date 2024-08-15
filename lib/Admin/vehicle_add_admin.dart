@@ -6,14 +6,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddVehicleController extends GetxController {
+class AdminAddVehicleController extends GetxController {
   var isLoading = false.obs;
   final ImagePicker _picker = ImagePicker();
   File? image;
+  dynamic vehicleId;
+  var selectedVehicleType = 'Car'.obs;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
-  TextEditingController typeController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -32,7 +33,7 @@ class AddVehicleController extends GetxController {
     }
     if (nameController.text.isEmpty ||
         numberController.text.isEmpty ||
-        typeController.text.isEmpty ||
+        selectedVehicleType.value.isEmpty ||
         priceController.text.isEmpty ||
         descriptionController.text.isEmpty) {
       Fluttertoast.showToast(msg: "Please fill all fields");
@@ -47,21 +48,44 @@ class AddVehicleController extends GetxController {
       await storageRef.putFile(image!);
       String downloadUrl = await storageRef.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('Vehicles').add({
+      var counterRef = FirebaseFirestore.instance.collection('Counter').doc('VehicleCounter');
+      var counterSnapshot = await counterRef.get();
+
+      if (counterSnapshot.exists) {
+        vehicleId = counterSnapshot.data()?['latestId'] + 1;
+      } else {
+        vehicleId = 1;
+      }
+
+      await counterRef.set({'latestId': vehicleId});
+
+      await FirebaseFirestore.instance.collection('Vehicles').doc(vehicleId.toString()).set({
+        'Vehicle_Id': vehicleId,
         'Vehicle_Name': nameController.text,
         'Vehicle_Number': numberController.text,
-        'Vehicle_Type': typeController.text,
-        'Rent_Price': priceController.text,
+        'Vehicle_Type': selectedVehicleType.value,
+        'Rent_Price': int.parse(priceController.text),
         'Vehicle_Description': descriptionController.text,
         'Cat_Name': categoryName,
         'Vehicle_Image': downloadUrl,
       });
-
-      Fluttertoast.showToast(msg: "Vehicle added successfully");
+      Fluttertoast.showToast(
+          msg: "Vehicle Added Successfully",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2
+      );
       Get.back();
-    } catch (e) {
-      Fluttertoast.showToast(msg: "Something went wrong");
-    } finally {
+    }
+    catch (e) {
+      Fluttertoast.showToast(
+          msg: "Failed To Add Vehicle",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2
+      );
+    }
+    finally {
       isLoading.value = false;
     }
   }
@@ -69,10 +93,9 @@ class AddVehicleController extends GetxController {
 
 class AdminAddVehicle extends StatelessWidget {
   final String name;
-
   AdminAddVehicle({super.key, required this.name});
 
-  final AddVehicleController addVehicleController = Get.put(AddVehicleController());
+  final AdminAddVehicleController addVehicleController = Get.put(AdminAddVehicleController());
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +163,7 @@ class AdminAddVehicle extends StatelessWidget {
                         controller: addVehicleController.nameController,
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "Please enter name";
+                            return "Please Enter Name";
                           }
                           return null;
                         },
@@ -158,7 +181,7 @@ class AdminAddVehicle extends StatelessWidget {
                         controller: addVehicleController.numberController,
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "Please enter number";
+                            return "Please Enter Vehicle Number";
                           }
                           return null;
                         },
@@ -172,21 +195,22 @@ class AdminAddVehicle extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: mdheight * 0.025),
-                      TextFormField(
-                        controller: addVehicleController.typeController,
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return "Please enter vehicle type";
-                          }
-                          return null;
+                      DropdownButtonFormField<String>(
+                        value: addVehicleController.selectedVehicleType.value,
+                        items: ['Car', 'Bike'].map((String category) => DropdownMenuItem<String>(
+                          value: category,
+                          child: Text(category),
+                        )).toList(),
+                        onChanged: (newValue) {
+                          addVehicleController.selectedVehicleType.value = newValue!;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
-                          hintText: 'Enter Vehicle Type',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
+                          hintText: 'Select Vehicle Type',
                         ),
                       ),
                       SizedBox(height: mdheight * 0.025),
@@ -194,7 +218,7 @@ class AdminAddVehicle extends StatelessWidget {
                         controller: addVehicleController.descriptionController,
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "Please enter description";
+                            return "Please Enter Vehicle Description";
                           }
                           return null;
                         },
@@ -210,9 +234,10 @@ class AdminAddVehicle extends StatelessWidget {
                       SizedBox(height: mdheight * 0.025),
                       TextFormField(
                         controller: addVehicleController.priceController,
+                        keyboardType: TextInputType.number,
                         validator: (val) {
                           if (val!.isEmpty) {
-                            return "Please enter price";
+                            return "Please Enter Vehicle Price";
                           }
                           return null;
                         },

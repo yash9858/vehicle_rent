@@ -14,15 +14,14 @@ class FeedbackController extends GetxController {
   Future<void> fetchFeedback(String vehicleId) async {
     try {
       isLoading(true);
-      QuerySnapshot feedbackSnapshot = await FirebaseFirestore.instance
-          .collection('Feedbacks')
-          .where('Vehicle_Id', isEqualTo: vehicleId)
-          .get();
+      QuerySnapshot feedbackSnapshot = await FirebaseFirestore.instance.collection('Feedbacks')
+          .where('Vehicle_Id', isEqualTo: vehicleId).get();
 
       feedbackList.value = feedbackSnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
-    } catch (e) {
+    }
+    catch (e) {
       Fluttertoast.showToast(
         msg: "Failed to load feedback: $e",
         toastLength: Toast.LENGTH_LONG,
@@ -76,7 +75,7 @@ class FeedbackController extends GetxController {
         hour = hour % 12;
         if (hour == 0) hour = 12;
 
-        return "${date.month}/${date.day}/${date.year}, $hour:${date.minute.toString().padLeft(2, '0')} $period";
+        return "${date.day}/${date.month}/${date.year}, $hour:${date.minute.toString().padLeft(2, '0')} $period";
       }
 
       var response = await FirebaseFirestore.instance.collection('Users').doc(currentUser.email).get();

@@ -1,9 +1,7 @@
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 
 class CancelBookings extends StatefulWidget {
   const CancelBookings({super.key});
@@ -12,285 +10,289 @@ class CancelBookings extends StatefulWidget {
   State<CancelBookings> createState() => _CancelBookingsState();
 }
 
-class _CancelBookingsState extends State<CancelBookings> {
-
-  dynamic logindata;
-  String? data;
-  dynamic getUser;
-  String? data2;
-  dynamic getUser2;
-  bool isLoading = true;
-  dynamic feed;
+class _CancelBookingsState extends State<CancelBookings>
+    with SingleTickerProviderStateMixin {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final RxBool isLoading = true.obs;
+  final RxList<Map<String, dynamic>> cancelList = <Map<String, dynamic>>[].obs;
+  final RxList<Map<String, dynamic>> refundList = <Map<String, dynamic>>[].obs;
+  late TabController _tabController;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    getdata();
-  }
-
-  Future getdata() async{
-    setState(() {
-      isLoading = true;
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        getData();
+      }
     });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Cancel_Admin.php"));
-    if(response.statusCode==200){
-      data=response.body;
-      setState(() {
-        isLoading=false;
-        getUser=jsonDecode(data!)["users"];
-        getdata2();
-      });
-    }
+    getData();
   }
 
-  Future getdata2() async{
-    setState(() {
-      isLoading = true;
-    });
-    http.Response response= await http.get(Uri.parse("https://road-runner24.000webhostapp.com/API/Page_Fetch_API/Refund_Pending.php"));
-    if(response.statusCode==200){
-      data2=response.body;
-      setState(() {
-        isLoading=false;
-        getUser2=jsonDecode(data2!)["users"];
-        feed=jsonDecode(data2!)["Cancle_Id"];
-      });
-    }
-  }
+  Future<void> getData() async {
+    isLoading(true);
+    try {
 
-  String formatDate(String date)
-  {
-    DateTime dateTime = DateTime.parse(date);
-    return DateFormat('dd/MM/yyyy & HH:mm').format(dateTime);
+      QuerySnapshot cancelSnapshot = await _firestore.collection('Bookings')
+          .where('Booking_Status', isEqualTo: 'Refund').get();
+      cancelList.value = await Future.wait(cancelSnapshot.docs.map((doc) async {
+        var data = doc.data() as Map<String, dynamic>;
+        var userDoc = await _firestore.collection('Users')
+            .doc(data['Login_Id']).get();
+        data['Name'] = userDoc.data()?['Name'];
+        return data;
+      }).toList());
+
+      QuerySnapshot refundSnapshot = await _firestore.collection('Bookings')
+          .where('Booking_Status', isEqualTo: 'Pending Refund').get();
+
+      refundList.value = await Future.wait(refundSnapshot.docs.map((doc) async {
+        var data = doc.data() as Map<String, dynamic>;
+        var userDoc = await _firestore
+            .collection('Users')
+            .doc(data['Login_Id'])
+            .get();
+        data['Name'] = userDoc.data()?['Name'];
+        return data;
+      }).toList());
+    }
+    catch (e) {
+      Fluttertoast.showToast(msg: "Error: $e");
+    } finally {
+      isLoading(false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     var mdheight = MediaQuery.sizeOf(context).height;
     var mdwidth = MediaQuery.sizeOf(context).width;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text(" Cancel bookings"),
-            centerTitle: true,
-            backgroundColor: Colors.deepPurple.shade800,
-            bottom: const TabBar(
-                indicatorColor: Colors.white,
-                indicatorWeight: 3,
-                labelColor: Colors.white,
-                tabs: [
-                  Tab(
-                    text: 'Cancel List',
-                  ),
-                  Tab(
-                    text: 'Refund List',
-                  ),
-                ]),
-          ),
-
-          body: isLoading ?  const Center(child: CircularProgressIndicator(color: Colors.deepPurple),) :
-          TabBarView(
-            children: [
-              ListView.builder(
-                  itemCount: getUser.length,
-                  itemBuilder: (BuildContext context,int index){
-                    return Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      margin: EdgeInsets.all(mdheight * 0.017),
-                      shadowColor: Colors.deepPurple.shade800,
-                      surfaceTintColor: Colors.deepPurple.shade800,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                                children:[
-                                  Text("${index+1}. ",style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                                  Text(getUser[index]["Name"],style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
-                                ]),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                  const Text("Booking Id : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  Expanded(child: Text(getUser[index]["Booking_Id"]),
-                                )],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                  const Text("Reason : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  Expanded(child: Text(getUser[index]["Reason"]),
-                                )],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                const Text("Cancelation Date & Time : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                Text(formatDate(getUser[index]["Cancelation_Time"])),
-                            ]),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-
-              feed==null?
-              ListView.builder(
-                  itemCount: getUser2.length,
-                  itemBuilder: (BuildContext context,int index){
-                    return Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      margin: EdgeInsets.all(mdheight * 0.017),
-                      shadowColor: Colors.deepPurple.shade800,
-                      surfaceTintColor: Colors.deepPurple.shade800,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                                children:[
-                                    Text("${index+1}. ",style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                                    Text(getUser2[index]["Name"],style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
-                                ]),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                  const Text("Booking Id : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  Expanded(child: Text(getUser2[index]["Booking_Id"]),
-                                )],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                  const Text("Reason : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  Expanded(child: Text(getUser2[index]["Reason"]),
-                                )],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                                children: [
-                                    const Text("Cancelation Date & Time : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                    Text(formatDate(getUser2[index]["Cancelation_Time"])),
-                                ]),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                MaterialButton(onPressed: (){
-                                  showDialog(context: context, builder: (context)
-                                  {
-                                    return Dialog(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
-                                          child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                SizedBox(height: mdheight * 0.02),
-                                                Padding(
-                                                  padding: EdgeInsets.only(left : mdwidth * 0.05, right: mdwidth * 0.01,),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children :[
-                                                      Row(
-                                                        children: [
-                                                          const Text('Booking Id : '),
-                                                          Text(getUser2[index]["Booking_Id"]),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: mdheight * 0.01),
-                                                      Row(
-                                                        children: [
-                                                          const Text('Payment Id : '),
-                                                          Text(getUser2[index]["Payment_Id"]),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: mdheight * 0.01),
-                                                      Row(
-                                                        children: [
-                                                          const Text('Cancle Id : '),
-                                                          Text(getUser2[index]["Cancle_Id"]),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: mdheight * 0.01),
-                                                      Row(
-                                                        children: [
-                                                          const Text('Refund Amount : '),
-                                                          Text(getUser2[index]["Refund_Amount"]),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: mdheight * 0.01),
-                                                    ],
-                                                  ),
-                                                ),
-                                                MaterialButton(onPressed: (){
-                                                 _submit2(index).whenComplete(() => Get.off(()=> const CancelBookings()));
-                                                 _submit2(index).whenComplete(() => Get.back());
-                                                },
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.02)),
-                                                    ),
-                                                    color: Colors.deepPurple.shade800,
-                                                    elevation: 5.0,
-                                                    child: const Text('Refund', style: TextStyle(color: Colors.white,),)),
-                                                    SizedBox(height: mdheight * 0.01),
-                                              ]
-                                          ),
-                                        ));
-                                  });
-                                },
-                                    color: Colors.deepPurple.shade800,
-                                    padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(mdheight * 0.02)),
-                                    ),
-                                    child: const Text('Proceed Refund', style:TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  })
-                  :const Center(
-                child:
-                Text("No Data found"),
-              )
+        appBar: AppBar(
+          title: const Text("Cancel bookings"),
+          centerTitle: true,
+          backgroundColor: Colors.deepPurple.shade800,
+          bottom: TabBar(
+            controller: _tabController,
+            indicatorColor: Colors.white,
+            indicatorWeight: 3,
+            labelColor: Colors.white,
+            tabs: const [
+              Tab(text: 'Cancel List'),
+              Tab(text: 'Refund List'),
             ],
-          )
+          ),
+        ),
+        body: Obx(() => isLoading.value
+            ? const Center(
+          child: CircularProgressIndicator(color: Colors.deepPurple),
+        )
+            : TabBarView(
+          controller: _tabController,
+          children: [
+            cancelList.isEmpty
+                ? const Center(child: Text("No Cancel Data"))
+                : _buildListView(cancelList, mdheight, mdwidth),
+            refundList.isEmpty
+                ? const Center(child: Text("No Data found"))
+                : _buildRefundListView(refundList, mdheight, mdwidth),
+          ],
+        )),
       ),
     );
   }
 
-Future<void> _submit2(int index) async {
-  final loginUrl = Uri.parse(
-      "https://road-runner24.000webhostapp.com/API/Update_API/Refund_Status_update.php");
-  final response = await http
-      .post(loginUrl, body: {
-    "Cancle_Id": getUser2[index]["Cancle_Id"],
-  });
-  if (response.statusCode == 200) {
-    setState(() {
-      isLoading = false;
-    });
-    if (logindata['error'] == false) {
-      Get.back();
-    }
-    else{
+  Widget _buildListView(
+      RxList<Map<String, dynamic>> list, double mdheight, double mdwidth) {
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 5,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: EdgeInsets.all(mdheight * 0.017),
+          shadowColor: Colors.deepPurple.shade800,
+          surfaceTintColor: Colors.deepPurple.shade800,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  Text("${index + 1}. ",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(list[index]['Name'],
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold)),
+                ]),
+                const SizedBox(height: 16),
+                _buildRow(
+                    "Booking Id : ", list[index]["Booking_Id"].toString()),
+                const SizedBox(height: 10),
+                _buildRow("Reason : ", list[index]["Cancellation_Reason"]),
+                const SizedBox(height: 10),
+                _buildRow("Cancelation Date & Time : ",
+                    list[index]["Cancellation_Time"].toString()),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildRefundListView(
+      RxList<Map<String, dynamic>> list, double mdheight, double mdwidth) {
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        var book = list[index];
+        return Card(
+          elevation: 5,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: EdgeInsets.all(mdheight * 0.017),
+          shadowColor: Colors.deepPurple.shade800,
+          surfaceTintColor: Colors.deepPurple.shade800,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  Text("${index + 1}. ",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(book["Name"],
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold)),
+                ]),
+                const SizedBox(height: 16),
+                _buildRow("Booking Id : ", book["Booking_Id"].toString()),
+                const SizedBox(height: 10),
+                _buildRow("Reason : ", book["Cancellation_Reason"]),
+                const SizedBox(height: 10),
+                _buildRow("Cancelation Date & Time : ",
+                    book["Cancellation_Time"].toString()),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        _showRefundDialog(context, list[index], mdheight, mdwidth);
+                      },
+                      color: Colors.deepPurple.shade800,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: mdwidth * 0.05, vertical: mdwidth * 0.01),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(mdheight * 0.02)),
+                      ),
+                      child: const Text('Proceed Refund',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildRow(String label, String value) {
+    return Row(
+      children: [
+        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Expanded(child: Text(value)),
+      ],
+    );
+  }
+
+  void _showRefundDialog(BuildContext context, Map<String, dynamic> booking,
+      double mdheight, double mdwidth) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: mdwidth * 0.03),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: mdheight * 0.02),
+                Padding(
+                  padding:
+                  EdgeInsets.only(left: mdwidth * 0.05, right: mdwidth * 0.01),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildRow(
+                          'Booking Id : ', booking["Booking_Id"].toString()),
+                      SizedBox(height: mdheight * 0.01),
+                      SizedBox(height: mdheight * 0.01),
+                      _buildRow('Cancle Id : ', booking["Cancle_Id"].toString()),
+                      SizedBox(height: mdheight * 0.01),
+                      _buildRow('Refund Amount : ', booking["Refund_Amount"]),
+                      SizedBox(height: mdheight * 0.01),
+                    ],
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    _submitRefund(booking["Booking_Id"].toString()).then((_) {
+                      Get.back();
+                      getData();
+                      _tabController.animateTo(1); // Switch back to Refund List tab
+                    });
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(mdheight * 0.02)),
+                  ),
+                  color: Colors.deepPurple.shade800,
+                  elevation: 5.0,
+                  child: const Text('Refund',
+                      style: TextStyle(color: Colors.white)),
+                ),
+                SizedBox(height: mdheight * 0.01),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _submitRefund(String cancelId) async {
+    isLoading(true);
+    try {
+      await _firestore.collection('Bookings').doc(cancelId).update({
+        "Booking_Status": "Refund",
+      });
       Fluttertoast.showToast(
-          msg: logindata['message'].toString(),
+          msg: "Refund processed successfully",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 2
-      );
+          timeInSecForIosWeb: 2);
     }
-  }
+    catch (e) {
+      Fluttertoast.showToast(msg: "Error: $e");
+    }
+    finally {
+      isLoading(false);
+    }
   }
 }

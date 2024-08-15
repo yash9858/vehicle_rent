@@ -9,8 +9,7 @@ class WaitPayController extends GetxController {
   void onInit() {
     super.onInit();
     Timer(
-      const Duration(seconds: 3),
-          () {
+      const Duration(seconds: 3), () {
         Get.off(() => Pay());
       },
     );
@@ -32,12 +31,7 @@ class WaitPay extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset("assets/img/load_pay.json", height: 250, width: 250),
-            const Text(
-              'Wait For Confirmation',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
+            const Text('Wait For Confirmation', style: TextStyle(fontSize: 18,),),
           ],
         ),
       ),

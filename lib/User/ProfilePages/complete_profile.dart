@@ -9,19 +9,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rentify/User/HomePages/user_dash_board.dart';
 
 class CompleteProfileController extends GetxController {
+  var gender = 'Male'.obs;
+  final _picker = ImagePicker();
+  var image = Rx<File?>(null);
+  var isLoading = false.obs;
   TextEditingController user = TextEditingController();
   TextEditingController dob = TextEditingController();
   TextEditingController li = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController address = TextEditingController();
-  var gender = 'Male'.obs;
-
-  final _picker = ImagePicker();
-  var image = Rx<File?>(null);
-  var isLoading = false.obs;
 
   Future<void> getImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       image.value = File(pickedFile.path);
     }
@@ -30,9 +29,10 @@ class CompleteProfileController extends GetxController {
   Future<void> uploadImageMedia() async {
     if (image.value == null) {
       Fluttertoast.showToast(
-        msg: "Please select an image",
+        msg: "Please Select An Image",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
       );
       return;
     }
@@ -40,9 +40,10 @@ class CompleteProfileController extends GetxController {
     final User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
       Fluttertoast.showToast(
-        msg: "No user is signed in",
+        msg: "No User Is Signed In",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
       );
       return;
     }
@@ -52,30 +53,31 @@ class CompleteProfileController extends GetxController {
       final ref = FirebaseStorage.instance.ref().child('profile_images').child('${currentUser.email}.jpg');
       await ref.putFile(image.value!);
       final imageUrl = await ref.getDownloadURL();
-
       final userData = {
         'Name': user.text,
         'Dob': dob.text,
-        'License': li.text,
+        'Licence': li.text,
         'Phone': phone.text,
         'Address': address.text,
         'Gender': gender.value,
         'Profile_Image': imageUrl,
+        'Status' : "1",
+        'Role' : "User"
       };
 
       await FirebaseFirestore.instance.collection('Users').doc(currentUser.email).set(userData);
-
       Fluttertoast.showToast(
         msg: "Profile Added Successfully",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
       );
       isLoading.value = false;
-      Get.offAll(() => const UserDashboard());
-    } catch (e) {
+      Get.offAll(() => UserDashboard());
+    }
+    catch (e) {
       isLoading.value = false;
       Fluttertoast.showToast(
-        msg: "Error: ${e.toString()}",
+        msg: "Failed To Added Profile",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
       );
@@ -83,16 +85,10 @@ class CompleteProfileController extends GetxController {
   }
 }
 
-class CompleteProfile extends StatefulWidget {
-  const CompleteProfile({super.key});
-
-  @override
-  CompleteProfileState createState() => CompleteProfileState();
-}
-
-class CompleteProfileState extends State<CompleteProfile> {
+class CompleteProfile extends StatelessWidget {
   final CompleteProfileController controller = Get.put(CompleteProfileController());
   final _formKey = GlobalKey<FormState>();
+  CompleteProfile({super.key});
 
   void _showDatePicker(BuildContext context) {
     showDatePicker(
@@ -102,9 +98,43 @@ class CompleteProfileState extends State<CompleteProfile> {
       lastDate: DateTime.now(),
     ).then((date) {
       if (date != null) {
-        controller.dob.text = date.toLocal().toString().split(' ')[0];
+        final formattedDate = "${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}";
+        controller.dob.text = formattedDate;
       }
     });
+  }
+
+  bool _isValidDOB(String dob) {
+    final dateParts = dob.split("-");
+    if (dateParts.length != 3) return false;
+
+    final day = int.tryParse(dateParts[0]);
+    final month = int.tryParse(dateParts[1]);
+    final year = int.tryParse(dateParts[2]);
+
+    if (day == null || month == null || year == null) return false;
+
+    final now = DateTime.now();
+    final age = now.year - year;
+    if (age < 18 || (age == 18 && (now.month < month || (now.month == month && now.day < day)))) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _isValidPhoneNumber(String phone) {
+    final regex = RegExp(r'^\+\d{1,3}\d{10}$');
+    return regex.hasMatch(phone);
+  }
+
+  bool _isValidLicence(String licence) {
+    final regex = RegExp(r'^[a-zA-Z0-9]+$');
+    return regex.hasMatch(licence);
+  }
+
+  bool _isValidName(String name) {
+    final regex = RegExp(r'^[a-zA-Z\s]+$');
+    return regex.hasMatch(name);
   }
 
   @override
@@ -169,15 +199,15 @@ class CompleteProfileState extends State<CompleteProfile> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    buildTextFormField(controller.user, "Enter Your Name", "Name", mdheight),
+                    buildTextFormField(controller.user, "Enter Your Name", "Name", mdheight, _isValidName, "Name should not contain symbols or special characters."),
                     SizedBox(height: mdheight * 0.025),
-                    buildTextFormField(controller.address, "Enter Your Address", "Address", mdheight),
+                    buildTextFormField(controller.address, "Enter Your Address", "Address", mdheight, null, "Address must be between 50 and 100 characters", min: 10, max: 100),
                     SizedBox(height: mdheight * 0.025),
-                    buildTextFormFieldWithIcon(controller.dob, "Enter Your DOB", "Date Of Birth", Icons.calendar_month, mdheight, () => _showDatePicker(context)),
+                    buildTextFormFieldWithIcon(controller.dob, "Enter Your DOB", "Date Of Birth", Icons.calendar_month, mdheight, () => _showDatePicker(context), _isValidDOB, "DOB must be in DD-MM-YYYY format and you must be 18+ years old."),
                     SizedBox(height: mdheight * 0.025),
-                    buildTextFormField(controller.li, "Enter Your Licence Number", "Licence Number", mdheight),
+                    buildTextFormField(controller.li, "Enter Your Licence Number", "Licence Number", mdheight, _isValidLicence, "Licence number should contain only alphabets and numbers."),
                     SizedBox(height: mdheight * 0.025),
-                    buildTextFormField(controller.phone, "Enter Your Phone No", "Phone No", mdheight),
+                    buildTextFormField(controller.phone, "Enter Your Phone No", "Phone No", mdheight, _isValidPhoneNumber, "Phone number should start with + followed by country code and 10 digits."),
                     SizedBox(height: mdheight * 0.025),
                   ],
                 ),
@@ -192,11 +222,17 @@ class CompleteProfileState extends State<CompleteProfile> {
     );
   }
 
-  Widget buildTextFormField(TextEditingController controller, String hintText, String labelText, double mdheight) {
+  Widget buildTextFormField(TextEditingController controller, String hintText, String labelText, double mdheight, bool Function(String)? validator, String errorMessage, {int min = 0, int max = 0}) {
     return TextFormField(
       validator: (val) {
         if (val!.isEmpty) {
           return "Please Enter $labelText";
+        }
+        if (validator != null && !validator(val)) {
+          return errorMessage;
+        }
+        if (min > 0 && val.length < min || max > 0 && val.length > max) {
+          return errorMessage;
         }
         return null;
       },
@@ -214,11 +250,14 @@ class CompleteProfileState extends State<CompleteProfile> {
     );
   }
 
-  Widget buildTextFormFieldWithIcon(TextEditingController controller, String hintText, String labelText, IconData icon, double mdheight, VoidCallback onPressed) {
+  Widget buildTextFormFieldWithIcon(TextEditingController controller, String hintText, String labelText, IconData icon, double mdheight, VoidCallback onPressed, bool Function(String)? validator, String errorMessage) {
     return TextFormField(
       validator: (val) {
         if (val!.isEmpty) {
           return "Please Enter $labelText";
+        }
+        if (validator != null && !validator(val)) {
+          return errorMessage;
         }
         return null;
       },
